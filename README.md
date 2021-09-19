@@ -4,3 +4,6 @@
 2. Clone this repo and navigate to repository and `yarn install`.
 3. Run `expo start`.
 4. Scan the QR code of your phone see live changes on the app.
+
+View style guide --
+https://airbnb.io/javascript/react/#basic-rules
