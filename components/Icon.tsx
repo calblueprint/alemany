@@ -32,7 +32,8 @@ export default function Icon(props: IconProps) {
   return (
     <Pressable
       onPress={onPress ?? null}
-      style={({ pressed }) => (pressed ? styles.opaque : styles.fade)}>
+      style={({ pressed }) => (pressed ? styles.opaque : styles.fade)}
+    >
       {icon}
     </Pressable>
   );

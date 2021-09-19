@@ -39,7 +39,6 @@
       }
     ],
     "react/jsx-props-no-spreading": "off",
-    "react/jsx-closing-bracket-location": "off",
     "no-console": ["error", { "allow": ["warn"] }],
     "object-curly-newline": "off"
   }

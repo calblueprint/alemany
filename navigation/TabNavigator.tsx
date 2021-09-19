@@ -23,7 +23,8 @@ export default function TabNavigator() {
       initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
+      }}
+    >
       <Screen
         name="TabOne"
         component={TabOneScreen}
