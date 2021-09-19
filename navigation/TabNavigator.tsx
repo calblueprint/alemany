@@ -1,13 +1,13 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import * as React from "react";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as React from 'react';
 
-import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
-import { RootTabParamList, RootTabScreenProps } from "../types";
+import Colors from '../constants/Colors';
+import useColorScheme from '../hooks/useColorScheme';
+import TabOneScreen from '../screens/TabOneScreen';
+import TabTwoScreen from '../screens/TabTwoScreen';
+import { RootTabParamList, RootTabScreenProps } from '../types';
 
-import Icon from "../components/Icon";
+import Icon from '../components/Icon';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -23,18 +23,17 @@ export default function TabNavigator() {
       initialRouteName="TabOne"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}
-    >
+      }}>
       <Screen
         name="TabOne"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab Two",
+        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+          title: 'Tab One',
           tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
           headerRight: () => (
             <Icon
               name="info-circle"
-              onPress={() => navigation.navigate("Modal")}
+              onPress={() => navigation.navigate('Modal')}
               size={25}
               color={Colors[colorScheme].text}
               style={{ marginRight: 15 }}
@@ -46,7 +45,7 @@ export default function TabNavigator() {
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: "Tab Two",
+          title: 'Tab Two',
           tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
         }}
       />
