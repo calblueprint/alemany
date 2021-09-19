@@ -15,41 +15,41 @@ import Icon from '../components/Icon';
  */
 
 export default function TabNavigator() {
-    const {Navigator, Screen} = createBottomTabNavigator<RootTabParamList>();
-    const colorScheme = useColorScheme();
- 
-    return (
-        <Navigator
-        initialRouteName="TabOne"
-        screenOptions={{
-            tabBarActiveTintColor: Colors[colorScheme].tint,
-        }}>
-        <Screen
-            name="TabOne"
-            component={TabOneScreen}
-            options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-                title: 'Tab Two',
-                tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
-                headerRight: () => (
-                    <Icon 
-                        name="info-circle" 
-                        onPress={() => navigation.navigate('Modal')} 
-                        size={25}
-                        color={Colors[colorScheme].text}
-                        style={{ marginRight: 15 }}
-                    />
-                )
-            })}
-        />
-        <Screen
-            name="TabTwo"
-            component={TabTwoScreen}
-            options={{
-                title: 'Tab Two',
-                tabBarIcon: ({ color }) =><Icon name="code" color={color} />
-            }}
-        />
-        </Navigator>
-    );
- }
- 
+  const { Navigator, Screen } = createBottomTabNavigator<RootTabParamList>();
+  const colorScheme = useColorScheme();
+
+  return (
+    <Navigator
+      initialRouteName="TabOne"
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme].tint,
+      }}
+    >
+      <Screen
+        name="TabOne"
+        component={TabOneScreen}
+        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+          title: 'Tab One',
+          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
+          headerRight: () => (
+            <Icon
+              name="info-circle"
+              onPress={() => navigation.navigate('Modal')}
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginRight: 15 }}
+            />
+          ),
+        })}
+      />
+      <Screen
+        name="TabTwo"
+        component={TabTwoScreen}
+        options={{
+          title: 'Tab Two',
+          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
+        }}
+      />
+    </Navigator>
+  );
+}
