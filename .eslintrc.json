@@ -4,6 +4,8 @@
     "es2021": true
   },
   "extends": [
+    "plugin:import/errors",
+    "plugin:import/warnings",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "airbnb"
@@ -17,8 +19,11 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
+
   "settings": {
     "import/resolver": {
+      "typescript": {},
+      "babel-module": {},
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
@@ -40,6 +45,12 @@
     ],
     "react/jsx-props-no-spreading": "off",
     "no-console": ["error", { "allow": ["warn"] }],
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["../*"]
+      }
+    ]
   }
 }

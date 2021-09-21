@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { RootStackScreenProps } from '../types';
+import { RootStackScreenProps } from '@types';
 
 const styles = StyleSheet.create({
   container: {
