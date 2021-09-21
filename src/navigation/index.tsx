@@ -12,9 +12,9 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName } from 'react-native';
 
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import { RootStackParamList } from '../types';
+import ModalScreen from 'screens/ModalScreen';
+import NotFoundScreen from 'screens/NotFoundScreen';
+import { RootStackParamList } from '@types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 import TabNavigator from './TabNavigator';
