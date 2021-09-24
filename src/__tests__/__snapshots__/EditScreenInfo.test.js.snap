@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Edit Screen Info should show hello world 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "backgroundColor": "#fff",
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#fff",
+        },
+        Object {
+          "alignItems": "center",
+          "marginHorizontal": 50,
+        },
+      ]
+    }
+  >
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "rgba(0,0,0,0.8)",
+          },
+          Object {
+            "fontSize": 17,
+            "lineHeight": 24,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      Open up the code for this screen:
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "backgroundColor": "rgba(0,0,0,0.05)",
+          },
+          Array [
+            Object {
+              "borderRadius": 3,
+              "paddingHorizontal": 4,
+            },
+            Object {
+              "marginVertical": 7,
+            },
+          ],
+        ]
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#000",
+            },
+            Array [
+              undefined,
+              Object {
+                "fontFamily": "space-mono",
+              },
+            ],
+          ]
+        }
+      >
+        Hello World!
+      </Text>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "color": "rgba(0,0,0,0.8)",
+          },
+          Object {
+            "fontSize": 17,
+            "lineHeight": 24,
+            "textAlign": "center",
+          },
+        ]
+      }
+    >
+      Change any of the text, save the file, and your app will automatically update.
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "backgroundColor": "#fff",
+        },
+        Object {
+          "alignItems": "center",
+          "marginHorizontal": 20,
+          "marginTop": 15,
+        },
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+          "paddingVertical": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "color": "#2f95dc",
+            },
+            Object {
+              "textAlign": "center",
+            },
+          ]
+        }
+      >
+        Tap here if your app doesn't automatically update after making changes
+      </Text>
+    </View>
+  </View>
+</View>
+`;
