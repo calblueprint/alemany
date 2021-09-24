@@ -1,13 +1,16 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "jest/globals": true
   },
   "extends": [
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
     "airbnb"
   ],
   "parser": "@typescript-eslint/parser",
@@ -18,8 +21,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
-
+  "plugins": ["react", "@typescript-eslint", "jest"],
   "settings": {
     "import/resolver": {
       "typescript": {},
@@ -30,9 +32,26 @@
     }
   },
   "rules": {
-    "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
-    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+    "no-use-before-define": "off",
+    "react/jsx-props-no-spreading": "off",
+    "no-console": ["error", { "allow": ["warn"] }],
+    "object-curly-newline": "off",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["../*"]
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".test.js", ".tsx", ".ts"] }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -41,15 +60,6 @@
         "jsx": "never",
         "ts": "never",
         "tsx": "never"
-      }
-    ],
-    "react/jsx-props-no-spreading": "off",
-    "no-console": ["error", { "allow": ["warn"] }],
-    "object-curly-newline": "off",
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": ["../*"]
       }
     ]
   }
