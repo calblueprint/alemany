@@ -17,7 +17,6 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   run-linters:
-    name: Run linters
     runs-on: ubuntu-latest
 
     steps:
