@@ -10,7 +10,9 @@
   },
   "jest": {
     "preset": "jest-expo",
-    "transform": {"\\.[jt]sx?$": "babel-jest"},
+    "transform": {
+      "\\.[jt]sx?$": "babel-jest"
+    },
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
     ],
@@ -33,6 +35,7 @@
     "eslint-import-resolver-babel-module": "^5.3.1",
     "expo": "~42.0.1",
     "expo-asset": "~8.3.2",
+    "expo-cli": "^4.12.0",
     "expo-constants": "~11.0.1",
     "expo-font": "~9.2.1",
     "expo-linking": "~2.3.1",
