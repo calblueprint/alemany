@@ -29,7 +29,7 @@ export default function TabNavigator() {
         name="TabOne"
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
+          title: 'Hiiiiii < 3',
           tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
           headerRight: () => (
             <Icon
