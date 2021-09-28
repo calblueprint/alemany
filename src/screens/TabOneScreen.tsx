@@ -1,8 +1,7 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
 import EditScreenInfo from 'components/EditScreenInfo';
 import { Text, View } from 'components/Themed';
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +23,7 @@ const styles = StyleSheet.create({
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>Fun Tab</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
