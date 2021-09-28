@@ -2,9 +2,9 @@
 ## How to Review
 ## Test Plan
 ## Other
-### Next steps
+### Next Steps
 ### Relevant Links
-### Online sources
+### Online Sources
 ### Related PRs
 ## Screenshots and Tests
 CC: @mylesdomingo
