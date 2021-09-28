@@ -12,7 +12,7 @@ interface IconProps {
 
 const styles = StyleSheet.create({
   default: {
-    marginRight: -3,
+    marginRight: -4,
   },
   opaque: {
     opacity: 1,
