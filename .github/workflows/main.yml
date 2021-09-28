@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Jest
+name: actions
 
 # Controls when the workflow will run
 on:
@@ -13,14 +11,25 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  jest-tests:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       # Install dependencies and run test
       - run: yarn 
       - run: yarn test
+    
+  run-linters:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: yarn 
+      - name: check linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+          prettier: true
