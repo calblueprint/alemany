@@ -1,3 +1,8 @@
 .github/
 package.json
 babel.config.js
+coverage/
+.expo/
+.expo-shared/
+*.md
+*.html
