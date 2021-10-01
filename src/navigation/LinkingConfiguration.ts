@@ -30,6 +30,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               TreeScreen: 'tree',
             },
           },
+          Add: {
+            screens: {
+              AddScreen: 'add',
+            },
+          },
         },
       },
       Modal: 'modal',

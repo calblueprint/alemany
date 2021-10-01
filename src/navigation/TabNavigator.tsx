@@ -6,6 +6,7 @@ import useColorScheme from 'hooks/useColorScheme';
 import HomeScreen from 'src/screens/HomeScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
+import AddScreen from 'src/screens/AddScreen';
 import { RootTabParamList, RootTabScreenProps } from '@types';
 
 import Icon from 'components/Icon';
@@ -57,6 +58,14 @@ export default function TabNavigator() {
         options={{
           title: 'Trees',
           tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
+        }}
+      />
+      <Screen
+        name="Add"
+        component={AddScreen}
+        options={{
+          title: 'Add',
+          tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
         }}
       />
     </Navigator>
