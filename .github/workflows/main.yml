@@ -1,0 +1,34 @@
+name: actions
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  jest-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Install dependencies and run test
+      - run: yarn 
+      - run: yarn test
+    
+  run-linters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn 
+      
+      - name: check linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+          prettier: true
