@@ -12,7 +12,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList { }
   }
 }
 
@@ -35,3 +35,32 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export type Tree = {
+  id: string;
+  name: string | null;
+  location: Location | null;
+  planted: Planted | null;
+};
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Planted {
+  seconds: number;
+  nanoseconds: number;
+}
+
+export interface Comment {
+  [key: string]: string;
+}
+
+export interface Additional {
+  [key: string]: string;
+}
+
+export interface Dictionary {
+  [key: string]: any;
+}
