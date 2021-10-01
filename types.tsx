@@ -12,7 +12,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList { }
+    interface RootParamList extends RootStackParamList {}
   }
 }
 
@@ -46,20 +46,20 @@ export type Tree = {
 export type Location = {
   latitude: number;
   longitude: number;
-}
+};
 
 export type Planted = {
   seconds: number;
   nanoseconds: number;
-}
+};
 
 export type Comment = {
   [key: string]: string;
-}
+};
 
 export type Additional = {
   [key: string]: string;
-}
+};
 
 export interface Dictionary {
   [key: string]: any;

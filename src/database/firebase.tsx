@@ -8,7 +8,7 @@ import {
   MESSAGING_SENDER_ID,
   APP_ID,
 } from '@env';
-import { Tree, Comment, Additional, Dictionary } from '../../types';
+import { Tree, Comment, Additional, Dictionary } from '@types';
 
 const config = {
   apiKey: API_KEY,
