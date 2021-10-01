@@ -43,21 +43,21 @@ export type Tree = {
   planted: Planted | null;
 };
 
-export interface Location {
+export type Location = {
   latitude: number;
   longitude: number;
 }
 
-export interface Planted {
+export type Planted = {
   seconds: number;
   nanoseconds: number;
 }
 
-export interface Comment {
+export type Comment = {
   [key: string]: string;
 }
 
-export interface Additional {
+export type Additional = {
   [key: string]: string;
 }
 
