@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 export default function TreeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>Tree Screen</Text>
       <View
         style={styles.separator}
         lightColor="#eee"

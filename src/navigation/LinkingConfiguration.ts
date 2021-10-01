@@ -25,7 +25,7 @@ const linking: LinkingOptions<RootStackParamList> = {
               LoginScreen: 'login',
             },
           },
-          Tree: {
+          Trees: {
             screens: {
               TreeScreen: 'tree',
             },

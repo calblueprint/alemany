@@ -3,8 +3,6 @@ import * as React from 'react';
 
 import Colors from 'constants/Colors';
 import useColorScheme from 'hooks/useColorScheme';
-import TabOneScreen from 'screens/TabOneScreen';
-import TabTwoScreen from 'screens/TabTwoScreen';
 import HomeScreen from 'src/screens/HomeScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
@@ -31,25 +29,34 @@ export default function TabNavigator() {
       <Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          title: 'Home Screen',
-          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
-        }}
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+          title: 'Home',
+          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+          headerRight: () => (
+            <Icon
+              name="info-circle"
+              onPress={() => navigation.navigate('Modal')}
+              size={25}
+              color={Colors[colorScheme].text}
+              style={{ marginRight: 15 }}
+            />
+          ),
+        })}
       />
       <Screen
         name="Login"
         component={LoginScreen}
         options={{
-          title: 'Login Screen',
-          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
+          title: 'Login',
+          tabBarIcon: ({ color }) => <Icon name="user" color={color} />,
         }}
       />
       <Screen
-        name="Tree"
+        name="Trees"
         component={TreeScreen}
         options={{
-          title: 'Tree Screen',
-          tabBarIcon: ({ color }) => <Icon name="code" color={color} />,
+          title: 'Trees',
+          tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
         }}
       />
     </Navigator>
