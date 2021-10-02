@@ -54,10 +54,12 @@ export type Planted = {
 };
 
 export type Comment = {
+  id: string;
   [key: string]: string;
 };
 
 export type Additional = {
+  id: string;
   [key: string]: string;
 };
 

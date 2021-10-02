@@ -46,122 +46,98 @@ export const checkID = async function (id: string): Promise<boolean> {
  * getTree queries the `trees` table and returns a Tree if the ID is found and an empty entry otherwise.
  */
 export const getTree = async function (id: string): Promise<Tree> {
-  await treeCollection
-    .doc(id)
-    .get()
-    .then(doc => {
-      return doc.data() as Tree;
-    })
-    .catch(error => {
-      console.log('Error getting document:', error);
-    });
-  return { id: '' } as Tree;
+  try {
+    const doc = await treeCollection.doc(id).get();
+    return doc.data() as Tree;
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * getAllTrees returns a Dictionary containing all entries in the `trees` table.
  */
 export const getAllTrees = async function (): Promise<Dictionary> {
-  const response = await treeCollection.get();
-  const trees: Dictionary = {};
-  response.docs.map(doc => {
-    const tree: Tree = doc.data() as Tree;
-    trees[tree.id] = tree;
-  });
-  return trees;
+  try {
+    const response = await treeCollection.get();
+    const trees: Dictionary = {};
+    response.docs.map(doc => {
+      const tree: Tree = doc.data() as Tree;
+      trees[tree.id] = tree;
+    });
+    return trees;
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling
+  }
 };
 
 /*
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
 export const setTree = async function (
-  id: string,
   tree: Tree,
-): Promise<boolean> {
-  await treeCollection
-    .doc(id)
-    .set({ tree })
-    .then(() => {
-      return true;
-    })
-    .catch(error => {
-      console.error('Error writing document: ', error);
-    });
-  return false;
+) {
+  try { 
+    await treeCollection.doc(tree.id).set({tree});
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * getComment queries the `comments` table and returns a Comment if the ID is found and an empty entry otherwise.
  */
 export const getComment = async function (id: string): Promise<Comment> {
-  await commentCollection
-    .doc(id)
-    .get()
-    .then(doc => {
-      if (doc.exists) {
-        return doc.data() as Comment;
-      }
-    })
-    .catch(error => {
-      console.log('Error getting document:', error);
-    });
-  return {} as Comment;
+  try {
+    const doc = await commentCollection.doc(id).get();
+    return doc.data() as Comment;
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
 export const setComment = async function (
-  id: string,
   comment: Comment,
-): Promise<boolean> {
-  await commentCollection
-    .doc(id)
-    .set({ comment })
-    .then(() => {
-      return true;
-    })
-    .catch(error => {
-      console.error('Error writing document: ', error);
-    });
-  return false;
+) {
+  try { 
+    await commentCollection.doc(comment.id).set({comment});
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * getAdditional queries the `additional` table and returns an Additional if the ID is found and an empty entry otherwise.
  */
 export const getAdditional = async function (id: string): Promise<Additional> {
-  await additionalCollection
-    .doc(id)
-    .get()
-    .then(doc => {
-      if (doc.exists) {
-        return doc.data() as Additional;
-      }
-    })
-    .catch(error => {
-      console.log('Error getting document:', error);
-    });
-  return {} as Additional;
+  try {
+    const doc = await additionalCollection.doc(id).get();
+    return doc.data() as Additional;
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * setAdditional creates/updates an entry in the `additional` table given a Additional.
  */
 export const setAdditional = async function (
-  id: string,
   additional: Additional,
-): Promise<boolean> {
-  await additionalCollection
-    .doc(id)
-    .set({ additional })
-    .then(() => {
-      return true;
-    })
-    .catch(error => {
-      console.error('Error writing document: ', error);
-    });
-  return false;
+) {
+  try { 
+    await additionalCollection.doc(additional.id).set({additional});
+  } catch (e) {
+    throw e;
+    // TODO: Add error handling.
+  }
 };
-
 export default firebase;
