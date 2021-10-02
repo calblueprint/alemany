@@ -37,6 +37,13 @@
     "react/jsx-props-no-spreading": "off",
     "no-console": ["error", { "allow": ["warn"] }],
     "object-curly-newline": "off",
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",

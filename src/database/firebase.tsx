@@ -8,7 +8,7 @@ import {
   MESSAGING_SENDER_ID,
   APP_ID,
 } from '@env';
-import { Tree, Comment, Additional, Dictionary } from '@types';
+import { Tree, Comment, Additional } from '@types';
 
 const config = {
   apiKey: API_KEY,
@@ -26,7 +26,7 @@ const treeCollection = database.collection('trees');
 const commentCollection = database.collection('comments');
 const additionalCollection = database.collection('additional');
 
-/*
+/**
  * checkID validates that this ID exists in the `trees` table.
  */
 export const checkID = async (id: string): Promise<boolean> => {
@@ -40,8 +40,9 @@ export const checkID = async (id: string): Promise<boolean> => {
   }
 };
 
-/*
- * getTree queries the `trees` table and returns a Tree if the ID is found and an empty entry otherwise.
+/**
+ * getTree queries the `trees` table and returns a Tree if the ID is found 
+ * and an empty entry otherwise.
  */
 export const getTree = async (id: string): Promise<Tree> => {
   try {
@@ -54,7 +55,7 @@ export const getTree = async (id: string): Promise<Tree> => {
   }
 };
 
-/*
+/**
  * getAllTrees returns a Dictionary containing all entries in the `trees` table.
  */
 export const getAllTrees = async (): Promise<Tree[]> => {
@@ -68,7 +69,7 @@ export const getAllTrees = async (): Promise<Tree[]> => {
   }
 };
 
-/*
+/**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
 export const setTree = async (tree: Tree) => {
@@ -81,7 +82,7 @@ export const setTree = async (tree: Tree) => {
   }
 };
 
-/*
+/**
  * getComment queries the `comments` table and returns a Comment if the ID is found and an empty entry otherwise.
  */
 export const getComment = async (id: string): Promise<Comment> => {
@@ -95,7 +96,7 @@ export const getComment = async (id: string): Promise<Comment> => {
   }
 };
 
-/*
+/**
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
 export const setComment = async (comment: Comment) => {
@@ -108,7 +109,7 @@ export const setComment = async (comment: Comment) => {
   }
 };
 
-/*
+/**
  * getAdditional queries the `additional` table and returns an Additional if the ID is found and an empty entry otherwise.
  */
 export const getAdditional = async (id: string): Promise<Additional> => {
@@ -122,7 +123,7 @@ export const getAdditional = async (id: string): Promise<Additional> => {
   }
 };
 
-/*
+/**
  * setAdditional creates/updates an entry in the `additional` table given a Additional.
  */
 export const setAdditional = async (additional: Additional) => {
