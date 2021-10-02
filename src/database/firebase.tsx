@@ -36,8 +36,9 @@ export const checkID = async function (id: string): Promise<boolean> {
     .then(doc => {
       return doc.exists;
     })
-    .catch(error => {
-      console.log('Error getting document:', error);
+    .catch(e => {
+      console.log('Error getting document:', e);
+      throw (e)
     });
   return false;
 };
@@ -58,15 +59,10 @@ export const getTree = async function (id: string): Promise<Tree> {
 /*
  * getAllTrees returns a Dictionary containing all entries in the `trees` table.
  */
-export const getAllTrees = async function (): Promise<Dictionary> {
+export const getAllTrees = async function (): Promise<Tree[]> {
   try {
     const response = await treeCollection.get();
-    const trees: Dictionary = {};
-    response.docs.map(doc => {
-      const tree: Tree = doc.data() as Tree;
-      trees[tree.id] = tree;
-    });
-    return trees;
+    return response.docs.map(doc => doc.data() as Tree);
   } catch (e) {
     throw e;
     // TODO: Add error handling
@@ -76,11 +72,9 @@ export const getAllTrees = async function (): Promise<Dictionary> {
 /*
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
-export const setTree = async function (
-  tree: Tree,
-) {
-  try { 
-    await treeCollection.doc(tree.id).set({tree});
+export const setTree = async function (tree: Tree) {
+  try {
+    await treeCollection.doc(tree.id).set({ tree });
   } catch (e) {
     throw e;
     // TODO: Add error handling.
@@ -103,11 +97,9 @@ export const getComment = async function (id: string): Promise<Comment> {
 /*
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
-export const setComment = async function (
-  comment: Comment,
-) {
-  try { 
-    await commentCollection.doc(comment.id).set({comment});
+export const setComment = async function (comment: Comment) {
+  try {
+    await commentCollection.doc(comment.id).set({ comment });
   } catch (e) {
     throw e;
     // TODO: Add error handling.
@@ -130,11 +122,9 @@ export const getAdditional = async function (id: string): Promise<Additional> {
 /*
  * setAdditional creates/updates an entry in the `additional` table given a Additional.
  */
-export const setAdditional = async function (
-  additional: Additional,
-) {
-  try { 
-    await additionalCollection.doc(additional.id).set({additional});
+export const setAdditional = async function (additional: Additional) {
+  try {
+    await additionalCollection.doc(additional.id).set({ additional });
   } catch (e) {
     throw e;
     // TODO: Add error handling.
