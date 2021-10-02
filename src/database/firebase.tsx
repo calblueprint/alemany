@@ -29,28 +29,26 @@ const additionalCollection = database.collection('additional');
 /*
  * checkID validates that this ID exists in the `trees` table.
  */
-export const checkID = async function (id: string): Promise<boolean> {
-  await treeCollection
-    .doc(id)
-    .get()
-    .then(doc => {
-      return doc.exists;
-    })
-    .catch(e => {
-      console.log('Error getting document:', e);
-      throw (e)
-    });
-  return false;
+export const checkID = async (id: string): Promise<boolean> => {
+  try {
+    const doc = await treeCollection.doc(id).get();
+    return doc.exists;
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
 };
 
 /*
  * getTree queries the `trees` table and returns a Tree if the ID is found and an empty entry otherwise.
  */
-export const getTree = async function (id: string): Promise<Tree> {
+export const getTree = async (id: string): Promise<Tree> => {
   try {
     const doc = await treeCollection.doc(id).get();
     return doc.data() as Tree;
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
@@ -59,11 +57,12 @@ export const getTree = async function (id: string): Promise<Tree> {
 /*
  * getAllTrees returns a Dictionary containing all entries in the `trees` table.
  */
-export const getAllTrees = async function (): Promise<Tree[]> {
+export const getAllTrees = async (): Promise<Tree[]> => {
   try {
     const response = await treeCollection.get();
     return response.docs.map(doc => doc.data() as Tree);
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling
   }
@@ -72,10 +71,11 @@ export const getAllTrees = async function (): Promise<Tree[]> {
 /*
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
-export const setTree = async function (tree: Tree) {
+export const setTree = async (tree: Tree) => {
   try {
     await treeCollection.doc(tree.id).set({ tree });
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
@@ -84,11 +84,12 @@ export const setTree = async function (tree: Tree) {
 /*
  * getComment queries the `comments` table and returns a Comment if the ID is found and an empty entry otherwise.
  */
-export const getComment = async function (id: string): Promise<Comment> {
+export const getComment = async (id: string): Promise<Comment> => {
   try {
     const doc = await commentCollection.doc(id).get();
     return doc.data() as Comment;
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
@@ -97,10 +98,11 @@ export const getComment = async function (id: string): Promise<Comment> {
 /*
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
-export const setComment = async function (comment: Comment) {
+export const setComment = async (comment: Comment) => {
   try {
     await commentCollection.doc(comment.id).set({ comment });
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
@@ -109,11 +111,12 @@ export const setComment = async function (comment: Comment) {
 /*
  * getAdditional queries the `additional` table and returns an Additional if the ID is found and an empty entry otherwise.
  */
-export const getAdditional = async function (id: string): Promise<Additional> {
+export const getAdditional = async (id: string): Promise<Additional> => {
   try {
     const doc = await additionalCollection.doc(id).get();
     return doc.data() as Additional;
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
@@ -122,10 +125,11 @@ export const getAdditional = async function (id: string): Promise<Additional> {
 /*
  * setAdditional creates/updates an entry in the `additional` table given a Additional.
  */
-export const setAdditional = async function (additional: Additional) {
+export const setAdditional = async (additional: Additional) => {
   try {
     await additionalCollection.doc(additional.id).set({ additional });
   } catch (e) {
+    console.warn(e);
     throw e;
     // TODO: Add error handling.
   }
