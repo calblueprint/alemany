@@ -1,34 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Edit Screen Info should show hello world 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "backgroundColor": "#fff",
-      },
-      undefined,
-    ]
-  }
->
+<View>
   <View
     style={
-      Array [
-        Object {
-          "backgroundColor": "#fff",
-        },
-        Object {
-          "alignItems": "center",
-          "marginHorizontal": 50,
-        },
-      ]
+      Object {
+        "alignItems": "center",
+        "marginHorizontal": 50,
+      }
     }
   >
     <Text
       style={
         Array [
           Object {
-            "color": "rgba(0,0,0,0.8)",
+            "color": "#000000",
+            "fontFamily": "System",
+            "fontWeight": "400",
+          },
+          Object {
+            "textAlign": "left",
           },
           Object {
             "fontSize": 17,
@@ -44,17 +35,12 @@ exports[`Edit Screen Info should show hello world 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "rgba(0,0,0,0.05)",
+            "borderRadius": 3,
+            "paddingHorizontal": 4,
           },
-          Array [
-            Object {
-              "borderRadius": 3,
-              "paddingHorizontal": 4,
-            },
-            Object {
-              "marginVertical": 7,
-            },
-          ],
+          Object {
+            "marginVertical": 7,
+          },
         ]
       }
     >
@@ -62,11 +48,17 @@ exports[`Edit Screen Info should show hello world 1`] = `
         style={
           Array [
             Object {
-              "color": "#000",
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            Object {
+              "textAlign": "left",
             },
             Array [
-              undefined,
+              null,
               Object {
+                "backgroundColor": "#fafafa",
                 "fontFamily": "space-mono",
               },
             ],
@@ -80,7 +72,12 @@ exports[`Edit Screen Info should show hello world 1`] = `
       style={
         Array [
           Object {
-            "color": "rgba(0,0,0,0.8)",
+            "color": "#000000",
+            "fontFamily": "System",
+            "fontWeight": "400",
+          },
+          Object {
+            "textAlign": "left",
           },
           Object {
             "fontSize": 17,
@@ -95,16 +92,11 @@ exports[`Edit Screen Info should show hello world 1`] = `
   </View>
   <View
     style={
-      Array [
-        Object {
-          "backgroundColor": "#fff",
-        },
-        Object {
-          "alignItems": "center",
-          "marginHorizontal": 20,
-          "marginTop": 15,
-        },
-      ]
+      Object {
+        "alignItems": "center",
+        "marginHorizontal": 20,
+        "marginTop": 15,
+      }
     }
   >
     <View
@@ -128,7 +120,12 @@ exports[`Edit Screen Info should show hello world 1`] = `
         style={
           Array [
             Object {
-              "color": "#2f95dc",
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            Object {
+              "textAlign": "left",
             },
             Object {
               "textAlign": "center",
