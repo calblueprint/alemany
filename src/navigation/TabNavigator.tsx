@@ -10,6 +10,7 @@ import AddScreen from 'src/screens/AddScreen';
 import { RootTabParamList, RootTabScreenProps } from '@types';
 
 import Icon from 'components/Icon';
+import SearchScreen from 'src/screens/SearchScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -66,6 +67,14 @@ export default function TabNavigator() {
         options={{
           title: 'Add',
           tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
+        }}
+      />
+      <Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
         }}
       />
     </Navigator>

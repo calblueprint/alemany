@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from 'components/EditScreenInfo';
+import { Button, StyleSheet } from 'react-native';
 import { Text, View } from 'components/Themed';
 
 const styles = StyleSheet.create({
@@ -14,23 +12,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
 });
 
-export default function TreeScreen() {
+// TODO: fix navigation
+export default function TreeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tree Screen</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TreeScreen.tsx" />
+      <Button title="Search" onPress={() => navigation.navigate('Search')} />
     </View>
   );
 }
