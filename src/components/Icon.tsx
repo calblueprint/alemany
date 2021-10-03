@@ -5,7 +5,7 @@ import { StyleSheet, Pressable } from 'react-native';
 interface IconProps {
   onPress?: () => void;
   name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
+  color?: string;
   size?: number;
   style?: object;
 }
@@ -41,6 +41,7 @@ export default function Icon(props: IconProps) {
 
 Icon.defaultProps = {
   onPress: null,
-  size: 30,
+  size: 24,
   style: styles.default,
+  color: '#333333',
 };

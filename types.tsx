@@ -26,8 +26,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Home: undefined;
+  Trees: undefined;
+  Login: undefined;
+  Add: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -35,3 +37,34 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export type Tree = {
+  id: string;
+  name: string | null;
+  location: Location | null;
+  planted: Planted | null;
+};
+
+export type Location = {
+  latitude: number;
+  longitude: number;
+};
+
+export type Planted = {
+  seconds: number;
+  nanoseconds: number;
+};
+
+export type Comment = {
+  id: string;
+  [key: string]: string;
+};
+
+export type Additional = {
+  id: string;
+  [key: string]: string;
+};
+
+export interface Dictionary {
+  [key: string]: any;
+}

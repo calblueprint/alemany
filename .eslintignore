@@ -1,0 +1,7 @@
+.github/
+babel.config.js
+coverage/
+.expo/
+.expo-shared/
+*.md
+*.html
