@@ -13,7 +13,7 @@ import { Tree, Comment, Additional } from '@types';
 const config = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
-  projectId: PROJECT_ID,
+  projectId: 'bp-alemany',
   storageBucket: STORAGE_BUCKET,
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
@@ -70,9 +70,9 @@ export const getAllTrees = async (): Promise<Tree[]> => {
 };
 
 /**
- * setTree creates/updates an entry in the `trees` table given a Tree.
+ * writeTree creates/updates an entry in the `trees` table given a Tree.
  */
-export const setTree = async (tree: Tree) => {
+export const writeTree = async (tree: Tree) => {
   try {
     await treeCollection.doc(tree.id).set({ tree });
   } catch (e) {

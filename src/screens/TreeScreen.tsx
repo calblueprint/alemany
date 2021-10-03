@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Title } from 'react-native-paper';
+import { Title, Text } from 'react-native-paper';
 
-import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
+import { getAllTrees } from 'database/firebase';
+
+import { Tree } from '@types';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,11 +17,20 @@ const styles = StyleSheet.create({
 });
 
 export default function TreeScreen() {
+  const [allTrees, setAllTrees] = React.useState<Tree[]>([]);
+  React.useEffect(() => {
+    async function getData() {
+      const trees = await getAllTrees();
+      setAllTrees(trees);
+    }
+    getData();
+  }, []);
+
   return (
     <ViewContainer>
       <Title>Tree Screen</Title>
       <View style={styles.separator} />
-      <EditScreenInfo path="/screens/TreeScreen.tsx" />
+      <Text>{allTrees.length.toString()}</Text>
     </ViewContainer>
   );
 }
