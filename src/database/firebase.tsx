@@ -56,7 +56,7 @@ export const getTree = async (id: string): Promise<Tree> => {
 };
 
 /**
- * getAllTrees returns a Dictionary containing all entries in the `trees` table.
+ * getAllTrees returns an array containing all entries in the `trees` table.
  */
 export const getAllTrees = async (): Promise<Tree[]> => {
   try {
