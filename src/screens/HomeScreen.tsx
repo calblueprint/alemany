@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 const isValidLocation = (tree: Tree) => {
   if (tree.location && tree.location.latitude && tree.location.longitude) {
     return tree;
-  } /* some trees have "_long and _latit". Is this bc we need data cleaning?" */
+  }
 };
 
 export default function HomeScreen() {
@@ -33,7 +33,7 @@ export default function HomeScreen() {
     async function getData() {
       try {
         const data = await getAllTrees();
-        const validTrees = data.filter(tree => isValidLocation(tree));
+        const validTrees = data.filter((tree) => isValidLocation(tree));
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
@@ -54,7 +54,7 @@ export default function HomeScreen() {
             longitudeDelta: 0.005,
           }}
         >
-          {trees.map(tree => (
+          {trees.map((tree) => (
             <Marker
               coordinate={{
                 latitude: tree.location.latitude,
@@ -62,12 +62,6 @@ export default function HomeScreen() {
               }}
             />
           ))}
-          {/*  <Marker
-            coordinate={{ latitude: 51.5078788, longitude: -0.0877321 }}
-          />
-          <Marker
-            coordinate={{ latitude: 52.5078788, longitude: -0.0877321 }}
-          />  Make marker objects for every eligible tree's location */}
         </MapView>
       </View>
     </ViewContainer>
