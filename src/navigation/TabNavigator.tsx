@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
 import Colors from 'constants/Colors';
-import useColorScheme from 'hooks/useColorScheme';
 import HomeScreen from 'src/screens/HomeScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
@@ -19,15 +18,9 @@ import SearchScreen from 'src/screens/SearchScreen';
 
 export default function TabNavigator() {
   const { Navigator, Screen } = createBottomTabNavigator<RootTabParamList>();
-  const colorScheme = useColorScheme();
 
   return (
-    <Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}
-    >
+    <Navigator initialRouteName="Home">
       <Screen
         name="Home"
         component={HomeScreen}
@@ -39,7 +32,6 @@ export default function TabNavigator() {
               name="info-circle"
               onPress={() => navigation.navigate('Modal')}
               size={25}
-              color={Colors[colorScheme].text}
               style={{ marginRight: 15 }}
             />
           ),

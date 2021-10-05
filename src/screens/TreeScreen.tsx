@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { Button, StyleSheet } from 'react-native';
-import { Text, View } from 'components/Themed';
+import { StyleSheet, View, Button } from 'react-native';
+import { Title } from 'react-native-paper';
+import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
+    backgroundColor: '#eee',
   },
 });
 
 // TODO: fix navigation
 export default function TreeScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tree Screen</Text>
+    <ViewContainer>
+      <Title>Tree Screen</Title>
+      <View style={styles.separator} />
       <Button title="Search" onPress={() => navigation.navigate('Search')} />
-    </View>
+    </ViewContainer>
   );
 }

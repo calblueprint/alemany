@@ -41,7 +41,7 @@ export const checkID = async (id: string): Promise<boolean> => {
 };
 
 /**
- * getTree queries the `trees` table and returns a Tree if the ID is found 
+ * getTree queries the `trees` table and returns a Tree if the ID is found
  * and an empty entry otherwise.
  */
 export const getTree = async (id: string): Promise<Tree> => {

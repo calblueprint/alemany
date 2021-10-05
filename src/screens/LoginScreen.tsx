@@ -1,36 +1,25 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Title } from 'react-native-paper';
 
 import EditScreenInfo from 'components/EditScreenInfo';
-import { Text, View } from 'components/Themed';
+import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
+    backgroundColor: '#eee',
   },
 });
 
 export default function LoginScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login Screen</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
+    <ViewContainer>
+      <Title>Login Screen</Title>
+      <View style={styles.separator} />
       <EditScreenInfo path="/screens/LoginScreen.tsx" />
-    </View>
+    </ViewContainer>
   );
 }

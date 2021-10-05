@@ -1,25 +1,13 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import EditScreenInfo from 'components/EditScreenInfo';
-import { Text, View } from 'components/Themed';
 import { useEffect, useState } from 'react';
 import { getAllTrees } from 'src/database/firebase';
 import { Tree } from '@types';
 import SearchCard from 'src/components/SearchCard';
-import { Searchbar } from 'react-native-paper';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
+import { Searchbar, Title } from 'react-native-paper';
+import ViewContainer from 'src/components/ViewContainer';
 
 export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,7 +17,7 @@ export default function SearchScreen() {
       let data = await getAllTrees();
       data = data.filter(
         (tree: Tree) => (tree.name || '').toLowerCase().includes(searchQuery) ||
-          tree.id.includes(searchQuery),
+          (tree.id && tree.id.includes(searchQuery)),
       );
       setTrees(data);
     }
@@ -37,9 +25,9 @@ export default function SearchScreen() {
   }, [searchQuery]);
   const onChangeSearch = (newQuery: string) => setSearchQuery(newQuery);
   return (
-    <View style={styles.container}>
+    <ViewContainer>
       <ScrollView>
-        <Text style={styles.title}> Search Screen </Text>
+        <Title> Search Screen </Title>
         <Searchbar
           placeholder="Search"
           onChangeText={onChangeSearch}
@@ -50,6 +38,6 @@ export default function SearchScreen() {
         ))}
         <EditScreenInfo path="/screens/TreeScreen.tsx" />
       </ScrollView>
-    </View>
+    </ViewContainer>
   );
 }
