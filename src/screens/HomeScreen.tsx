@@ -33,7 +33,7 @@ export default function HomeScreen() {
     async function getData() {
       try {
         const data = await getAllTrees();
-        const validTrees = data.filter((tree) => isValidLocation(tree));
+        const validTrees = data.filter(tree => isValidLocation(tree));
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
@@ -50,11 +50,11 @@ export default function HomeScreen() {
           region={{
             latitude: 37.733053,
             longitude: -122.419756,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            latitudeDelta: 0.00275,
+            longitudeDelta: 0.00275,
           }}
         >
-          {trees.map((tree) => (
+          {trees.map(tree => (
             <Marker
               coordinate={{
                 latitude: tree.location.latitude,
