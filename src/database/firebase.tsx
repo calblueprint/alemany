@@ -83,7 +83,8 @@ export const setTree = async (tree: Tree) => {
 };
 
 /**
- * getComment queries the `comments` table and returns a Comment if the ID is found and an empty entry otherwise.
+ * getComment queries the `comments` table and
+ * returns a Comment if the ID is found and an empty entry otherwise.
  */
 export const getComment = async (id: string): Promise<Comment> => {
   try {
@@ -110,7 +111,8 @@ export const setComment = async (comment: Comment) => {
 };
 
 /**
- * getAdditional queries the `additional` table and returns an Additional if the ID is found and an empty entry otherwise.
+ * getAdditional queries the `additional` table and
+ * returns an Additional if the ID is found and an empty entry otherwise.
  */
 export const getAdditional = async (id: string): Promise<Additional> => {
   try {

@@ -37,6 +37,7 @@
     "react/jsx-props-no-spreading": "off",
     "no-console": ["error", { "allow": ["warn"] }],
     "object-curly-newline": "off",
+    "arrow-parens": [2, "as-needed"],
     "no-unused-expressions": [
       "error",
       {
