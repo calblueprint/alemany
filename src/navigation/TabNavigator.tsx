@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
+import Colors from 'constants/Colors';
 import HomeScreen from 'src/screens/HomeScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
