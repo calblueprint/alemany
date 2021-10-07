@@ -2,9 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Title, TextInput, Button } from 'react-native-paper';
 
-import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
-import { writeTree } from 'database/firebase';
+import { setTree } from 'database/firebase';
 
 import { Tree } from '@types';
 
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 export default function AddScreen() {
-  const [tree, setTree] = React.useState<Tree>({
+  const [entry, setEntry] = React.useState<Tree>({
     id: '',
     name: '',
     location: null,
@@ -34,21 +33,15 @@ export default function AddScreen() {
       <View style={styles.separator} />
       <TextInput
         label="Name"
-        style={styles.input}
-        value={tree.name}
-        onChangeText={name => setTree({ ...tree, name })}
+        value={entry.name}
+        onChangeText={name => setEntry({ ...entry, name })}
       />
       <TextInput
         label="ID"
-        style={styles.input}
-        value={tree.id}
-        onChangeText={id => setTree({ ...tree, id })}
+        value={entry.id}
+        onChangeText={id => setEntry({ ...entry, id })}
       />
-      <Button
-        mode="contained"
-        onPress={() => writeTree(tree)}
-        style={styles.input}
-      >
+      <Button mode="contained" onPress={() => setTree(entry)}>
         Submit
       </Button>
     </ViewContainer>
