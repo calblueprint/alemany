@@ -1,5 +1,3 @@
-import firebase from 'firebase';
-import 'firebase/firestore';
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -8,6 +6,9 @@ import {
   MESSAGING_SENDER_ID,
   APP_ID,
 } from '@env';
+import firebase from 'firebase';
+import 'firebase/firestore';
+
 import { Tree, Comment, Additional } from '@types';
 
 const config = {

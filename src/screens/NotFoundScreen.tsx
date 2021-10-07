@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Title, Text } from 'react-native-paper';
+
 import PropTypes from 'prop-types';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Title } from 'react-native-paper';
 
 import { RootStackScreenProps } from '@types';
 import ViewContainer from 'src/components/ViewContainer';
