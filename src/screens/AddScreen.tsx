@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: '#eee',
   },
+  input: {
+    width: '100%',
+  },
 });
 
 export default function AddScreen() {
@@ -31,15 +34,21 @@ export default function AddScreen() {
       <View style={styles.separator} />
       <TextInput
         label="Name"
+        style={styles.input}
         value={tree.name}
         onChangeText={name => setTree({ ...tree, name })}
       />
       <TextInput
         label="ID"
+        style={styles.input}
         value={tree.id}
         onChangeText={id => setTree({ ...tree, id })}
       />
-      <Button mode="contained" onPress={() => writeTree(tree)}>
+      <Button
+        mode="contained"
+        onPress={() => writeTree(tree)}
+        style={styles.input}
+      >
         Submit
       </Button>
     </ViewContainer>

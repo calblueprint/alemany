@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Title, Text } from 'react-native-paper';
+import { Title, Text, Card, Paragraph } from 'react-native-paper';
 
 import ViewContainer from 'components/ViewContainer';
 import { getAllTrees } from 'database/firebase';
@@ -30,7 +30,29 @@ export default function TreeScreen() {
     <ViewContainer>
       <Title>Tree Screen</Title>
       <View style={styles.separator} />
-      <Text>{allTrees.length.toString()}</Text>
+      <Card>
+        {/* <Card.Title
+          title="Card Title"
+          subtitle="Card Subtitle"
+          left={LeftContent}
+        /> */}
+        <Card.Content>
+          <Title>Card title</Title>
+          <Paragraph>{allTrees.length.toString()}</Paragraph>
+        </Card.Content>
+      </Card>
+
+      <Card>
+        {/* <Card.Title
+          title="Card Title"
+          subtitle="Card Subtitle"
+          left={LeftContent}
+        /> */}
+        <Card.Content>
+          <Title>Card title</Title>
+          <Paragraph>{allTrees[0].name}</Paragraph>
+        </Card.Content>
+      </Card>
     </ViewContainer>
   );
 }
