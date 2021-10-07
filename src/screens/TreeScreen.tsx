@@ -1,6 +1,10 @@
 import * as React from 'react';
+
+import PropTypes from 'prop-types';
 import { StyleSheet, View, Button } from 'react-native';
 import { Title } from 'react-native-paper';
+
+import { RootTabScreenProps } from '@types';
 import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
@@ -12,8 +16,9 @@ const styles = StyleSheet.create({
   },
 });
 
-// TODO: fix navigation
-export default function TreeScreen({ navigation }) {
+export default function TreeScreen({
+  navigation,
+}: RootTabScreenProps<'Search'>) {
   return (
     <ViewContainer>
       <Title>Tree Screen</Title>
@@ -22,3 +27,8 @@ export default function TreeScreen({ navigation }) {
     </ViewContainer>
   );
 }
+TreeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

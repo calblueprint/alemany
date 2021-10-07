@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { FontAwesome } from '@expo/vector-icons';
 import { StyleSheet, Pressable } from 'react-native';
 
