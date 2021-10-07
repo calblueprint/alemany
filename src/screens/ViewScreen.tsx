@@ -21,17 +21,7 @@ export default function AddScreen() {
       <View style={styles.separator} />
       <EditScreenInfo path="/screens/ViewScreen.tsx" />
 
-      <Card>
-        <Card.Title
-          title="Card Title"
-          subtitle="Card Subtitle"
-          left={LeftContent}
-        />
-        <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content>
-      </Card>
+
     </ViewContainer>
   );
 }

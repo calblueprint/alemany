@@ -50,7 +50,7 @@ export default function TreeScreen() {
         /> */}
         <Card.Content>
           <Title>Card title</Title>
-          <Paragraph>{allTrees[0].name}</Paragraph>
+          <Paragraph>Test tree 1</Paragraph>
         </Card.Content>
       </Card>
     </ViewContainer>
