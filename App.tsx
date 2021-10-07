@@ -1,11 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider as PaperProvider } from 'react-native-paper';
 
-import Navigation from 'navigation/index';
+import { StatusBar } from 'expo-status-bar';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 import useCachedResources from 'hooks/useCachedResources';
 import useTheme from 'hooks/useTheme';
+import Navigation from 'navigation/index';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
