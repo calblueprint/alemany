@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
 import { Title } from 'react-native-paper';
 import MapView, { Marker } from 'react-native-maps';
 import { getAllTrees } from 'database/firebase';
