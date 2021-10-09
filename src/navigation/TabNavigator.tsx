@@ -1,14 +1,13 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import Colors from 'constants/Colors';
-import HomeScreen from 'src/screens/HomeScreen';
-import TreeScreen from 'src/screens/TreeScreen';
-import LoginScreen from 'src/screens/LoginScreen';
-import AddScreen from 'src/screens/AddScreen';
-import { RootTabParamList, RootTabScreenProps } from '@types';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { RootTabParamList, RootTabScreenProps } from '@types';
 import Icon from 'components/Icon';
+import AddScreen from 'src/screens/AddScreen';
+import HomeScreen from 'src/screens/HomeScreen';
+import LoginScreen from 'src/screens/LoginScreen';
+import TreeScreen from 'src/screens/TreeScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.

@@ -11,6 +11,7 @@ web-build/
 .env
 yarn-error.log
 coverage/
+package.json
 
 # macOS
 .DS_Store
