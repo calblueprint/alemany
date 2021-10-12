@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Title } from 'react-native-paper';
 
 import { Tree } from '@types';
-import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
 import { getAllTrees } from 'database/firebase';
 
