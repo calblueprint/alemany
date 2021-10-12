@@ -1,3 +1,4 @@
+import firebase from 'firebase';
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -5,8 +6,7 @@ import {
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
   APP_ID,
-} from '@env';
-import firebase from 'firebase';
+} from 'react-native-dotenv';
 import 'firebase/firestore';
 
 import { Tree, Comment, Additional } from '@types';
@@ -30,9 +30,9 @@ const additionalCollection = database.collection('additional');
 /**
  * checkID validates that this ID exists in the `trees` table.
  */
-export const checkID = async (id: string): Promise<boolean> => {
+export const checkID = async (uuid: string): Promise<boolean> => {
   try {
-    const doc = await treeCollection.doc(id).get();
+    const doc = await treeCollection.doc(uuid).get();
     return doc.exists;
   } catch (e) {
     console.warn(e);
@@ -45,9 +45,9 @@ export const checkID = async (id: string): Promise<boolean> => {
  * getTree queries the `trees` table and returns a Tree if the ID is found
  * and an empty entry otherwise.
  */
-export const getTree = async (id: string): Promise<Tree> => {
+export const getTree = async (uuid: string): Promise<Tree> => {
   try {
-    const doc = await treeCollection.doc(id).get();
+    const doc = await treeCollection.doc(uuid).get();
     return doc.data() as Tree;
   } catch (e) {
     console.warn(e);
@@ -75,7 +75,7 @@ export const getAllTrees = async (): Promise<Tree[]> => {
  */
 export const setTree = async (tree: Tree) => {
   try {
-    await treeCollection.doc(tree.id).set({ tree });
+    await treeCollection.doc(tree.uuid).set({ tree });
   } catch (e) {
     console.warn(e);
     throw e;
@@ -87,9 +87,9 @@ export const setTree = async (tree: Tree) => {
  * getComment queries the `comments` table and
  * returns a Comment if the ID is found and an empty entry otherwise.
  */
-export const getComment = async (id: string): Promise<Comment> => {
+export const getComment = async (uuid: string): Promise<Comment> => {
   try {
-    const doc = await commentCollection.doc(id).get();
+    const doc = await commentCollection.doc(uuid).get();
     return doc.data() as Comment;
   } catch (e) {
     console.warn(e);
@@ -103,7 +103,7 @@ export const getComment = async (id: string): Promise<Comment> => {
  */
 export const setComment = async (comment: Comment) => {
   try {
-    await commentCollection.doc(comment.id).set({ comment });
+    await commentCollection.doc(comment.uuid).set({ comment });
   } catch (e) {
     console.warn(e);
     throw e;
@@ -115,9 +115,9 @@ export const setComment = async (comment: Comment) => {
  * getAdditional queries the `additional` table and
  * returns an Additional if the ID is found and an empty entry otherwise.
  */
-export const getAdditional = async (id: string): Promise<Additional> => {
+export const getAdditional = async (uuid: string): Promise<Additional> => {
   try {
-    const doc = await additionalCollection.doc(id).get();
+    const doc = await additionalCollection.doc(uuid).get();
     return doc.data() as Additional;
   } catch (e) {
     console.warn(e);
@@ -131,7 +131,7 @@ export const getAdditional = async (id: string): Promise<Additional> => {
  */
 export const setAdditional = async (additional: Additional) => {
   try {
-    await additionalCollection.doc(additional.id).set({ additional });
+    await additionalCollection.doc(additional.uuid).set({ additional });
   } catch (e) {
     console.warn(e);
     throw e;
