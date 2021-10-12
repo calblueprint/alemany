@@ -1,26 +1,63 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import { Title } from 'react-native-paper';
 
+import { Tree } from '@types';
 import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
+import { getAllTrees } from 'database/firebase';
 
 const styles = StyleSheet.create({
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-    backgroundColor: '#eee',
+  map: {
+    width: '100%',
+    height: '100%',
   },
 });
 
+const DEFAULT_LOCATION = {
+  latitude: 37.733053,
+  longitude: -122.419756,
+  latitudeDelta: 0.00275,
+  longitudeDelta: 0.00275,
+};
+
 export default function HomeScreen() {
+  const [trees, setTrees] = useState<Tree[]>([]);
+
+  const isValidLocation = (tree: Tree) => {
+    if (tree.location && tree.location.latitude && tree.location.longitude) {
+      return tree;
+    }
+  };
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const data = await getAllTrees();
+        const validTrees = data.filter(tree => isValidLocation(tree));
+        console.log(validTrees);
+        setTrees(validTrees);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+    getData();
+  }, []);
+
   return (
     <ViewContainer>
-      <Title>Home Screen</Title>
-      <View style={styles.separator} />
-      <EditScreenInfo path="/screens/HomeScreen.tsx" />
+      <MapView style={styles.map} region={DEFAULT_LOCATION}>
+        {trees.map(tree => (
+          <Marker
+            coordinate={{
+              latitude: tree.location.latitude,
+              longitude: tree.location.longitude,
+            }}
+          />
+        ))}
+      </MapView>
     </ViewContainer>
   );
 }
