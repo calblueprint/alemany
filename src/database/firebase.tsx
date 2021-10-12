@@ -75,7 +75,7 @@ export const getAllTrees = async (): Promise<Tree[]> => {
  */
 export const setTree = async (tree: Tree) => {
   try {
-    await treeCollection.doc(tree.uuid).set({ tree });
+    await treeCollection.doc(tree.uuid).set(tree);
   } catch (e) {
     console.warn(e);
     throw e;
@@ -103,7 +103,7 @@ export const getComment = async (uuid: string): Promise<Comment> => {
  */
 export const setComment = async (comment: Comment) => {
   try {
-    await commentCollection.doc(comment.uuid).set({ comment });
+    await commentCollection.doc(comment.uuid).set(comment);
   } catch (e) {
     console.warn(e);
     throw e;
@@ -131,7 +131,7 @@ export const getAdditional = async (uuid: string): Promise<Additional> => {
  */
 export const setAdditional = async (additional: Additional) => {
   try {
-    await additionalCollection.doc(additional.uuid).set({ additional });
+    await additionalCollection.doc(additional.uuid).set(additional);
   } catch (e) {
     console.warn(e);
     throw e;

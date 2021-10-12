@@ -41,7 +41,7 @@ export default function SearchScreen() {
           value={searchQuery}
         />
         {filtered.map((tree: Tree) => (
-          <SearchCard key={tree.id} name={tree.name} id={tree.id} />
+          <SearchCard key={tree.uuid} name={tree.name} id={tree.id} />
         ))}
       </ScrollView>
     </ViewContainer>
