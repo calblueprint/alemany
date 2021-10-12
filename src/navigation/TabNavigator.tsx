@@ -7,6 +7,7 @@ import Icon from 'components/Icon';
 import AddScreen from 'src/screens/AddScreen';
 import HomeScreen from 'src/screens/HomeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
+import SearchScreen from 'src/screens/SearchScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 
 /**
@@ -57,6 +58,14 @@ export default function TabNavigator() {
         options={{
           title: 'Add',
           tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
+        }}
+      />
+      <Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
         }}
       />
     </Navigator>

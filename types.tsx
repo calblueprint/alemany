@@ -30,6 +30,7 @@ export type RootTabParamList = {
   Trees: undefined;
   Login: undefined;
   Add: undefined;
+  Search: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
