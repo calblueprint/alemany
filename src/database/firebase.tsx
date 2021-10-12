@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import 'firebase/firestore';
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -7,7 +6,9 @@ import {
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
   APP_ID,
-} from '@env';
+} from 'react-native-dotenv';
+import 'firebase/firestore';
+
 import { Tree, Comment, Additional } from '@types';
 
 const config = {
