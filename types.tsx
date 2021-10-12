@@ -43,6 +43,7 @@ export type Tree = {
   name: string | null;
   location: Location | null;
   planted: Planted | null;
+  uuid: string;
 };
 
 export type Location = {
@@ -56,12 +57,12 @@ export type Planted = {
 };
 
 export type Comment = {
-  id: string;
+  uuid: string;
   [key: string]: string;
 };
 
 export type Additional = {
-  id: string;
+  uuid: string;
   [key: string]: string;
 };
 
