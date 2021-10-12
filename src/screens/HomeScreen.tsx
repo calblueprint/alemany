@@ -25,7 +25,7 @@ const DEFAULT_LOCATION = {
 
 export default function HomeScreen() {
   const [trees, setTrees] = useState<Tree[]>([]);
-
+  
   const isValidLocation = (tree: Tree) =>
     tree.location && tree.location.latitude && tree.location.longitude;
 
