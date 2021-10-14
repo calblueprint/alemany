@@ -1,4 +1,3 @@
-import firebase from 'firebase';
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -6,9 +5,11 @@ import {
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID,
   APP_ID,
-} from 'react-native-dotenv';
-import 'firebase/firestore';
+  // eslint-disable-next-line import/no-unresolved
+} from '@env';
+import firebase from 'firebase';
 
+import 'firebase/firestore';
 import { Tree, Comment, Additional } from '@types';
 
 const config = {
