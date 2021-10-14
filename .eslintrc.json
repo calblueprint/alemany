@@ -34,6 +34,7 @@
   "rules": {
     "@typescript-eslint/no-use-before-define": ["error"],
     "arrow-parens": [2, "as-needed"],
+    "implicit-arrow-linebreak": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
