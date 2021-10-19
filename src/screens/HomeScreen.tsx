@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Title } from 'react-native-paper';
 
 import { Tree } from '@types';
-import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
 import { getAllTrees } from 'database/firebase';
 
@@ -26,18 +24,14 @@ const DEFAULT_LOCATION = {
 export default function HomeScreen() {
   const [trees, setTrees] = useState<Tree[]>([]);
 
-  const isValidLocation = (tree: Tree) => {
-    if (tree.location && tree.location.latitude && tree.location.longitude) {
-      return tree;
-    }
-  };
+  const isValidLocation = (tree: Tree) =>
+    tree.location && tree.location.latitude && tree.location.longitude;
 
   useEffect(() => {
     async function getData() {
       try {
         const data = await getAllTrees();
         const validTrees = data.filter(tree => isValidLocation(tree));
-        console.log(validTrees);
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
@@ -51,9 +45,10 @@ export default function HomeScreen() {
       <MapView style={styles.map} region={DEFAULT_LOCATION}>
         {trees.map(tree => (
           <Marker
+            key={tree.uuid}
             coordinate={{
-              latitude: tree.location.latitude,
-              longitude: tree.location.longitude,
+              latitude: tree.location!.latitude,
+              longitude: tree.location!.longitude,
             }}
           />
         ))}
