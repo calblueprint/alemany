@@ -4,9 +4,8 @@ import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    padding: '2%',
-    // margin: '5%',
+    flex: 1,
+    alignItems: 'center',
     backgroundColor: '#fff',
   },
 });
