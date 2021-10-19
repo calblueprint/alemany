@@ -4,9 +4,14 @@ import { StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
+<<<<<<< HEAD
     justifyContent: 'center',
     padding: '2%',
     // margin: '5%',
+=======
+    flex: 1,
+    alignItems: 'center',
+>>>>>>> origin/main
     backgroundColor: '#fff',
   },
 });

@@ -84,6 +84,16 @@ export const setTree = async (tree: Tree) => {
   }
 };
 
+export const addTree = async (tree: Tree) => {
+  try {
+    await treeCollection.add(tree);
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
 /**
  * getComment queries the `comments` table and
  * returns a Comment if the ID is found and an empty entry otherwise.
