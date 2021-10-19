@@ -1,26 +1,45 @@
 import * as React from 'react';
 
-import { StyleSheet, View } from 'react-native';
-import { Title } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Title, TextInput, Button } from 'react-native-paper';
 
-import EditScreenInfo from 'components/EditScreenInfo';
+import { Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
+import { addTree } from 'database/firebase';
 
 const styles = StyleSheet.create({
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-    backgroundColor: '#eee',
+  input: {
+    width: '90%',
   },
 });
 
 export default function AddScreen() {
+  const [entry, setEntry] = React.useState<Tree>({
+    id: '',
+    name: '',
+    uuid: '',
+    location: null,
+    planted: null,
+  });
+
   return (
     <ViewContainer>
       <Title>Create Screen</Title>
-      <View style={styles.separator} />
-      <EditScreenInfo path="/screens/AddScreen.tsx" />
+      <TextInput
+        label="Name"
+        value={entry.name}
+        onChangeText={name => setEntry({ ...entry, name: name.toString() })}
+        style={styles.input}
+      />
+      <TextInput
+        label="ID"
+        value={entry.id}
+        onChangeText={id => setEntry({ ...entry, id: id.toString() })}
+        style={styles.input}
+      />
+      <Button mode="contained" onPress={() => addTree(entry)}>
+        Submit
+      </Button>
     </ViewContainer>
   );
 }
