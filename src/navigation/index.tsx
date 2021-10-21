@@ -9,6 +9,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '@types';
+import EditScreen from 'screens/EditScreen';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
 
@@ -28,6 +29,11 @@ function RootNavigator() {
       <Screen
         name="Root"
         component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Screen
+        name="Edit"
+        component={EditScreen}
         options={{ headerShown: false }}
       />
       <Screen
