@@ -7,7 +7,7 @@ import { Searchbar, Title } from 'react-native-paper';
 import { Tree, RootTabScreenProps } from '@types';
 import SearchCard from 'src/components/SearchCard';
 import ViewContainer from 'src/components/ViewContainer';
-import { getAllTrees } from 'src/database/firebase';
+import { getAllTrees, checkID } from 'src/database/firebase';
 
 export default function SearchScreen({
   navigation,
@@ -15,7 +15,10 @@ export default function SearchScreen({
   const [searchQuery, setSearchQuery] = useState('');
   const [trees, setTrees] = useState<Tree[]>([]);
   const filtered = trees
-    .filter((tree: Tree) => tree !== null && tree.name && tree.id)
+    .filter(
+      (tree: Tree) =>
+        tree !== null && tree.name && tree.id && checkID(tree.uuid),
+    )
     .filter((tree: Tree) => {
       const query = searchQuery.toLowerCase();
       return (
@@ -28,7 +31,9 @@ export default function SearchScreen({
       setTrees(data);
     }
     getTrees();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => getTrees());
+    return unsubscribe;
+  }, [navigation]);
 
   const onSearchChange = (searchValue: string) => {
     setSearchQuery(searchValue);
@@ -51,7 +56,7 @@ export default function SearchScreen({
               key={uuid}
               name={name}
               id={id}
-              onPress={() => navigation.push('Edit', { name, id })}
+              onPress={() => navigation.push('Edit', { uuid })}
             />
           );
         })}
@@ -63,5 +68,6 @@ export default function SearchScreen({
 SearchScreen.propTypes = {
   navigation: PropTypes.shape({
     push: PropTypes.func.isRequired,
+    addListener: PropTypes.func.isRequired,
   }).isRequired,
 };

@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { Title, TextInput } from 'react-native-paper';
 
-import { RootStackScreenProps } from '@types';
+import { RootStackScreenProps, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
+import { getTree, checkID, setTree } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
   input: {
@@ -29,23 +30,42 @@ export default function EditScreen({
   navigation,
 }: RootStackScreenProps<'Edit'>) {
   // @ts-ignore
-  const { name, id } = route.params;
+  const { uuid } = route.params;
+  const [entry, setEntry] = useState<Tree>({
+    id: '',
+    name: '',
+    uuid: '',
+    location: null,
+    planted: null,
+  });
+  useEffect(() => {
+    async function getEntry() {
+      const data = await getTree(uuid);
+      setEntry(data);
+    }
+    getEntry();
+  }, [uuid]);
+  const onPress = () => {
+    setTree(entry);
+    navigation.goBack();
+  };
+
   return (
     <ViewContainer>
       <Title>Edit Screen</Title>
       <TextInput
         label="Name"
-        value={name}
-        onChangeText={name => setEntry({ ...entry, name: name.toString() })}
+        value={entry.name}
+        onChangeText={value => setEntry({ ...entry, name: value.toString() })}
         style={styles.input}
       />
       <TextInput
         label="ID"
-        value={id}
-        onChangeText={id => setEntry({ ...entry, id: id.toString() })}
+        value={entry.id}
+        onChangeText={value => setEntry({ ...entry, id: value.toString() })}
         style={styles.input}
       />
-      <Button title="Submit Tree" onPress={null} />
+      <Button title="Submit Tree" onPress={onPress} />
     </ViewContainer>
   );
 }
@@ -53,11 +73,10 @@ export default function EditScreen({
 EditScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
+      uuid: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
   }).isRequired,
 };
