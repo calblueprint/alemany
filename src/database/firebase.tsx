@@ -12,7 +12,7 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 import { Tree, Comment, Additional } from '@types';
 
-const config = {
+export const config = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
   projectId: PROJECT_ID,
