@@ -2,8 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import * as Location from 'expo-location';
-import { LocationObject } from 'expo-location';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Title, TextInput, Button } from 'react-native-paper';
 
 import { Tree } from '@types';
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const getCurrentLocation = async (): Promise<LocationObject> => {
+const getCurrentLocation = async (): Promise<Location> => {
   try {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -29,7 +28,12 @@ const getCurrentLocation = async (): Promise<LocationObject> => {
       const currentLocation = await Location.getCurrentPositionAsync({
         timeout: 3000,
       });
-      return currentLocation;
+
+      const locationObj = {
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+      };
+      return locationObj;
     }
   } catch (err) {
     console.log(err);
@@ -38,22 +42,18 @@ const getCurrentLocation = async (): Promise<LocationObject> => {
 };
 
 export default function AddScreen() {
-  /*
-  - getting a button that links you to settings if you didnt enable location
-  - properly showing location
-  Eventually:
-  - subscribe to location updates with async expo-location function (annie knows)
-  - getting more accurate location pinpoints
-  - right now, location only asked for when you it AddScreen on navbar.
-  when we move to location subscription this should be asked at app launch (for map)
-  */
-  const [location, setLocation] = useState<LocationObject>(null);
+  const [location, setLocation] = useState<Location>({
+    latitude: null,
+    longitude: null,
+  });
   const [errorMsg, setErrorMsg] = useState<string>('');
+
   useEffect(() => {
     async function getData() {
       try {
         const data = await getCurrentLocation();
         setLocation(data);
+        console.log('Data:', data);
       } catch (e) {
         console.warn(e);
         setErrorMsg(e);
@@ -74,8 +74,10 @@ export default function AddScreen() {
     <ViewContainer>
       <Title>Create Screen</Title>
       <Title>
-        Location:
-        {location}
+        Location: Latitude:
+        {String(location.latitude)}
+, Longitude:
+{String(location.longitude)}
       </Title>
       <TextInput
         label="Name"
