@@ -16,9 +16,7 @@ import {
 import { Title } from 'react-native-paper';
 
 import ViewContainer from 'components/ViewContainer';
-// import config from 'src/database/firebase';
 import { config } from 'src/database/firebase';
-// imp;
 
 const styles = StyleSheet.create({
   separator: {
@@ -62,9 +60,6 @@ export default function App() {
         title="Send Verification Code"
         disabled={!phoneNumber}
         onPress={async () => {
-          // The FirebaseRecaptchaVerifierModal ref implements the
-          // FirebaseAuthApplicationVerifier interface and can be
-          // passed directly to `verifyPhoneNumber`.
           try {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
             // eslint-disable-next-line no-shadow
