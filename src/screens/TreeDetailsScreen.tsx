@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
-import { Title, TextInput } from 'react-native-paper';
+import { IconButton, TextInput } from 'react-native-paper';
 
 import { RootStackScreenProps, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
-import { getTree, checkID, setTree } from 'src/database/firebase';
+import { getTree, setTree } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
   input: {
@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function EditScreen({
+export default function TreeDetailsScreen({
   route,
   navigation,
-}: RootStackScreenProps<'Edit'>) {
+}: RootStackScreenProps<'TreeDetails'>) {
   // @ts-ignore
   const { uuid } = route.params;
   const [entry, setEntry] = useState<Tree>({
@@ -33,6 +33,9 @@ export default function EditScreen({
     location: null,
     planted: null,
   });
+
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
   useEffect(() => {
     async function getEntry() {
       const data = await getTree(uuid);
@@ -40,32 +43,52 @@ export default function EditScreen({
     }
     getEntry();
   }, [uuid]);
-  const onPress = () => {
-    setTree(entry);
-    navigation.goBack();
+
+  const toggleEditing = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      navigation.setOptions({
+        title: 'View Tree',
+      });
+    } else {
+      setIsEditing(true);
+      navigation.setOptions({
+        title: 'Edit Tree',
+      });
+    }
   };
+
+  const handleSaveChanges = () => {
+    setTree(entry);
+    toggleEditing();
+  };
+
+  navigation.setOptions({
+    headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
+  });
 
   return (
     <ViewContainer>
-      <Title>Edit Screen</Title>
       <TextInput
+        disabled={!isEditing}
         label="Name"
-        value={entry.name}
         onChangeText={value => setEntry({ ...entry, name: value.toString() })}
         style={styles.input}
+        value={entry.name ?? ''}
       />
       <TextInput
+        disabled={!isEditing}
         label="ID"
-        value={entry.id}
         onChangeText={value => setEntry({ ...entry, id: value.toString() })}
         style={styles.input}
+        value={entry.id}
       />
-      <Button title="Submit Tree" onPress={onPress} />
+      {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
     </ViewContainer>
   );
 }
 
-EditScreen.propTypes = {
+TreeDetailsScreen.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       uuid: PropTypes.string.isRequired,
@@ -73,5 +96,6 @@ EditScreen.propTypes = {
   }).isRequired,
   navigation: PropTypes.shape({
     goBack: PropTypes.func.isRequired,
+    setOptions: PropTypes.func.isRequired,
   }).isRequired,
 };

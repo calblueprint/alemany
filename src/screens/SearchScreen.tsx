@@ -56,7 +56,7 @@ export default function SearchScreen({
               key={uuid}
               name={name}
               id={id}
-              onPress={() => navigation.push('Edit', { uuid })}
+              onPress={() => navigation.push('TreeDetails', { uuid })}
             />
           );
         })}
