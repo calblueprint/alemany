@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 });
+// TODO: research date picker options (drop down, calender view, etc)
 
 export default function AddScreen() {
   const [entry, setEntry] = React.useState<Tree>({

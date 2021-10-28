@@ -19,12 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
   },
 });
-// TODO: need to have state for this screen (define setEntry to be able to change name and id)
-// want to pass in id itself, in this screen make call to database (getTree) to get tree associated with that ID
-// when submit button is clicked, call to firebase that sets tree to new object
-// check that tree is updated correctly
-// change value props to reflect current state of edit
-// cross reference addScreen
+
 export default function EditScreen({
   route,
   navigation,
