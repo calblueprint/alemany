@@ -21,7 +21,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "jest"],
+  "plugins": ["react", "@typescript-eslint", "jest", "react-hooks"],
   "settings": {
     "import/resolver": {
       "typescript": {},
@@ -33,32 +33,8 @@
   },
   "rules": {
     "@typescript-eslint/no-use-before-define": ["error"],
-    "no-use-before-define": "off",
-    "react/jsx-props-no-spreading": "off",
-    "no-console": ["error", { "allow": ["warn"] }],
-    "object-curly-newline": "off",
-    "no-unused-expressions": [
-      "error",
-      {
-        "allowShortCircuit": true,
-        "allowTernary": true
-      }
-    ],
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": ["../*"]
-      }
-    ],
-    "react/jsx-filename-extension": [
-      1,
-      { "extensions": [".test.js", ".tsx", ".ts"] }
-    ],
+    "arrow-parens": [2, "as-needed"],
+    "implicit-arrow-linebreak": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -68,6 +44,53 @@
         "ts": "never",
         "tsx": "never"
       }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
+    "no-console": ["error", { "allow": ["warn"] }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["../*"]
+      }
+    ],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
+    "no-use-before-define": "off",
+    "object-curly-newline": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".test.js", ".tsx", ".ts"] }
     ]
   }
 }

@@ -15,11 +15,12 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
-
+// TODO: add strong typing for react navigation props
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  TreeDetails: any;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -30,6 +31,7 @@ export type RootTabParamList = {
   Trees: undefined;
   Login: undefined;
   Add: undefined;
+  Search: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -43,6 +45,7 @@ export type Tree = {
   name: string | null;
   location: Location | null;
   planted: Planted | null;
+  uuid: string;
 };
 
 export type Location = {
@@ -56,12 +59,12 @@ export type Planted = {
 };
 
 export type Comment = {
-  id: string;
+  uuid: string;
   [key: string]: string;
 };
 
 export type Additional = {
-  id: string;
+  uuid: string;
   [key: string]: string;
 };
 

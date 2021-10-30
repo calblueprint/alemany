@@ -1,5 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
+
+import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Title } from 'react-native-paper';
 
