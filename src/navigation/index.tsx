@@ -9,9 +9,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '@types';
-import EditScreen from 'screens/EditScreen';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
+import TreeDetailsScreen from 'src/screens/TreeDetailsScreen';
 
 import LinkingConfiguration from './LinkingConfiguration';
 import TabNavigator from './TabNavigator';
@@ -32,9 +32,11 @@ function RootNavigator() {
         options={{ headerShown: false }}
       />
       <Screen
-        name="Edit"
-        component={EditScreen}
-        options={{ headerShown: false }}
+        name="TreeDetails"
+        component={TreeDetailsScreen}
+        options={{
+          title: 'View Tree',
+        }}
       />
       <Screen
         name="NotFound"
