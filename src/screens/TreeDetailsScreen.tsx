@@ -84,6 +84,10 @@ export default function TreeDetailsScreen({
         value={entry.id}
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
+      <Button
+        title="Add Comment"
+        onPress={() => navigation.navigate('Comment Modal')}
+      />
     </ViewContainer>
   );
 }
