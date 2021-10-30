@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
-import * as Location from 'expo-location';
 import { StyleSheet } from 'react-native';
-import { Title, TextInput, Button } from 'react-native-paper';
+import { Switch, Title, TextInput, Button } from 'react-native-paper';
 
-import { Tree } from '@types';
+import { Tree, Location } from '@types';
 import ViewContainer from 'components/ViewContainer';
 import { addTree } from 'database/firebase';
+import { DEFAULT_LOCATION } from 'src/constants/DefaultLocation';
+import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
 
 const styles = StyleSheet.create({
   input: {
@@ -15,53 +16,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const getCurrentLocation = async (): Promise<Location> => {
-  try {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      console.error(
-        '[AddScreen] Error in getCurrentLocation:',
-        'Permission to access location was denied',
-      );
-      throw new Error('Permission to access location was denied');
-    } else {
-      const currentLocation = await Location.getCurrentPositionAsync({
-        timeout: 3000,
-      });
-
-      const locationObj = {
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-      };
-      return locationObj;
-    }
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
 export default function AddScreen() {
-  const [location, setLocation] = useState<Location>({
-    latitude: null,
-    longitude: null,
-  });
-  const [errorMsg, setErrorMsg] = useState<string>('');
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        const data = await getCurrentLocation();
-        setLocation(data);
-        console.log('Data:', data);
-      } catch (e) {
-        console.warn(e);
-        setErrorMsg(e);
-      }
-    }
-    getData();
-  }, []);
-
+  const getCurrentLocation = useCurrentLocation();
   const [entry, setEntry] = React.useState<Tree>({
     id: '',
     name: '',
@@ -69,16 +25,31 @@ export default function AddScreen() {
     location: null,
     planted: null,
   });
+  const [location, setLocation] = useState<Location>({
+    latitude: DEFAULT_LOCATION.latitude,
+    longitude: DEFAULT_LOCATION.longitude,
+  });
+  const [checked, setChecked] = React.useState(false);
+
+  useEffect(() => {
+    async function getData() {
+      const data = await getCurrentLocation();
+      setLocation(data);
+    }
+    getData();
+  }, [getCurrentLocation]);
+
+  const onPress = (): void => {
+    let result = entry;
+    if (checked) {
+      result = { ...result, location };
+    }
+    addTree(result);
+  };
 
   return (
     <ViewContainer>
       <Title>Create Screen</Title>
-      <Title>
-        Location: Latitude:
-        {String(location.latitude)}
-, Longitude:
-{String(location.longitude)}
-      </Title>
       <TextInput
         label="Name"
         value={entry.name}
@@ -91,7 +62,14 @@ export default function AddScreen() {
         onChangeText={id => setEntry({ ...entry, id: id.toString() })}
         style={styles.input}
       />
-      <Button mode="contained" onPress={() => addTree(entry)}>
+      {/* TODO: Add Switch label that shows location */}
+      <Switch
+        value={checked}
+        onValueChange={() => {
+          setChecked(!checked);
+        }}
+      />
+      <Button mode="contained" onPress={onPress}>
         Submit
       </Button>
     </ViewContainer>
