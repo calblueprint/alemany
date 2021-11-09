@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@types';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
+import TreeDetailsScreen from 'src/screens/TreeDetailsScreen';
 
 import LinkingConfiguration from './LinkingConfiguration';
 import TabNavigator from './TabNavigator';
@@ -29,6 +30,13 @@ function RootNavigator() {
         name="Root"
         component={TabNavigator}
         options={{ headerShown: false }}
+      />
+      <Screen
+        name="TreeDetails"
+        component={TreeDetailsScreen}
+        options={{
+          title: 'View Tree',
+        }}
       />
       <Screen
         name="NotFound"

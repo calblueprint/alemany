@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
-import { Tree } from '@types';
+import { Tree, RootTabScreenProps } from '@types';
 import SearchCard from 'src/components/SearchCard';
 import ViewContainer from 'src/components/ViewContainer';
-import { getAllTrees } from 'src/database/firebase';
+import { getAllTrees, checkID } from 'src/database/firebase';
 
-export default function SearchScreen() {
+export default function SearchScreen({
+  navigation,
+}: RootTabScreenProps<'Search'>) {
   const [searchQuery, setSearchQuery] = useState('');
   const [trees, setTrees] = useState<Tree[]>([]);
   const filtered = trees
-    .filter((tree: Tree) => tree !== null && tree.name && tree.id)
+    .filter(
+      (tree: Tree) =>
+        tree !== null && tree.name && tree.id && checkID(tree.uuid),
+    )
     .filter((tree: Tree) => {
       const query = searchQuery.toLowerCase();
       return (
@@ -25,11 +31,14 @@ export default function SearchScreen() {
       setTrees(data);
     }
     getTrees();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => getTrees());
+    return unsubscribe;
+  }, [navigation]);
 
   const onSearchChange = (searchValue: string) => {
     setSearchQuery(searchValue);
   };
+
   return (
     <ViewContainer>
       <ScrollView>
@@ -40,10 +49,25 @@ export default function SearchScreen() {
           onChangeText={onSearchChange}
           value={searchQuery}
         />
-        {filtered.map((tree: Tree) => (
-          <SearchCard key={tree.uuid} name={tree.name} id={tree.id} />
-        ))}
+        {filtered.map((tree: Tree) => {
+          const { uuid, name, id } = tree;
+          return (
+            <SearchCard
+              key={uuid}
+              name={name}
+              id={id}
+              onPress={() => navigation.push('TreeDetails', { uuid })}
+            />
+          );
+        })}
       </ScrollView>
     </ViewContainer>
   );
 }
+
+SearchScreen.propTypes = {
+  navigation: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    addListener: PropTypes.func.isRequired,
+  }).isRequired,
+};
