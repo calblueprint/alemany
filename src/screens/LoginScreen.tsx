@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function App() {
+export default function Login({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
@@ -94,6 +94,7 @@ export default function App() {
             );
             await firebase.auth().signInWithCredential(credential);
             showMessage({ text: 'Phone authentication successful' });
+            navigation.navigate('TabNavigator');
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }
