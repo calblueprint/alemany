@@ -1,22 +1,17 @@
-import * as React from 'react';
-import { StyleSheet, View, Dimensions } from 'react-native';
-import { Title } from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+
+import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { getAllTrees } from 'database/firebase';
-import EditScreenInfo from 'components/EditScreenInfo';
+
+import { Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
-import { ThemeProvider } from '@react-navigation/native';
+import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
+import { getAllTrees } from 'database/firebase';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: '100%',
+    height: '100%',
   },
 });
 
@@ -27,43 +22,37 @@ const isValidLocation = (tree: Tree) => {
 };
 
 export default function HomeScreen() {
-  const [trees, setTrees] = React.useState<Tree[]>([]);
+  const [trees, setTrees] = useState<Tree[]>([]);
 
-  React.useEffect(() => {
+  const isValidLocation = (tree: Tree) =>
+    tree.location && tree.location.latitude && tree.location.longitude;
+
+  useEffect(() => {
     async function getData() {
       try {
         const data = await getAllTrees();
-        const validTrees = data.filter((tree) => isValidLocation(tree));
+        const validTrees = data.filter(tree => isValidLocation(tree));
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
       }
     }
     getData();
-  }, [setTrees]);
+  }, []);
 
   return (
     <ViewContainer>
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          region={{
-            latitude: 37.733053,
-            longitude: -122.419756,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
-          }}
-        >
-          {trees.map((tree) => (
-            <Marker
-              coordinate={{
-                latitude: tree.location.latitude,
-                longitude: tree.location.longitude,
-              }}
-            />
-          ))}
-        </MapView>
-      </View>
+      <MapView style={styles.map} region={DEFAULT_LOCATION}>
+        {trees.map(tree => (
+          <Marker
+            key={tree.uuid}
+            coordinate={{
+              latitude: tree.location!.latitude,
+              longitude: tree.location!.longitude,
+            }}
+          />
+        ))}
+      </MapView>
     </ViewContainer>
   );
 }
