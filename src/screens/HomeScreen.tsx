@@ -5,6 +5,7 @@ import MapView, { Marker } from 'react-native-maps';
 
 import { Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
+import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
 import { getAllTrees } from 'database/firebase';
 
 const styles = StyleSheet.create({
@@ -13,13 +14,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
-
-const DEFAULT_LOCATION = {
-  latitude: 37.733053,
-  longitude: -122.419756,
-  latitudeDelta: 0.00275,
-  longitudeDelta: 0.00275,
-};
 
 export default function HomeScreen() {
   const [trees, setTrees] = useState<Tree[]>([]);
