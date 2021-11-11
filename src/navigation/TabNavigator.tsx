@@ -11,6 +11,7 @@ import HomeScreen from 'src/screens/HomeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
 import SearchScreen from 'src/screens/SearchScreen';
 import TreeScreen from 'src/screens/TreeScreen';
+import VerificationScreen from 'src/screens/VerificationScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -72,6 +73,7 @@ export default function AllNavigator() {
     <NavigationContainer independent>
       <Navigator>
         <Screen name="Login" component={LoginScreen} />
+        <Screen name="Verify" component={VerificationScreen} />
         <Screen
           name="TabNavigator"
           component={TabNavigator}
