@@ -86,7 +86,8 @@ export const setTree = async (tree: Tree) => {
 
 export const addTree = async (tree: Tree) => {
   try {
-    await treeCollection.add(tree);
+    const ref = await treeCollection.add(tree);
+    treeCollection.doc(ref.id).update({ uuid: ref.id });
   } catch (e) {
     console.warn(e);
     throw e;
