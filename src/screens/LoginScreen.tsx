@@ -63,11 +63,11 @@ export default function Login({ navigation }) {
           try {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
             // eslint-disable-next-line no-shadow
-            const RealverificationId = await phoneProvider.verifyPhoneNumber(
+            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
               phoneNumber,
               recaptchaVerifier.current,
             );
-            setVerificationId(RealverificationId);
+            setVerificationId(tempVerificationID);
             showMessage({
               text: 'Verification code has been sent to your phone.',
             });

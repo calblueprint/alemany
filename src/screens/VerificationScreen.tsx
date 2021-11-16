@@ -57,7 +57,7 @@ export default function Verify({ route, navigation }) {
           }
         }}
       />
-      {message ? (
+      {message && (
         <TouchableOpacity onPress={() => showMessage({ text: '' })}>
           <Text
             style={{
@@ -70,7 +70,7 @@ export default function Verify({ route, navigation }) {
             {message.text}
           </Text>
         </TouchableOpacity>
-      ) : undefined}
+      )}
     </ViewContainer>
   );
 }
