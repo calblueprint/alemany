@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { StyleSheet, Button } from 'react-native';
-import { IconButton, TextInput } from 'react-native-paper';
+import { StyleSheet, Button, Text, View } from 'react-native';
+import { IconButton, TextInput, Title } from 'react-native-paper';
 
 import { RootStackScreenProps, Tree } from '@types';
-import ViewContainer from 'components/ViewContainer';
+import MapView, { Marker } from 'react-native-maps';
+import {
+  ViewContainer,
+  StyledButton,
+  StyledInput,
+  MapContainer,
+} from 'components/Components';
+import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
 import { getTree, setTree } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
@@ -20,12 +27,25 @@ const styles = StyleSheet.create({
   },
 });
 
+const DEFAULT_LOCATION = {
+  latitude: 37.733053,
+  longitude: -122.419756,
+  latitudeDelta: 0.00275,
+  longitudeDelta: 0.00275,
+};
+
 export default function TreeDetailsScreen({
   route,
   navigation,
 }: RootStackScreenProps<'TreeDetails'>) {
   // @ts-ignore
   const { uuid } = route.params;
+  const getCurrentLocation = useCurrentLocation();
+  const [date, setDate] = React.useState(new Date());
+  const [location, setLocation] = React.useState<Location>({
+    latitude: DEFAULT_LOCATION.latitude,
+    longitude: DEFAULT_LOCATION.longitude,
+  });
   const [entry, setEntry] = useState<Tree>({
     id: '',
     name: '',
@@ -69,21 +89,69 @@ export default function TreeDetailsScreen({
 
   return (
     <ViewContainer>
-      <TextInput
+      {false && !isEditing && (
+        <View>
+          <Title>
+            {entry.id}: {entry.name}
+          </Title>
+        </View>
+      )}
+      <MapView
+        style={{
+          height: '30%',
+          width: '100%',
+          borderRadius: 5,
+          margin: 5,
+        }}
+        region={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.00275,
+          longitudeDelta: 0.00275,
+        }}
+      >
+        <Marker
+          coordinate={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }}
+        />
+      </MapView>
+      <StyledInput
         disabled={!isEditing}
         label="Name"
-        onChangeText={value => setEntry({ ...entry, name: value.toString() })}
-        style={styles.input}
         value={entry.name ?? ''}
+        onChangeText={name => setEntry({ ...entry, name: name.toString() })}
       />
-      <TextInput
+      <StyledInput
         disabled={!isEditing}
         label="ID"
-        onChangeText={value => setEntry({ ...entry, id: value.toString() })}
-        style={styles.input}
-        value={entry.id}
+        value={entry.id ?? ''}
+        onChangeText={id => setEntry({ ...entry, id: id.toString() })}
       />
-      {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
+      <StyledInput
+        disabled={!isEditing}
+        label="Date Planted"
+        value={new Date().toDateString()}
+        onChangeText={d => setDate(new Date(d))}
+      />
+
+      {isEditing && (
+        <StyledButton
+          style={{
+            flex: 0,
+
+            minWidth: '100%',
+            color: 'green',
+            position: 'absolute',
+            bottom: 50,
+            left: 0,
+          }}
+          onPress={handleSaveChanges}
+        >
+          Save Changes
+        </StyledButton>
+      )}
     </ViewContainer>
   );
 }

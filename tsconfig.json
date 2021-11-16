@@ -14,7 +14,7 @@
       "hooks/*": ["src/hooks/*"],
       "navigation/*": ["src/navigation/*"],
       "screens/*": ["src/screens/*"],
-      "@types": ["types.tsx"]
+      "@types": ["types.tsx", "styled-components-react-native"]
     }
   }
 }

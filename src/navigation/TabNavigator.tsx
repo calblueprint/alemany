@@ -45,14 +45,6 @@ export default function TabNavigator() {
         }}
       />
       <Screen
-        name="Trees"
-        component={TreeScreen}
-        options={{
-          title: 'Trees',
-          tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
-        }}
-      />
-      <Screen
         name="Add"
         component={AddScreen}
         options={{

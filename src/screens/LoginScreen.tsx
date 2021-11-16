@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function App() {
+export default function LoginScreen(props: any) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');

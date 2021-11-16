@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-
+import { Searchbar, Title } from 'react-native-paper';
 import { Tree } from '@types';
-import ViewContainer from 'components/ViewContainer';
+import { ViewContainer } from 'src/components/Components';
 import { getAllTrees } from 'database/firebase';
 
 const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+    marginBottom: 10,
+    borderRadius: 5,
   },
 });
 
@@ -21,7 +23,7 @@ const DEFAULT_LOCATION = {
   longitudeDelta: 0.00275,
 };
 
-export default function HomeScreen() {
+export default function HomeScreen(props: any) {
   const [trees, setTrees] = useState<Tree[]>([]);
 
   const isValidLocation = (tree: Tree) =>
@@ -42,14 +44,20 @@ export default function HomeScreen() {
 
   return (
     <ViewContainer>
+      <Searchbar
+        style={{ minWidth: '100%', marginBottom: 10, shadowColor: 'white' }}
+        placeholder="Search"
+        onIconPress={() => props.navigation.navigate('Search')}
+      />
       <MapView style={styles.map} region={DEFAULT_LOCATION}>
         {trees.map(tree => (
           <Marker
             key={tree.uuid}
             coordinate={{
-              latitude: tree.location!.latitude,
-              longitude: tree.location!.longitude,
+              latitude: tree.location!.latitude - Math.random() / 2000,
+              longitude: tree.location!.longitude - Math.random() / 2000,
             }}
+            onPress={() => props.navigation.push('TreeDetails', tree.uuid)}
           />
         ))}
       </MapView>
