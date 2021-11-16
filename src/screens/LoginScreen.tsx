@@ -52,7 +52,9 @@ export default function Login({ navigation }) {
         verificationId,
       });
     } catch (err) {
-      showMessage({ text: 'Error: Not a valid phone number.' });
+      showMessage({
+        text: 'Error: Check phone number format and retake recaptcha.',
+      });
     }
   };
 
