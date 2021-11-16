@@ -5,6 +5,7 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
+import PropTypes from 'prop-types';
 import {
   Text,
   View,
@@ -31,7 +32,6 @@ export default function Login({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
-  const [verificationCode, setVerificationCode] = React.useState('');
   const [message, showMessage] = React.useState({
     text: '',
   });
@@ -63,38 +63,17 @@ export default function Login({ navigation }) {
           try {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
             // eslint-disable-next-line no-shadow
-            const verificationId = await phoneProvider.verifyPhoneNumber(
+            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
               phoneNumber,
               recaptchaVerifier.current,
             );
-            setVerificationId(verificationId);
+            setVerificationId(tempVerificationID);
             showMessage({
               text: 'Verification code has been sent to your phone.',
             });
-          } catch (err) {
-            showMessage({ text: `Error: ${err.message}` });
-          }
-        }}
-      />
-      <Text style={{ marginTop: 20 }}>Enter Verification code</Text>
-      <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        editable={!!verificationId}
-        placeholder="123456"
-        onChangeText={setVerificationCode}
-      />
-      <Button
-        title="Confirm Verification Code"
-        disabled={!verificationId}
-        onPress={async () => {
-          try {
-            const credential = firebase.auth.PhoneAuthProvider.credential(
+            navigation.navigate('Verify', {
               verificationId,
-              verificationCode,
-            );
-            await firebase.auth().signInWithCredential(credential);
-            showMessage({ text: 'Phone authentication successful' });
-            navigation.navigate('TabNavigator');
+            });
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }
