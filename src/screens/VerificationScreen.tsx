@@ -53,7 +53,7 @@ export default function Verify({ route, navigation }) {
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('TabNavigator');
           } catch (err) {
-            showMessage({ text: `Error: ${err.message}` });
+            showMessage({ text: 'Error: Incorrect verification code.' });
           }
         }}
       />

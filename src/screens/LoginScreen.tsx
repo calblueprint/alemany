@@ -5,7 +5,6 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
 import {
   Text,
   View,
@@ -36,6 +35,26 @@ export default function Login({ navigation }) {
     text: '',
   });
   const attemptInvisibleVerification = false;
+  const phoneProvider = new firebase.auth.PhoneAuthProvider();
+  const verify = async () => {
+    try {
+      // eslint-disable-next-line no-shadow
+      const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current,
+      );
+      console.log('failed');
+      setVerificationId(tempVerificationID);
+      showMessage({
+        text: 'Verification code has been sent to your phone.',
+      });
+      navigation.navigate('Verify', {
+        verificationId,
+      });
+    } catch (err) {
+      showMessage({ text: 'Error: Not a valid phone number.' });
+    }
+  };
 
   return (
     <ViewContainer>
@@ -59,25 +78,7 @@ export default function Login({ navigation }) {
       <Button
         title="Send Verification Code"
         disabled={!phoneNumber}
-        onPress={async () => {
-          try {
-            const phoneProvider = new firebase.auth.PhoneAuthProvider();
-            // eslint-disable-next-line no-shadow
-            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
-              phoneNumber,
-              recaptchaVerifier.current,
-            );
-            setVerificationId(tempVerificationID);
-            showMessage({
-              text: 'Verification code has been sent to your phone.',
-            });
-            navigation.navigate('Verify', {
-              verificationId,
-            });
-          } catch (err) {
-            showMessage({ text: `Error: ${err.message}` });
-          }
-        }}
+        onPress={verify}
       />
       {message ? (
         <TouchableOpacity onPress={() => showMessage({ text: '' })}>
@@ -92,7 +93,9 @@ export default function Login({ navigation }) {
             {message.text}
           </Text>
         </TouchableOpacity>
-      ) : undefined}
+      ) : (
+        showMessage({ text: 'Error: Complete Recaptcha.' })
+      )}
       {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
     </ViewContainer>
   );
