@@ -51,7 +51,7 @@ export default function Verify({ route, navigation }) {
             );
             await firebase.auth().signInWithCredential(credential);
             showMessage({ text: 'Phone authentication successful' });
-            navigation.navigate('TabNavigator');
+            navigation.navigate('Root');
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }
