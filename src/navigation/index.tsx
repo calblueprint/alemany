@@ -11,7 +11,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@types';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
+import LoginScreen from 'src/screens/LoginScreen';
 import TreeDetailsScreen from 'src/screens/TreeDetailsScreen';
+import VerificationScreen from 'src/screens/VerificationScreen';
 
 import LinkingConfiguration from './LinkingConfiguration';
 import TabNavigator from './TabNavigator';
@@ -26,6 +28,8 @@ function RootNavigator() {
 
   return (
     <Navigator>
+      <Screen name="Login" component={LoginScreen} />
+      <Screen name="Verify" component={VerificationScreen} />
       <Screen
         name="Root"
         component={TabNavigator}
