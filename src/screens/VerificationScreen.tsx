@@ -35,8 +35,13 @@ export default function Verify({ route, navigation }) {
       <View style={styles.separator} />
       <Text style={{ marginTop: 20 }}>Enter Verification code</Text>
       <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        editable={!!verificationId}
+        style={{
+          marginVertical: 10,
+          fontSize: 17,
+          minWidth: '100%',
+          textAlign: 'center',
+        }}
+        editable={!verificationId || !!verificationId}
         placeholder="123456"
         onChangeText={setVerificationCode}
       />
