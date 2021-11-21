@@ -17,6 +17,7 @@ import {
 import { Title } from 'react-native-paper';
 
 import ViewContainer from 'components/ViewContainer';
+import { PrimaryButton, RoundedButton } from 'src/components/Buttons';
 import { config } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
@@ -94,6 +95,10 @@ export default function Login({ navigation }) {
         </TouchableOpacity>
       ) : undefined}
       {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+      <PrimaryButton onPress={() => navigation.navigate('Root')}>
+        Bypass
+      </PrimaryButton>
+      <RoundedButton icon="plus"></RoundedButton>
     </ViewContainer>
   );
 }
