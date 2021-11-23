@@ -71,3 +71,7 @@ export type Additional = {
 export interface Dictionary {
   [key: string]: any;
 }
+
+type name {
+  key: type
+}

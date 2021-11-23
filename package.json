@@ -55,14 +55,9 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
-<<<<<<< HEAD
-    "react-native-web": "~0.13.12",
-    "react-native-webview": "^11.14.1"
-=======
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "~0.13.12",
     "react-native-webview": "^11.14.2"
->>>>>>> 9dcb1d66be292587ac6342cbab5da2a365464db5
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

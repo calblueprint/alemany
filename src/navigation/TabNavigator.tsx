@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RootTabParamList, RootTabScreenProps } from '@types';
 import Icon from 'components/Icon';
@@ -9,13 +11,14 @@ import HomeScreen from 'src/screens/HomeScreen';
 import LoginScreen from 'src/screens/LoginScreen';
 import SearchScreen from 'src/screens/SearchScreen';
 import TreeScreen from 'src/screens/TreeScreen';
+import VerificationScreen from 'src/screens/VerificationScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
-export default function TabNavigator() {
+function TabNavigator() {
   const { Navigator, Screen } = createBottomTabNavigator<RootTabParamList>();
 
   return (
@@ -35,14 +38,6 @@ export default function TabNavigator() {
             />
           ),
         })}
-      />
-      <Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          title: 'Login',
-          tabBarIcon: ({ color }) => <Icon name="user" color={color} />,
-        }}
       />
       <Screen
         name="Trees"
@@ -69,5 +64,22 @@ export default function TabNavigator() {
         }}
       />
     </Navigator>
+  );
+}
+
+export default function AllNavigator() {
+  const { Navigator, Screen } = createNativeStackNavigator();
+  return (
+    <NavigationContainer independent>
+      <Navigator>
+        {/* <Screen name="Login" component={LoginScreen} />
+        <Screen name="Verify" component={VerificationScreen} /> */}
+        <Screen
+          name="TabNavigator"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+      </Navigator>
+    </NavigationContainer>
   );
 }
