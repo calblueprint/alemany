@@ -49,6 +49,14 @@ export default function Login({ navigation }) {
     }
   }, [verificationId, navigation]);
 
+  function phoneFormatter(num: string) {
+    if (num.length === 10) {
+      setPhoneNumber('+1'.concat(num));
+    } else {
+      setPhoneNumber(num);
+    }
+  }
+
   return (
     <ViewContainer>
       <Title>Login Screen</Title>
@@ -66,7 +74,7 @@ export default function Login({ navigation }) {
         autoCompleteType="tel"
         keyboardType="phone-pad"
         textContentType="telephoneNumber"
-        onChangeText={insertNumber => setPhoneNumber(insertNumber)}
+        onChangeText={insertNumber => phoneFormatter(insertNumber)}
       />
       <Button
         title="Send Verification Code"
@@ -74,7 +82,6 @@ export default function Login({ navigation }) {
         onPress={async () => {
           try {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
-            // eslint-disable-next-line no-shadow
             const tempVerificationID = await phoneProvider.verifyPhoneNumber(
               phoneNumber,
               recaptchaVerifier.current,
