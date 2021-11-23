@@ -75,3 +75,15 @@ export interface Dictionary {
 type name {
   key: type
 }
+
+export type Feature {
+  type: string;
+  properties: {
+      Name: string;
+  };
+  geometry: {
+      coordinates: number[][];
+      type: string;
+  };
+  id: string;
+}

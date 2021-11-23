@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import MapView, { Marker, Polygon, Callout } from 'react-native-maps';
 
-import { Dictionary, Tree } from '@types';
+import { Feature, Dictionary, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
 import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
 import MAPBOX_COORDS from 'constants/Features';
@@ -30,26 +30,23 @@ export default function HomeScreen() {
     tree.location && tree.location.latitude && tree.location.longitude;
 
   const getCoordinates = (mapboxJSON: Dictionary) => {
-    const coordDicts = mapboxJSON.features;
-    for (const coordArrays of coordDicts) {
-      const polygon: number[][] = coordArrays.geometry.coordinates;
-      const coordinateArr = polygon.map((coordsArr: number[]) => {
-        const lat = coordsArr[1];
-        const long = coordsArr[0];
-        const coords = {
-          latitude: lat,
-          longitude: long,
-        };
-        return coords;
-      });
-
+    const { features } = mapboxJSON;
+    return features.map((feature: Feature) => {
+      const coordinates = feature.geometry.coordinates.map(
+        (coord: number[]) => ({
+          latitude: coord[1],
+          longitude: coord[0],
+        }),
+      );
+      return (
         <Polygon
-        coordinates={coordinateArr}
-        fillColor="rgba(0,0,255,0.5)"
-        strokeColor="rgba(0,0,255,0.5)"
-        strokeWidth={2}
-      />;
-    }
+          coordinates={coordinates}
+          fillColor="rgba(0,0,255,0.5)"
+          strokeColor="rgba(0,0,255,0.5)"
+          strokeWidth={2}
+        />
+      );
+    });
   };
 
   useEffect(() => {
