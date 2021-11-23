@@ -94,6 +94,7 @@ export default function Login({ navigation }) {
         </TouchableOpacity>
       ) : undefined}
       {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+      <Button title="BYPASS" onPress={() => navigation.navigate('Root')} />
     </ViewContainer>
   );
 }

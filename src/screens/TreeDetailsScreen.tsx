@@ -32,6 +32,7 @@ export default function TreeDetailsScreen({
     uuid: '',
     location: null,
     planted: null,
+    active: true,
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -82,6 +83,10 @@ export default function TreeDetailsScreen({
         onChangeText={value => setEntry({ ...entry, id: value.toString() })}
         style={styles.input}
         value={entry.id}
+      />
+      <Button
+        title={entry.active ? 'Archive tree' : 'Unarchive tree'}
+        onPress={() => setEntry({ ...entry, active: !entry.active })}
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
     </ViewContainer>

@@ -72,6 +72,21 @@ export const getAllTrees = async (): Promise<Tree[]> => {
 };
 
 /**
+ * getActiveTrees
+ * @param tree
+ */
+export const getActiveTrees = async (): Promise<Tree[]> => {
+  try {
+    const response = await treeCollection.where('active', '==', true).get();
+    return response.docs.map(doc => doc.data() as Tree);
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling
+  }
+};
+
+/**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
 export const setTree = async (tree: Tree) => {

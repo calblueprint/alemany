@@ -48,6 +48,7 @@ export type Tree = {
   location: Location | null;
   planted: Planted | null;
   uuid: string;
+  active: boolean;
 };
 
 export type Location = {
