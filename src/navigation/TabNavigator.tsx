@@ -18,7 +18,7 @@ export default function TabNavigator() {
   const { Navigator, Screen } = createBottomTabNavigator<RootTabParamList>();
 
   return (
-    <Navigator initialRouteName="Home">
+    <Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
       <Screen
         name="Home"
         component={HomeScreen}

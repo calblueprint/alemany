@@ -27,14 +27,16 @@ function RootNavigator() {
   const { Navigator, Screen, Group } = Stack;
 
   return (
-    <Navigator>
+    <Navigator
+      screenOptions={{ headerShown: false }}
+      navigationOptions={{
+        headerShown: false,
+      }}
+      options={{ headerShown: false }}
+    >
       <Screen name="Login" component={LoginScreen} />
       <Screen name="Verify" component={VerificationScreen} />
-      <Screen
-        name="Root"
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
+      <Screen name="Root" component={TabNavigator} />
       <Screen
         name="TreeDetails"
         component={TreeDetailsScreen}
