@@ -116,9 +116,3 @@ export default function HomeScreen() {
     </ViewContainer>
   );
 }
-
-/*
-https://github.com/react-native-maps/react-native-maps/blob/master/docs/polygon.md
-https://pretagteam.com/question/how-to-draw-polygon-on-react-native-maps-with-many-pointslatitude-and-longitude
-https://www.youtube.com/watch?v=4qq0GQPkfjI  14:00 min
-*/
