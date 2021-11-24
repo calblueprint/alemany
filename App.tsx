@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { StatusBar } from 'expo-status-bar';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 

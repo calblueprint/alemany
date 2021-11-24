@@ -10,6 +10,8 @@ import { addTree } from 'database/firebase';
 import { DEFAULT_LOCATION } from 'src/constants/DefaultLocation';
 import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
 
+import { ShortInput } from 'src/components/Inputs';
+
 const styles = StyleSheet.create({
   input: {
     width: '90%',
