@@ -95,6 +95,10 @@ export const addTree = async (tree: Tree) => {
   }
 };
 
+/**
+ * same functionality as addTree but for comments:
+ * assigns uuid to comment and adds to commentCollection.
+ */
 export const saveComment = async (comment: Comment) => {
   try {
     const ref = await commentCollection.add(comment);
@@ -137,15 +141,15 @@ export const getComment = async (uuid: string): Promise<Comment> => {
 /**
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
-// export const setComment = async (comment: Comment) => {
-//   try {
-//     await commentCollection.doc(comment.uuid).set(comment);
-//   } catch (e) {
-//     console.warn(e);
-//     throw e;
-//     // TODO: Add error handling.
-//   }
-// };
+export const setComment = async (comment: Comment) => {
+  try {
+    await commentCollection.doc(comment.uuid).set(comment);
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
 
 /**
  * getAdditional queries the `additional` table and
