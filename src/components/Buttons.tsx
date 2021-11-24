@@ -9,13 +9,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     minWidth: '100%',
     padding: 10,
-    backgroundColor: COLORS.SPINACH,
+    backgroundColor: COLORS.Spinach,
   },
   rounded: {
-    backgroundColor: COLORS.SPINACH,
+    backgroundColor: COLORS.Spinach,
   },
   text: {
-    fontFamily: 'Inter',
     color: 'white',
   },
 });
@@ -36,7 +35,7 @@ export function RoundedButton(props: React.ComponentProps<typeof IconButton>) {
   return (
     <IconButton
       style={styles.rounded}
-      color={COLORS.WHITE}
+      color={COLORS.White}
       size={40}
       {...props}
     />

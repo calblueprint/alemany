@@ -18,6 +18,7 @@ import { Title } from 'react-native-paper';
 
 import ViewContainer from 'components/ViewContainer';
 import { PrimaryButton, RoundedButton } from 'src/components/Buttons';
+import { ShortInput } from 'src/components/Inputs';
 import { config } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
@@ -48,8 +49,7 @@ export default function Login({ navigation }) {
         attemptInvisibleVerification={attemptInvisibleVerification}
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>
-      <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
+      <ShortInput
         placeholder="+1 999 999 9999"
         autoFocus
         autoCompleteType="tel"

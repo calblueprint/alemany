@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flex: 0,
 
     minWidth: '100%',
-    color: COLORS.SPINACH,
+    color: COLORS.Spinach,
   },
   input: {
     width: '100%',
