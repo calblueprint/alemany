@@ -108,12 +108,7 @@ export const saveComment = async (comment: Comment) => {
 
 export const addComment = async (comment: Comment, uuid: string) => {
   try {
-    // setTree({ ...entry, comments: [...(entry.comments ?? []), comment] });
-    // 1. Fetch current data for tree id
-    // 2. assign that data to a ref
     const ref = await treeCollection.doc(uuid).get();
-    // 3. create a new Comment array with new comment appended to old comments from that data
-    // 4. line 90:
     treeCollection
       .doc(uuid)
       .update({ comments: [...(ref.data().comments ?? []), comment] });
