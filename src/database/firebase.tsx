@@ -95,6 +95,35 @@ export const addTree = async (tree: Tree) => {
   }
 };
 
+export const saveComment = async (comment: Comment) => {
+  try {
+    const ref = await commentCollection.add(comment);
+    commentCollection.doc(ref.id).update({ uuid: ref.id });
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
+export const addComment = async (comment: Comment, uuid: string) => {
+  try {
+    // setTree({ ...entry, comments: [...(entry.comments ?? []), comment] });
+    // 1. Fetch current data for tree id
+    // 2. assign that data to a ref
+    const ref = await treeCollection.doc(uuid).get();
+    // 3. create a new Comment array with new comment appended to old comments from that data
+    // 4. line 90:
+    treeCollection
+      .doc(uuid)
+      .update({ comments: [...(ref.data().comments ?? []), comment] });
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
 /**
  * getComment queries the `comments` table and
  * returns a Comment if the ID is found and an empty entry otherwise.
@@ -113,15 +142,15 @@ export const getComment = async (uuid: string): Promise<Comment> => {
 /**
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
-export const setComment = async (comment: Comment) => {
-  try {
-    await commentCollection.doc(comment.uuid).set(comment);
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
+// export const setComment = async (comment: Comment) => {
+//   try {
+//     await commentCollection.doc(comment.uuid).set(comment);
+//   } catch (e) {
+//     console.warn(e);
+//     throw e;
+//     // TODO: Add error handling.
+//   }
+// };
 
 /**
  * getAdditional queries the `additional` table and

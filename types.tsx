@@ -21,6 +21,8 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   TreeDetails: any;
+  Login: undefined;
+  Verify: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -46,6 +48,7 @@ export type Tree = {
   location: Location | null;
   planted: Planted | null;
   uuid: string;
+  comments: Comment[] | null;
 };
 
 export type Location = {
@@ -60,7 +63,7 @@ export type Planted = {
 
 export type Comment = {
   uuid: string;
-  [key: string]: string;
+  input: string;
 };
 
 export type Additional = {

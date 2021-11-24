@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
-import { RootStackScreenProps, Tree } from '@types';
+import { RootStackScreenProps, Tree, Comment } from '@types';
 import ViewContainer from 'components/ViewContainer';
-import { getTree, setTree } from 'src/database/firebase';
+import {
+  getTree,
+  setTree,
+  addComment,
+  saveComment,
+} from 'src/database/firebase';
 
 const styles = StyleSheet.create({
   input: {
     width: '90%',
+    marginBottom: 5,
   },
   separator: {
     marginVertical: 30,
@@ -32,9 +38,15 @@ export default function TreeDetailsScreen({
     uuid: '',
     location: null,
     planted: null,
+    comments: [],
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const [comment, setComment] = useState<Comment>({
+    uuid: '',
+    input: '',
+  });
 
   useEffect(() => {
     async function getEntry() {
@@ -63,6 +75,11 @@ export default function TreeDetailsScreen({
     toggleEditing();
   };
 
+  const handleSaveComment = () => {
+    saveComment(comment);
+    addComment(comment, entry.uuid);
+  };
+
   navigation.setOptions({
     headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
   });
@@ -84,10 +101,16 @@ export default function TreeDetailsScreen({
         value={entry.id}
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
-      <Button
-        title="Add Comment"
-        onPress={() => navigation.navigate('Comment Modal')}
+
+      <TextInput
+        label="Add Comment"
+        onChangeText={value =>
+          setComment({ ...comment, input: value.toString() })}
+        style={styles.input}
+        value={comment.input}
       />
+
+      <Button title="Add Comment" onPress={handleSaveComment} />
     </ViewContainer>
   );
 }
