@@ -1,11 +1,13 @@
 import * as React from 'react';
+
+import { ThemeProvider } from '@react-navigation/native';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import { Title } from 'react-native-paper';
 import MapView, { Marker } from 'react-native-maps';
-import { getAllTrees } from 'database/firebase';
+import { Title } from 'react-native-paper';
+
 import EditScreenInfo from 'components/EditScreenInfo';
 import ViewContainer from 'components/ViewContainer';
-import { ThemeProvider } from '@react-navigation/native';
+import { getAllTrees } from 'database/firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +35,7 @@ export default function HomeScreen() {
     async function getData() {
       try {
         const data = await getAllTrees();
-        const validTrees = data.filter((tree) => isValidLocation(tree));
+        const validTrees = data.filter(tree => isValidLocation(tree));
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
@@ -54,7 +56,7 @@ export default function HomeScreen() {
             longitudeDelta: 0.005,
           }}
         >
-          {trees.map((tree) => (
+          {trees.map(tree => (
             <Marker
               coordinate={{
                 latitude: tree.location.latitude,

@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+
+import PropTypes from 'prop-types';
+import { StyleSheet, View, Button } from 'react-native';
 import { Title } from 'react-native-paper';
 
-import EditScreenInfo from 'components/EditScreenInfo';
+import { RootTabScreenProps } from '@types';
 import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
@@ -14,12 +16,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TreeScreen() {
+export default function TreeScreen({
+  navigation,
+}: RootTabScreenProps<'Search'>) {
   return (
     <ViewContainer>
       <Title>Tree Screen</Title>
       <View style={styles.separator} />
-      <EditScreenInfo path="/screens/TreeScreen.tsx" />
+      <Button title="Search" onPress={() => navigation.navigate('Search')} />
     </ViewContainer>
   );
 }
+TreeScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

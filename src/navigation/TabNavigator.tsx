@@ -1,14 +1,13 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
-import Colors from 'constants/Colors';
-import HomeScreen from 'src/screens/HomeScreen';
-import TreeScreen from 'src/screens/TreeScreen';
-import LoginScreen from 'src/screens/LoginScreen';
-import AddScreen from 'src/screens/AddScreen';
-import { RootTabParamList, RootTabScreenProps } from '@types';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { RootTabParamList, RootTabScreenProps } from '@types';
 import Icon from 'components/Icon';
+import AddScreen from 'src/screens/AddScreen';
+import HomeScreen from 'src/screens/HomeScreen';
+import SearchScreen from 'src/screens/SearchScreen';
+import TreeScreen from 'src/screens/TreeScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -37,14 +36,6 @@ export default function TabNavigator() {
         })}
       />
       <Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          title: 'Login',
-          tabBarIcon: ({ color }) => <Icon name="user" color={color} />,
-        }}
-      />
-      <Screen
         name="Trees"
         component={TreeScreen}
         options={{
@@ -58,6 +49,14 @@ export default function TabNavigator() {
         options={{
           title: 'Add',
           tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
+        }}
+      />
+      <Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
         }}
       />
     </Navigator>
