@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import React, { useState, useEffect } from 'react';
 
 import { StyleSheet, Text } from 'react-native';
@@ -65,42 +64,6 @@ export default function HomeScreen() {
   return (
     <ViewContainer>
       <MapView style={styles.map} region={DEFAULT_LOCATION}>
-        <Polygon
-          coordinates={[
-            {
-              latitude: 37.732937,
-              longitude: -122.42002,
-            },
-            {
-              latitude: 37.733048,
-              longitude: -122.420035,
-            },
-            {
-              latitude: 37.733098,
-              longitude: -122.420051,
-            },
-            {
-              latitude: 37.733076,
-              longitude: -122.420177,
-            },
-            {
-              latitude: 37.732894,
-              longitude: -122.420154,
-            },
-            {
-              latitude: 37.732937,
-              longitude: -122.42002,
-            },
-          ]}
-          fillColor="rgba(0,0,255,0.5)"
-          strokeColor="rgba(0,0,255,0.5)"
-          strokeWidth={2}
-        >
-          <Callout>
-            <Text> Fruit Ally </Text>
-          </Callout>
-        </Polygon>
-
         {getCoordinates(MAPBOX_COORDS)}
 
         {trees.map(tree => (

@@ -72,8 +72,8 @@ export default function AllNavigator() {
   return (
     <NavigationContainer independent>
       <Navigator>
-        {/* <Screen name="Login" component={LoginScreen} />
-        <Screen name="Verify" component={VerificationScreen} /> */}
+        <Screen name="Login" component={LoginScreen} />
+        <Screen name="Verify" component={VerificationScreen} />
         <Screen
           name="TabNavigator"
           component={TabNavigator}
