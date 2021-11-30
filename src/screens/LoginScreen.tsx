@@ -8,6 +8,7 @@ import {
 import firebase from 'firebase';
 import { Text, View, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title } from 'react-native-paper';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
@@ -41,14 +42,12 @@ export default function Login({ navigation }) {
       });
     }
   }, [verificationId, navigation]);
-  function phoneFormatter(num: string) {
-    if (num.length === 10) {
-      setPhoneNumber('+1'.concat(num));
-    } else {
+
+  function checkNumber(num: string) {
+    if (isPossiblePhoneNumber(num)) {
       setPhoneNumber(num);
     }
   }
-
   return (
     <ViewContainer>
       <Title>Login Screen</Title>
@@ -59,19 +58,10 @@ export default function Login({ navigation }) {
         attemptInvisibleVerification={attemptInvisibleVerification}
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>
-      {/* <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        placeholder="+1 999 999 9999"
-        autoFocus
-        autoCompleteType="tel"
-        keyboardType="phone-pad"
-        textContentType="telephoneNumber"
-        onChangeText={insertNumber => phoneFormatter(insertNumber)}
-      /> */}
       <PhoneInput
         defaultCountry="US"
         placeholder="(123) 456 - 7899"
-        onChange={number => phoneFormatter(number)}
+        onChange={number => checkNumber(number)}
       />
       <Button
         title="Send Verification Code"
