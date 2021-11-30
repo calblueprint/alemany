@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, SafeAreaView } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
+import Carousel from 'react-native-snap-carousel';
 import { RootStackScreenProps, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
 import { getTree, setTree } from 'src/database/firebase';
+import { Pill, RowContainer, ScreenContainer } from 'src/components/Components';
+import { Body, LargeTitle } from 'src/components/Text';
 
 const styles = StyleSheet.create({
   input: {
@@ -68,23 +71,38 @@ export default function TreeDetailsScreen({
   });
 
   return (
-    <ViewContainer>
-      <TextInput
-        disabled={!isEditing}
-        label="Name"
-        onChangeText={value => setEntry({ ...entry, name: value.toString() })}
-        style={styles.input}
-        value={entry.name ?? ''}
-      />
-      <TextInput
-        disabled={!isEditing}
-        label="ID"
-        onChangeText={value => setEntry({ ...entry, id: value.toString() })}
-        style={styles.input}
-        value={entry.id}
-      />
-      {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
-    </ViewContainer>
+    <ScreenContainer>
+      <SafeAreaView>
+        <LargeTitle>{entry.name}</LargeTitle>
+        <RowContainer style={[{ marginTop: 9 }]}>
+          <Body>#{entry.id} </Body>
+          <Pill value="Peach" style={{ backgroundColor: '#ABCDEF' }} />
+        </RowContainer>
+        <View style={{ minHeight: 150, backgroundColor: 'coral' }}></View>
+
+        <RowContainer>
+          <Pill value="Add location" icon="map-marker" />
+          <Pill value="Add date planted" icon="birthday-cake" />
+        </RowContainer>
+        <TextInput
+          disabled={!isEditing}
+          label="Name"
+          onChangeText={value => setEntry({ ...entry, name: value.toString() })}
+          style={styles.input}
+          value={entry.name ?? ''}
+        />
+        <TextInput
+          disabled={!isEditing}
+          label="ID"
+          onChangeText={value => setEntry({ ...entry, id: value.toString() })}
+          style={styles.input}
+          value={entry.id}
+        />
+        {isEditing && (
+          <Button title="Save Changes" onPress={handleSaveChanges} />
+        )}
+      </SafeAreaView>
+    </ScreenContainer>
   );
 }
 

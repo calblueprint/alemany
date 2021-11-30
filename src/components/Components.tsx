@@ -1,59 +1,81 @@
 import * as React from 'react';
 
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import { useTheme, Title, TextInput, Button } from 'react-native-paper';
 import { COLORS } from 'src/constants/Colors';
+import { FontAwesome } from '@expo/vector-icons';
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    margin: '2%',
+  screen: {
+    backgroundColor: COLORS.Grey50,
+  },
+  row: {
+    flexDirection: 'row',
   },
   scroll: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
+    backgroundColor: COLORS.Grey50,
   },
-  button: {
-    flex: 0,
-
-    minWidth: '100%',
-    color: COLORS.Spinach,
+  pill: {
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: COLORS.Grey100,
+    padding: 10,
   },
-  input: {
-    width: '100%',
-    margin: 5,
+  top: {
+    marginHorizontal: 28,
   },
-  map: {
-    height: '30%',
-    width: '100%',
-    borderRadius: 5,
-    margin: 5,
+  lined: {
+    borderTopColor: COLORS.Grey100,
+    borderTopWidth: 1,
+    borderBottomColor: COLORS.Grey100,
+    borderBottomWidth: 1,
   },
 });
 
-type ViewProps = {
-  children?: React.ReactNode;
+export function ScreenContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={styles.screen} />;
+}
+
+export function TopContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={styles.top} />;
+}
+
+export function ScrollContainer(
+  props: React.ComponentProps<typeof ScrollView>,
+) {
+  return <ScrollView {...props} style={[styles.scroll, props.style]} />;
+}
+
+export function RowContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={[styles.row, props.style]} />;
+}
+
+export function LinedContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={[styles.lined, props.style]} />;
+}
+
+type PillProps = {
+  value: string;
+  icon: string;
 };
 
-export function ViewContainer(props: ViewProps) {
-  const { children } = props;
-  return <View style={styles.container}>{children}</View>;
-}
-
-export function ScrollContainer(props: ViewProps) {
-  const { children } = props;
-  return <ScrollView style={styles.scroll}>{children}</ScrollView>;
-}
-
-ViewContainer.defaultProps = {
-  children: null,
+const defaultPillProps = {
+  value: '',
+  icon: '',
 };
-
-export function StyledInput(props: any) {
-  return <TextInput mode={'outlined'} style={styles.input} {...props} />;
+export function Pill(props: any) {
+  return (
+    <RowContainer style={[styles.pill, props.style, { alignItems: 'center' }]}>
+      {props.icon !== '' && (
+        <FontAwesome
+          name={props.icon}
+          color={COLORS.Grey300}
+          style={{ marginRight: 4 }}
+        />
+      )}
+      <Text>{props.value}</Text>
+    </RowContainer>
+  );
 }
 
-export function MapContainer(props: any) {
-  return <MapView style={styles.map} />;
-}
+Pill.defaultProps = defaultPillProps;

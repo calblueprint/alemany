@@ -7,7 +7,6 @@ import Icon from 'components/Icon';
 import AddScreen from 'src/screens/AddScreen';
 import HomeScreen from 'src/screens/HomeScreen';
 import SearchScreen from 'src/screens/SearchScreen';
-import TreeScreen from 'src/screens/TreeScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -24,7 +23,7 @@ export default function TabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
-          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <Icon name="map" color={color} />,
           headerRight: () => (
             <Icon
               name="info-circle"
@@ -34,14 +33,6 @@ export default function TabNavigator() {
             />
           ),
         })}
-      />
-      <Screen
-        name="Trees"
-        component={TreeScreen}
-        options={{
-          title: 'Trees',
-          tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
-        }}
       />
       <Screen
         name="Add"

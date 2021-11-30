@@ -46,7 +46,7 @@ export type Tree = {
   id: string;
   name: string | null;
   location: Location | null;
-  planted: Planted | null;
+  planted: Planted;
   uuid: string;
 };
 
