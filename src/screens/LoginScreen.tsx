@@ -6,16 +6,9 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title } from 'react-native-paper';
+import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
 import { config } from 'src/database/firebase';
@@ -67,7 +60,7 @@ export default function Login({ navigation }) {
         attemptInvisibleVerification={attemptInvisibleVerification}
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>
-      <TextInput
+      {/* <TextInput
         style={{ marginVertical: 10, fontSize: 17 }}
         placeholder="+1 999 999 9999"
         autoFocus
@@ -75,6 +68,11 @@ export default function Login({ navigation }) {
         keyboardType="phone-pad"
         textContentType="telephoneNumber"
         onChangeText={insertNumber => phoneFormatter(insertNumber)}
+      /> */}
+      <PhoneInput
+        defaultCountry="US"
+        placeholder="(123) 456 - 7899"
+        onChange={phoneFormatter}
       />
       <Button
         title="Send Verification Code"
