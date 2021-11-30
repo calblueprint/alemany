@@ -41,8 +41,6 @@ export default function Login({ navigation }) {
       });
     }
   }, [verificationId, navigation]);
-
-
   function phoneFormatter(num: string) {
     if (num.length === 10) {
       setPhoneNumber('+1'.concat(num));
@@ -50,7 +48,7 @@ export default function Login({ navigation }) {
       setPhoneNumber(num);
     }
   }
-  
+
   return (
     <ViewContainer>
       <Title>Login Screen</Title>
