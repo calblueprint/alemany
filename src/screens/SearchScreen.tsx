@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
-import { Button, Searchbar, Title } from 'react-native-paper';
+import { ScrollView, Button } from 'react-native';
+import { Searchbar, Title } from 'react-native-paper';
 
 import { Tree, RootTabScreenProps } from '@types';
 import SearchCard from 'src/components/SearchCard';
 import ViewContainer from 'src/components/ViewContainer';
-import { getAllTrees, getActiveTrees, checkID } from 'src/database/firebase';
+import { getAllTrees, checkID } from 'src/database/firebase';
 
 export default function SearchScreen({
   navigation,
 }: RootTabScreenProps<'Search'>) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [trees, setTrees] = useState<Tree[]>([]);
   const [active, setActive] = useState<boolean>(true);
-
-  let filtered = trees
+  const [trees, setTrees] = useState<Tree[]>([]);
+  const filtered = trees
+    .filter((tree: Tree) => !active || tree.active)
     .filter(
       (tree: Tree) =>
         tree !== null && tree.name && tree.id && checkID(tree.uuid),
@@ -27,25 +27,15 @@ export default function SearchScreen({
         tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
       );
     });
-
   useEffect(() => {
-    refreshTrees();
-    const unsubscribe = navigation.addListener('focus', () => refreshTrees());
-    return unsubscribe;
-  }, [navigation]);
-
-  const refreshTrees = () => {
     async function getTrees() {
-      let data = [];
-      if (active) {
-        data = await getActiveTrees();
-      } else {
-        data = await getAllTrees();
-      }
+      const data = await getAllTrees();
       setTrees(data);
     }
     getTrees();
-  };
+    const unsubscribe = navigation.addListener('focus', () => getTrees());
+    return unsubscribe;
+  }, [navigation]);
 
   const onSearchChange = (searchValue: string) => {
     setSearchQuery(searchValue);
@@ -54,21 +44,21 @@ export default function SearchScreen({
   return (
     <ViewContainer>
       <ScrollView>
+        <Title>Hello</Title>
         <Title> Search Screen </Title>
+        <Button
+          title={!active ? 'Show All Trees' : 'Show Active Trees'}
+          onPress={() => {
+            setActive(!active);
+          }}
+        />
         <Searchbar
           style={{ minWidth: '100%' }}
           placeholder="Search"
           onChangeText={onSearchChange}
           value={searchQuery}
         />
-        <Button
-          onPress={() => {
-            setActive(!active);
-            refreshTrees();
-          }}
-        >
-          {!active ? 'Show All Trees' : 'Show Active Trees'}
-        </Button>
+
         {filtered.map((tree: Tree) => {
           const { uuid, name, id } = tree;
           return (
