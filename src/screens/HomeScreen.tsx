@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet, Text } from 'react-native';
-import MapView, { Marker, Polygon, Callout } from 'react-native-maps';
+import { StyleSheet } from 'react-native';
+import MapView, { Marker, Polygon } from 'react-native-maps';
 
-import { Feature, Dictionary, Tree } from '@types';
+import { Feature, Mapbox, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
 import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
 import MAPBOX_COORDS from 'constants/Features';
@@ -16,19 +16,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const isValidLocation = (tree: Tree) => {
-  if (tree.location && tree.location.latitude && tree.location.longitude) {
-    return tree;
-  }
-};
-
 export default function HomeScreen() {
   const [trees, setTrees] = useState<Tree[]>([]);
 
   const isValidLocation = (tree: Tree) =>
     tree.location && tree.location.latitude && tree.location.longitude;
 
-  const getCoordinates = (mapboxJSON: Dictionary) => {
+  const getCoordinates = (mapboxJSON: Mapbox) => {
     const { features } = mapboxJSON;
     return features.map((feature: Feature) => {
       const coordinates = feature.geometry.coordinates.map(

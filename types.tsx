@@ -72,18 +72,19 @@ export interface Dictionary {
   [key: string]: any;
 }
 
-type name {
-  key: type
-}
-
-export type Feature {
+export type Feature = {
   type: string;
   properties: {
-      Name: string;
+    Name: string;
   };
   geometry: {
-      coordinates: number[][];
-      type: string;
+    coordinates: number[][];
+    type: string;
   };
   id: string;
-}
+};
+
+export type Mapbox = {
+  features: Feature[];
+  type: string;
+};

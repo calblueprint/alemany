@@ -65,18 +65,6 @@ const MAPBOX_COORDS = {
     {
       type: 'Feature',
       properties: {
-        Name: 'Riparian Habitat',
-        Type: 'Naturalized Open Spaces',
-      },
-      geometry: {
-        coordinates: [-122.420034, 37.732449],
-        type: 'Point',
-      },
-      id: '7fe528b51a50ee631dbc0e22e694bc6c',
-    },
-    {
-      type: 'Feature',
-      properties: {
         Name: 'Orchard Terraces',
         Type: 'Agricultural Areas',
       },
@@ -96,17 +84,6 @@ const MAPBOX_COORDS = {
         type: 'Polygon',
       },
       id: '9f6d7f707ae823e973ac24f34d9052c3',
-    },
-    {
-      type: 'Feature',
-      properties: {
-        Name: 'Alemany Farm',
-      },
-      geometry: {
-        coordinates: [-122.419693, 37.732374],
-        type: 'Point',
-      },
-      id: 'b08a316296643b866c7297909ed918ec',
     },
     {
       type: 'Feature',
