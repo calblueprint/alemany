@@ -73,7 +73,7 @@ export default function Login({ navigation }) {
       <PhoneInput
         defaultCountry="US"
         placeholder="(123) 456 - 7899"
-        onChange={phoneFormatter}
+        onChange={number => phoneFormatter(number)}
       />
       <Button
         title="Send Verification Code"
