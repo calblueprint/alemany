@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Colors } from 'src/constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 const styles = StyleSheet.create({
@@ -9,9 +9,6 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-  },
-  scroll: {
-    backgroundColor: Colors.Grey50,
   },
   pill: {
     borderRadius: 100,
@@ -24,12 +21,6 @@ const styles = StyleSheet.create({
 
 export function ScreenContainer(props: React.ComponentProps<typeof View>) {
   return <View {...props} style={[styles.screen, props.style]} />;
-}
-
-export function ScrollContainer(
-  props: React.ComponentProps<typeof ScrollView>,
-) {
-  return <ScrollView {...props} style={[styles.scroll, props.style]} />;
 }
 
 export function RowContainer(props: React.ComponentProps<typeof View>) {
