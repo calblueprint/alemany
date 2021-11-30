@@ -44,7 +44,7 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 
 export type Tree = {
   id: string;
-  name: string | null;
+  name: string;
   location: Location | null;
   planted: Planted | null;
   uuid: string;

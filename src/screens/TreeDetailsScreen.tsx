@@ -91,7 +91,7 @@ export default function TreeDetailsScreen({
         label="Name"
         onChangeText={value => setEntry({ ...entry, name: value.toString() })}
         style={styles.input}
-        value={entry.name ?? ''}
+        value={entry.name}
       />
       <TextInput
         disabled={!isEditing}
@@ -105,7 +105,8 @@ export default function TreeDetailsScreen({
       <TextInput
         label="Add Comment"
         onChangeText={value =>
-          setComment({ ...comment, input: value.toString() })}
+          setComment({ ...comment, input: value.toString() })
+        }
         style={styles.input}
         value={comment.input}
       />
