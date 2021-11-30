@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 
 import {
   FirebaseRecaptchaBanner,
@@ -37,6 +38,17 @@ export default function Login({ navigation }) {
   });
   const attemptInvisibleVerification = false;
 
+  useEffect(() => {
+    if (verificationId) {
+      showMessage({
+        text: 'Verification code has been sent to your phone.',
+      });
+      navigation.navigate('Verify', {
+        verificationId,
+      });
+    }
+  }, [verificationId, navigation]);
+
   return (
     <ViewContainer>
       <Title>Login Screen</Title>
@@ -68,12 +80,6 @@ export default function Login({ navigation }) {
               recaptchaVerifier.current,
             );
             setVerificationId(tempVerificationID);
-            showMessage({
-              text: 'Verification code has been sent to your phone.',
-            });
-            navigation.navigate('Verify', {
-              verificationId,
-            });
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }
