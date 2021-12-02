@@ -9,7 +9,6 @@ import {
 } from '@env';
 import firebase from 'firebase';
 
-import 'firebase/firestore';
 import { Tree, Comment, Additional } from '@types';
 
 export const config = {
@@ -25,6 +24,7 @@ export const config = {
 
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
+const storage = firebase.storage();
 const commentCollection = database.collection('comments');
 const additionalCollection = database.collection('additional');
 
@@ -150,4 +150,32 @@ export const setAdditional = async (additional: Additional) => {
     // TODO: Add error handling.
   }
 };
+export const uploadImageAsync = async (
+  uri: string,
+  uuid: string,
+): Promise<any> => {
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onload = () => {
+      resolve(xhr.response);
+    };
+    xhr.onerror = e => {
+      console.log(e);
+      reject(new TypeError('Network request failed'));
+    };
+
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const ref = firebase.storage().ref().child(uuid);
+  const snapshot = await ref.put(blob as Blob);
+  blob.close();
+
+  const imageUrl = await snapshot.ref.getDownloadURL();
+  return imageUrl;
+};
+
 export default firebase;
