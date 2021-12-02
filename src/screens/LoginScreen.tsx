@@ -6,16 +6,10 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title } from 'react-native-paper';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
 import { config } from 'src/database/firebase';
@@ -49,6 +43,11 @@ export default function Login({ navigation }) {
     }
   }, [verificationId, navigation]);
 
+  function checkNumber(num: string) {
+    if (isPossiblePhoneNumber(num)) {
+      setPhoneNumber(num);
+    }
+  }
   return (
     <ViewContainer>
       <Title>Login Screen</Title>
@@ -59,14 +58,10 @@ export default function Login({ navigation }) {
         attemptInvisibleVerification={attemptInvisibleVerification}
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>
-      <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        placeholder="+1 999 999 9999"
-        autoFocus
-        autoCompleteType="tel"
-        keyboardType="phone-pad"
-        textContentType="telephoneNumber"
-        onChangeText={insertNumber => setPhoneNumber(insertNumber)}
+      <PhoneInput
+        defaultCountry="US"
+        placeholder="(123) 456 - 7899"
+        onChange={number => checkNumber(number)}
       />
       <Button
         title="Send Verification Code"
@@ -74,7 +69,6 @@ export default function Login({ navigation }) {
         onPress={async () => {
           try {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
-            // eslint-disable-next-line no-shadow
             const tempVerificationID = await phoneProvider.verifyPhoneNumber(
               phoneNumber,
               recaptchaVerifier.current,
