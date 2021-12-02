@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { RootTabParamList, RootTabScreenProps } from '@types';
