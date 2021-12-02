@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useEffect,
+  useState,
+} from 'react';
 
 import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
@@ -35,6 +40,9 @@ export default function TreeDetailsScreen({
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const toggleEditing = useCallback(() => {
+    setIsEditing(!isEditing);
+  }, [isEditing]);
 
   useEffect(() => {
     async function getEntry() {
@@ -44,28 +52,17 @@ export default function TreeDetailsScreen({
     getEntry();
   }, [uuid]);
 
-  const toggleEditing = () => {
-    if (isEditing) {
-      setIsEditing(false);
-      navigation.setOptions({
-        title: 'View Tree',
-      });
-    } else {
-      setIsEditing(true);
-      navigation.setOptions({
-        title: 'Edit Tree',
-      });
-    }
-  };
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? 'Edit Tree' : 'View Tree',
+      headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
+    });
+  }, [navigation, isEditing, toggleEditing]);
 
   const handleSaveChanges = () => {
     setTree(entry);
     toggleEditing();
   };
-
-  navigation.setOptions({
-    headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
-  });
 
   return (
     <ViewContainer>
