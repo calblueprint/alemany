@@ -17,6 +17,7 @@ declare global {
 }
 // TODO: add strong typing for react navigation props
 export type RootStackParamList = {
+  AuthLoading: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
