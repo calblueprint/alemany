@@ -7,9 +7,9 @@ import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CommentModal from 'screens/CommentModal';
 
 import { RootStackParamList } from '@types';
-import CommentModal from 'screens/CommentModal';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
 import LoginScreen from 'src/screens/LoginScreen';
@@ -50,7 +50,6 @@ function RootNavigator() {
       />
       <Group screenOptions={{ presentation: 'modal' }}>
         <Screen name="Modal" component={ModalScreen} />
-        <Screen name="Comment Modal" component={CommentModal} />
       </Group>
     </Navigator>
   );
