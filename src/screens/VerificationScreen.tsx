@@ -1,7 +1,7 @@
 import * as React from 'react';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
 import {
   Text,
   View,
@@ -49,6 +49,7 @@ export default function Verify({ route, navigation }) {
               verificationId,
               verificationCode,
             );
+            await AsyncStorage.setItem('userToken', credential.providerId);
             await firebase.auth().signInWithCredential(credential);
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('Root');

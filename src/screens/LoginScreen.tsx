@@ -6,7 +6,7 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
-import { Text, View, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/react-native-input';
@@ -49,7 +49,7 @@ export default function Login({ navigation }) {
     }
   }
   return (
-    <ViewContainer>
+    <ViewContainer topPadding>
       <Title>Login Screen</Title>
       <View style={styles.separator} />
       <FirebaseRecaptchaVerifierModal
