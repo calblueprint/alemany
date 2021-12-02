@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { View, StyleSheet } from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import { Button, IconButton, withTheme } from 'react-native-paper';
 import { Colors } from 'src/constants/Colors';
 
 const styles = StyleSheet.create({
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function PrimaryButton(props: React.ComponentProps<typeof Button>) {
+function PrimaryButton(props: React.ComponentProps<typeof Button>) {
   return (
     <Button
       {...props}
