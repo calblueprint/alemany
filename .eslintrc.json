@@ -85,6 +85,7 @@
     ],
     "no-use-before-define": "off",
     "object-curly-newline": "off",
+    "react/prop-types": 0,
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react/jsx-props-no-spreading": "off",

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
@@ -48,6 +47,7 @@ export default function SearchScreen({
           placeholder="Search"
           onChangeText={onSearchChange}
           value={searchQuery}
+          autoComplete={undefined}
         />
         {filtered.map((tree: Tree) => {
           const { uuid, name, id } = tree;
@@ -64,10 +64,3 @@ export default function SearchScreen({
     </ViewContainer>
   );
 }
-
-SearchScreen.propTypes = {
-  navigation: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    addListener: PropTypes.func.isRequired,
-  }).isRequired,
-};

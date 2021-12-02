@@ -10,19 +10,13 @@ import {
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
-}
-// TODO: add strong typing for react navigation props
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
-  TreeDetails: any;
+  TreeDetails: { uuid: string };
   Login: undefined;
-  Verify: undefined;
+  Verify: { verificationId: string };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
