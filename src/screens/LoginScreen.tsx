@@ -12,7 +12,7 @@ import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
-import { config } from 'src/database/firebase';
+import { checkPhoneNumber, config } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
   separator: {
@@ -65,6 +65,31 @@ export default function Login({ navigation }) {
       />
       <Button
         title="Send Verification Code"
+        disabled={!phoneNumber}
+        onPress={async () => {
+          try {
+            const authorizedPhoneNumber = await checkPhoneNumber(phoneNumber);
+            if (authorizedPhoneNumber) {
+              const phoneProvider = new firebase.auth.PhoneAuthProvider();
+              const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+                phoneNumber,
+                recaptchaVerifier.current,
+              );
+              setVerificationId(tempVerificationID);
+            } else {
+              showMessage({
+                text: 'Error: the phone number entered is not authorized to create an account. Please contact an Alemany Farm administrator for authorization.',
+              });
+            }
+          } catch (err) {
+            showMessage({ text: `Error: ${err.message}` });
+          }
+        }}
+      />
+      {/* FOR TESTING PURPOSES: Bypass checking if the phone number is in the
+      Users table (entered via Retool dashboard) */}
+      <Button
+        title="Send Verification Code [authorization bypass]"
         disabled={!phoneNumber}
         onPress={async () => {
           try {

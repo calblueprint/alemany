@@ -25,6 +25,7 @@ export const config = {
 
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
+const userCollection = database.collection('users');
 const commentCollection = database.collection('comments');
 const additionalCollection = database.collection('additional');
 
@@ -34,6 +35,23 @@ const additionalCollection = database.collection('additional');
 export const checkID = async (uuid: string): Promise<boolean> => {
   try {
     const doc = await treeCollection.doc(uuid).get();
+    return doc.exists;
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+/**
+ * checkPhoneNumber queries the `users` table and returns True if the phone number
+ * is a valid id and False otherwise.
+ */
+export const checkPhoneNumber = async (
+  phoneNumber: string,
+): Promise<boolean> => {
+  try {
+    const formattedPhoneNumber = phoneNumber.substring(2); // Remove +1
+    const doc = await userCollection.doc(formattedPhoneNumber).get();
     return doc.exists;
   } catch (e) {
     console.warn(e);
