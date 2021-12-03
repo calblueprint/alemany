@@ -5,7 +5,6 @@ import React, {
   useState,
 } from 'react';
 
-import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
@@ -29,7 +28,6 @@ export default function TreeDetailsScreen({
   route,
   navigation,
 }: RootStackScreenProps<'TreeDetails'>) {
-  // @ts-ignore
   const { uuid } = route.params;
   const [entry, setEntry] = useState<Tree>({
     id: '',
@@ -84,15 +82,3 @@ export default function TreeDetailsScreen({
     </ViewContainer>
   );
 }
-
-TreeDetailsScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-    setOptions: PropTypes.func.isRequired,
-  }).isRequired,
-};
