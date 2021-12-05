@@ -1,14 +1,12 @@
 import * as React from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RootTabParamList, RootTabScreenProps } from '@types';
 import Icon from 'components/Icon';
 import AddScreen from 'src/screens/AddScreen';
 import HomeScreen from 'src/screens/HomeScreen';
-import LoginScreen from 'src/screens/LoginScreen';
 import SearchScreen from 'src/screens/SearchScreen';
 import TreeScreen from 'src/screens/TreeScreen';
 
@@ -17,7 +15,7 @@ import TreeScreen from 'src/screens/TreeScreen';
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 
-function TabNavigator() {
+export default function TabNavigator() {
   const { Navigator, Screen } = createBottomTabNavigator<RootTabParamList>();
 
   return (
@@ -30,8 +28,11 @@ function TabNavigator() {
           tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
           headerRight: () => (
             <Icon
-              name="info-circle"
-              onPress={() => navigation.navigate('Modal')}
+              name="sign-out"
+              onPress={async () => {
+                await AsyncStorage.removeItem('userToken');
+                navigation.navigate('AuthLoading');
+              }}
               size={25}
               style={{ marginRight: 15 }}
             />
@@ -63,21 +64,5 @@ function TabNavigator() {
         }}
       />
     </Navigator>
-  );
-}
-
-export default function AllNavigator() {
-  const { Navigator, Screen } = createNativeStackNavigator();
-  return (
-    <NavigationContainer independent>
-      <Navigator>
-        <Screen name="Login" component={LoginScreen} />
-        <Screen
-          name="TabNavigator"
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
-      </Navigator>
-    </NavigationContainer>
   );
 }

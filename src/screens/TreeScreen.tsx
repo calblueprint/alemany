@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import PropTypes from 'prop-types';
 import { StyleSheet, View, Button } from 'react-native';
 import { Title } from 'react-native-paper';
 
@@ -27,8 +26,3 @@ export default function TreeScreen({
     </ViewContainer>
   );
 }
-TreeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};

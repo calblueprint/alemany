@@ -1,22 +1,18 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 
 import {
   FirebaseRecaptchaBanner,
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Title } from 'react-native-paper';
+import { isPossiblePhoneNumber } from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
-import { config } from 'src/database/firebase';
+import { checkPhoneNumber, config } from 'src/database/firebase';
 
 const styles = StyleSheet.create({
   separator: {
@@ -31,14 +27,29 @@ export default function Login({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
-  const [verificationCode, setVerificationCode] = React.useState('');
   const [message, showMessage] = React.useState({
     text: '',
   });
   const attemptInvisibleVerification = false;
 
+  useEffect(() => {
+    if (verificationId) {
+      showMessage({
+        text: 'Verification code has been sent to your phone.',
+      });
+      navigation.navigate('Verify', {
+        verificationId,
+      });
+    }
+  }, [verificationId, navigation]);
+
+  function checkNumber(num: string) {
+    if (isPossiblePhoneNumber(num)) {
+      setPhoneNumber(num);
+    }
+  }
   return (
-    <ViewContainer>
+    <ViewContainer topPadding>
       <Title>Login Screen</Title>
       <View style={styles.separator} />
       <FirebaseRecaptchaVerifierModal
@@ -47,54 +58,47 @@ export default function Login({ navigation }) {
         attemptInvisibleVerification={attemptInvisibleVerification}
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>
-      <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        placeholder="+1 999 999 9999"
-        autoFocus
-        autoCompleteType="tel"
-        keyboardType="phone-pad"
-        textContentType="telephoneNumber"
-        onChangeText={insertNumber => setPhoneNumber(insertNumber)}
+      <PhoneInput
+        defaultCountry="US"
+        placeholder="(123) 456 - 7899"
+        onChange={number => checkNumber(number)}
       />
       <Button
         title="Send Verification Code"
         disabled={!phoneNumber}
         onPress={async () => {
           try {
-            const phoneProvider = new firebase.auth.PhoneAuthProvider();
-            // eslint-disable-next-line no-shadow
-            const verificationId = await phoneProvider.verifyPhoneNumber(
-              phoneNumber,
-              recaptchaVerifier.current,
-            );
-            setVerificationId(verificationId);
-            showMessage({
-              text: 'Verification code has been sent to your phone.',
-            });
+            const authorizedPhoneNumber = await checkPhoneNumber(phoneNumber);
+            if (authorizedPhoneNumber) {
+              const phoneProvider = new firebase.auth.PhoneAuthProvider();
+              const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+                phoneNumber,
+                recaptchaVerifier.current,
+              );
+              setVerificationId(tempVerificationID);
+            } else {
+              showMessage({
+                text: 'Error: the phone number entered is not authorized to create an account. Please contact an Alemany Farm administrator for authorization.',
+              });
+            }
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }
         }}
       />
-      <Text style={{ marginTop: 20 }}>Enter Verification code</Text>
-      <TextInput
-        style={{ marginVertical: 10, fontSize: 17 }}
-        editable={!!verificationId}
-        placeholder="123456"
-        onChangeText={setVerificationCode}
-      />
+      {/* FOR TESTING PURPOSES: Bypass checking if the phone number is in the
+      Users table (entered via Retool dashboard) */}
       <Button
-        title="Confirm Verification Code"
-        disabled={!verificationId}
+        title="Send Verification Code [authorization bypass]"
+        disabled={!phoneNumber}
         onPress={async () => {
           try {
-            const credential = firebase.auth.PhoneAuthProvider.credential(
-              verificationId,
-              verificationCode,
+            const phoneProvider = new firebase.auth.PhoneAuthProvider();
+            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+              phoneNumber,
+              recaptchaVerifier.current,
             );
-            await firebase.auth().signInWithCredential(credential);
-            showMessage({ text: 'Phone authentication successful' });
-            navigation.navigate('TabNavigator');
+            setVerificationId(tempVerificationID);
           } catch (err) {
             showMessage({ text: `Error: ${err.message}` });
           }

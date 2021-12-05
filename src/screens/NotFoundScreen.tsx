@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Title } from 'react-native-paper';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Title } from 'react-native-paper';
 
 import { RootStackScreenProps } from '@types';
 import ViewContainer from 'src/components/ViewContainer';
@@ -44,10 +43,3 @@ export default function NotFoundScreen({
     </ViewContainer>
   );
 }
-
-NotFoundScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
-};
