@@ -1,7 +1,7 @@
 import * as React from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
 import {
   Text,
   View,
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Title } from 'react-native-paper';
 
+import { RootStackScreenProps } from '@types';
 import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
@@ -23,7 +24,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Verify({ route, navigation }) {
+export default function Verify({
+  route,
+  navigation,
+}: RootStackScreenProps<'Verify'>) {
   const [message, showMessage] = React.useState({
     text: '',
   });
@@ -49,10 +53,11 @@ export default function Verify({ route, navigation }) {
               verificationId,
               verificationCode,
             );
+            await AsyncStorage.setItem('userToken', credential.providerId);
             await firebase.auth().signInWithCredential(credential);
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('Root');
-          } catch (err) {
+          } catch (err: any) {
             showMessage({ text: `Error: ${err.message}` });
           }
         }}

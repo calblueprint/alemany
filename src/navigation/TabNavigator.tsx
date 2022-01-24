@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { RootTabParamList, RootTabScreenProps } from '@types';
@@ -27,8 +28,11 @@ export default function TabNavigator() {
           tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
           headerRight: () => (
             <Icon
-              name="info-circle"
-              onPress={() => navigation.navigate('Modal')}
+              name="sign-out"
+              onPress={async () => {
+                await AsyncStorage.removeItem('userToken');
+                navigation.navigate('AuthLoading');
+              }}
               size={25}
               style={{ marginRight: 15 }}
             />

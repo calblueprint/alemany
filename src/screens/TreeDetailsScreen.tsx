@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useEffect,
+  useState,
+} from 'react';
 
-import PropTypes from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
@@ -30,7 +34,6 @@ export default function TreeDetailsScreen({
   route,
   navigation,
 }: RootStackScreenProps<'TreeDetails'>) {
-  // @ts-ignore
   const { uuid } = route.params;
   const [entry, setEntry] = useState<Tree>({
     id: '',
@@ -42,6 +45,9 @@ export default function TreeDetailsScreen({
   });
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const toggleEditing = useCallback(() => {
+    setIsEditing(!isEditing);
+  }, [isEditing]);
 
   const [comment, setComment] = useState<Comment>({
     uuid: '',
@@ -56,19 +62,12 @@ export default function TreeDetailsScreen({
     getEntry();
   }, [uuid]);
 
-  const toggleEditing = () => {
-    if (isEditing) {
-      setIsEditing(false);
-      navigation.setOptions({
-        title: 'View Tree',
-      });
-    } else {
-      setIsEditing(true);
-      navigation.setOptions({
-        title: 'Edit Tree',
-      });
-    }
-  };
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? 'Edit Tree' : 'View Tree',
+      headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
+    });
+  }, [navigation, isEditing, toggleEditing]);
 
   const handleSaveChanges = () => {
     setTree(entry);
@@ -83,7 +82,7 @@ export default function TreeDetailsScreen({
   navigation.setOptions({
     headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
   });
-
+    
   return (
     <ViewContainer>
       <TextInput
@@ -115,15 +114,3 @@ export default function TreeDetailsScreen({
     </ViewContainer>
   );
 }
-
-TreeDetailsScreen.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-    setOptions: PropTypes.func.isRequired,
-  }).isRequired,
-};
