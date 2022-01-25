@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
+import { ScrollView, SafeAreaView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
 import { Tree, RootTabScreenProps } from '@types';
 import SearchCard from 'src/components/SearchCard';
 import ViewContainer from 'src/components/ViewContainer';
 import { getAllTrees, checkID } from 'src/database/firebase';
+import { ScrollContainer, TopContainer } from 'src/components/Components';
+import { Card } from 'src/components/Cards';
+import { SearchBar } from 'src/components/Inputs';
 
 export default function SearchScreen({
   navigation,
@@ -40,28 +43,27 @@ export default function SearchScreen({
   };
 
   return (
-    <ViewContainer>
-      <ScrollView>
-        <Title> Search Screen </Title>
-        <Searchbar
+    <SafeAreaView>
+      <TopContainer>
+        <SearchBar
           style={{ minWidth: '100%' }}
           placeholder="Search"
           onChangeText={onSearchChange}
           value={searchQuery}
         />
+      </TopContainer>
+      <ScrollContainer>
         {filtered.map((tree: Tree) => {
-          const { uuid, name, id } = tree;
+          const uuid = tree.uuid;
           return (
-            <SearchCard
-              key={uuid}
-              name={name}
-              id={id}
+            <Card
+              tree={tree}
               onPress={() => navigation.push('TreeDetails', { uuid })}
             />
           );
         })}
-      </ScrollView>
-    </ViewContainer>
+      </ScrollContainer>
+    </SafeAreaView>
   );
 }
 

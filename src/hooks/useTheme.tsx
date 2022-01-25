@@ -35,7 +35,6 @@ const fontConfig = {
 };
 
 const colors = {
-  background: '#000000',
   black: '#000000',
   bluegrey: '#373940',
   bluegrey200: '#ADB0B9',

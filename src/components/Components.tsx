@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Colors } from 'src/constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
 const styles = StyleSheet.create({
@@ -15,12 +15,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.Grey100,
     padding: 10,
+    backgroundColor: Colors.White,
     alignItems: 'center',
+  },
+  top: {
+    marginHorizontal: 20,
+  },
+  lined: {
+    borderTopColor: Colors.Grey100,
+    borderTopWidth: 1,
+    borderBottomColor: Colors.Grey100,
+    borderBottomWidth: 1,
+  },
+  scroll: {
+    backgroundColor: Colors.Grey50,
   },
 });
 
 export function ScreenContainer(props: React.ComponentProps<typeof View>) {
   return <View {...props} style={[styles.screen, props.style]} />;
+}
+
+export function TopContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={styles.top} />;
+}
+
+export function ScrollContainer(
+  props: React.ComponentProps<typeof ScrollView>,
+) {
+  return <ScrollView {...props} style={[styles.scroll, props.style]} />;
+}
+
+export function LinedContainer(props: React.ComponentProps<typeof View>) {
+  return <View {...props} style={[styles.lined, props.style]} />;
 }
 
 export function RowContainer(props: React.ComponentProps<typeof View>) {

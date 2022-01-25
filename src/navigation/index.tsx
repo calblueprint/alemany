@@ -28,7 +28,10 @@ function RootNavigator() {
   const { Navigator, Screen, Group } = Stack;
 
   return (
-    <Navigator initialRouteName="AuthLoading">
+    <Navigator
+      initialRouteName="AuthLoading"
+      screenOptions={{ headerShown: false }}
+    >
       <Screen
         name="AuthLoading"
         component={AuthLoadingScreen}
@@ -42,7 +45,11 @@ function RootNavigator() {
         options={{ headerShown: false, gestureEnabled: false }}
         component={LoginScreen}
       />
-      <Screen name="Verify" component={VerificationScreen} />
+      <Screen
+        name="Verify"
+        options={{ headerShown: false, gestureEnabled: true }}
+        component={VerificationScreen}
+      />
       <Screen
         name="Root"
         component={TabNavigator}

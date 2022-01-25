@@ -37,15 +37,9 @@ export default function TabNavigator() {
               style={{ marginRight: 15 }}
             />
           ),
+          headerShown: false,
+          gestureEnabled: false,
         })}
-      />
-      <Screen
-        name="Trees"
-        component={TreeScreen}
-        options={{
-          title: 'Trees',
-          tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
-        }}
       />
       <Screen
         name="Add"
@@ -53,6 +47,8 @@ export default function TabNavigator() {
         options={{
           title: 'Add',
           tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
+          headerShown: false,
+          gestureEnabled: false,
         }}
       />
       <Screen
@@ -61,6 +57,8 @@ export default function TabNavigator() {
         options={{
           title: 'Search',
           tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
+          headerShown: false,
+          gestureEnabled: false,
         }}
       />
     </Navigator>

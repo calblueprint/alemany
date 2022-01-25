@@ -4,7 +4,7 @@ import { StyleSheet, TextInput } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { Colors } from 'src/constants/Colors';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   short: {
     borderWidth: 2,
     borderColor: Colors.Grey100,
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontFamily: 'Inter_800ExtraBold',
+    backgroundColor: Colors.White,
   },
   multiline: {
     minWidth: '100%',
@@ -28,6 +29,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     minWidth: '100%',
     elevation: 0,
+    backgroundColor: Colors.White,
+    fontFamily: 'Inter_400Regular',
+    color: Colors.Black,
   },
   outline: {
     borderWidth: 1,
@@ -71,6 +75,7 @@ export function SearchBar(props: React.ComponentProps<typeof Searchbar>) {
     <Searchbar
       {...props}
       style={[styles.search, styles.outline, props.style]}
+      placeholderTextColor={Colors.Grey300}
     />
   );
 }

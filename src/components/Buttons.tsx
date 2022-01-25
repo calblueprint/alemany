@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     minWidth: '100%',
     padding: 10,
+    color: Colors.White,
     backgroundColor: Colors.Spinach,
   },
   rounded: {
@@ -56,6 +57,7 @@ export function PrimaryButton(props: React.ComponentProps<typeof Button>) {
       style={[styles.primary, props.style]}
       labelStyle={{
         fontFamily: 'Inter_600SemiBold',
+        color: Colors.White,
       }}
       mode="text"
       uppercase={false}
