@@ -84,10 +84,12 @@ export default function TreeDetailsScreen({
         style={styles.input}
         value={entry.id}
       />
-      <Button
-        title={entry.active ? 'Archive tree' : 'Unarchive tree'}
-        onPress={() => setEntry({ ...entry, active: !entry.active })}
-      />
+      {isEditing && (
+        <Button
+          title={entry.active ? 'Archive tree' : 'Unarchive tree'}
+          onPress={() => setEntry({ ...entry, active: !entry.active })}
+        />
+      )}
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
     </ViewContainer>
   );

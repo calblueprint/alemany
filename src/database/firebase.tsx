@@ -72,7 +72,7 @@ export const getAllTrees = async (): Promise<Tree[]> => {
 };
 
 /**
- * getActiveTrees
+ * getActiveTrees returns an array of all Trees with state prop 'active' set to true.
  * @param tree
  */
 export const getActiveTrees = async (): Promise<Tree[]> => {

@@ -44,7 +44,6 @@ export default function SearchScreen({
   return (
     <ViewContainer>
       <ScrollView>
-        <Title>Hello</Title>
         <Title> Search Screen </Title>
         <Button
           title={!active ? 'Show All Trees' : 'Show Active Trees'}
