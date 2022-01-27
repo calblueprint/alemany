@@ -4,7 +4,7 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title } from 'react-native-paper';
 
 import { RootStackScreenProps } from '@types';
-import ViewContainer from 'src/components/ViewContainer';
+import ViewContainer from 'components/ViewContainer';
 
 const styles = StyleSheet.create({
   container: {

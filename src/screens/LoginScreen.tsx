@@ -5,14 +5,14 @@ import {
   FirebaseRecaptchaBanner,
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
 import ViewContainer from 'components/ViewContainer';
-import { checkPhoneNumber, config } from 'src/database/firebase';
+import { checkPhoneNumber, config } from 'database/firebase';
 
 const styles = StyleSheet.create({
   separator: {

@@ -7,9 +7,9 @@ import {
   APP_ID,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
-import 'firebase/firestore';
 import { Tree, Comment, Additional } from '@types';
 
 export const config = {

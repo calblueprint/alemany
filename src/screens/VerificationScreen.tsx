@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
 import {
   Text,
   View,

@@ -11,10 +11,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@types';
 import ModalScreen from 'screens/ModalScreen';
 import NotFoundScreen from 'screens/NotFoundScreen';
-import AuthLoadingScreen from 'src/screens/AuthLoadingScreen';
-import LoginScreen from 'src/screens/LoginScreen';
-import TreeDetailsScreen from 'src/screens/TreeDetailsScreen';
-import VerificationScreen from 'src/screens/VerificationScreen';
+import AuthLoadingScreen from 'screens/AuthLoadingScreen';
+import LoginScreen from 'screens/LoginScreen';
+import TreeDetailsScreen from 'screens/TreeDetailsScreen';
+import VerificationScreen from 'screens/VerificationScreen';
 
 import LinkingConfiguration from './LinkingConfiguration';
 import TabNavigator from './TabNavigator';

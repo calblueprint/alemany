@@ -10,7 +10,7 @@ import { IconButton, TextInput } from 'react-native-paper';
 
 import { RootStackScreenProps, Tree } from '@types';
 import ViewContainer from 'components/ViewContainer';
-import { getTree, setTree } from 'src/database/firebase';
+import { getTree, setTree } from 'database/firebase';
 
 const styles = StyleSheet.create({
   input: {

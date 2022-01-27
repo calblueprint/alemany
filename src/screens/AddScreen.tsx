@@ -7,8 +7,8 @@ import { Switch, Title, TextInput, Button } from 'react-native-paper';
 import { Tree, Location } from '@types';
 import ViewContainer from 'components/ViewContainer';
 import { addTree } from 'database/firebase';
-import { DEFAULT_LOCATION } from 'src/constants/DefaultLocation';
-import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
+import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
+import { useCurrentLocation } from 'hooks/useCurrentLocation';
 
 const styles = StyleSheet.create({
   input: {

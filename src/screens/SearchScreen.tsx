@@ -4,9 +4,9 @@ import { ScrollView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
 import { Tree, RootTabScreenProps } from '@types';
-import SearchCard from 'src/components/SearchCard';
-import ViewContainer from 'src/components/ViewContainer';
-import { getAllTrees, checkID } from 'src/database/firebase';
+import SearchCard from 'components/SearchCard';
+import ViewContainer from 'components/ViewContainer';
+import { getAllTrees, checkID } from 'database/firebase';
 
 export default function SearchScreen({
   navigation,
