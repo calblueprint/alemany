@@ -1,20 +1,42 @@
 {
-  "extends": "./node_modules/expo/tsconfig.base",
+  "extends": "expo/tsconfig.base.json",
+  "include": [
+    "App.tsx",
+    "./src/**/*",
+  ],
   "compilerOptions": {
     "module": "esnext",
     "jsx": "react-native",
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"],
-      "assets/*": ["assets/*"],
-      "components/*": ["src/components/*"],
-      "constants/*": ["src/constants/*"],
-      "database/*": ["src/database/*"],
-      "hooks/*": ["src/hooks/*"],
-      "navigation/*": ["src/navigation/*"],
-      "screens/*": ["src/screens/*"],
-      "@types": ["types.tsx"]
+      "src/*": [
+        "src/*"
+      ],
+      "assets/*": [
+        "assets/*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "constants/*": [
+        "src/constants/*"
+      ],
+      "database/*": [
+        "src/database/*"
+      ],
+      "hooks/*": [
+        "src/hooks/*"
+      ],
+      "navigation/*": [
+        "src/navigation/*"
+      ],
+      "screens/*": [
+        "src/screens/*"
+      ],
+      "@types": [
+        "types.tsx"
+      ]
     }
   }
 }
