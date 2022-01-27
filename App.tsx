@@ -4,9 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import useCachedResources from 'hooks/useCachedResources';
-import useTheme from 'hooks/useTheme';
-import Navigation from 'navigation/index';
+import useCachedResources from './src/hooks/useCachedResources';
+import useTheme from './src/hooks/useTheme';
+import Navigation from './src/navigation/index';
 
 import {
   useFonts,
