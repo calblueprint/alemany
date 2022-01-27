@@ -13,6 +13,7 @@ import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
 const styles = StyleSheet.create({
   input: {
     width: '90%',
+    backgroundColor: 'white',
   },
 });
 

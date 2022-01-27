@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     marginBottom: 5,
+    backgroundColor: 'white',
   },
   separator: {
     marginVertical: 30,
@@ -82,7 +83,7 @@ export default function TreeDetailsScreen({
   navigation.setOptions({
     headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
   });
-    
+
   return (
     <ViewContainer>
       <TextInput
