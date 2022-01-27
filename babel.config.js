@@ -3,8 +3,24 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
+      [
+        "module-resolver",
+        {
+          "root": ["./"],
+          "alias": {
+            "src": "./src",
+            "assets": "./assets",
+            "components": "./src/components",
+            "constants": "./src/constants",
+            "database": "./src/database",
+            "hooks": "./src/hooks",
+            "navigation": "./src/navigation",
+            "screens": "./src/screens",
+            "@types": "./"
+          }
+        }
+      ],
       ['react-native-paper/babel'],
-      ['react-native-reanimated/plugin'],
       [
         'module:react-native-dotenv',
         {
