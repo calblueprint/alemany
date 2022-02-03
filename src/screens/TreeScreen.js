@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { func, objectOf } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { StyleSheet, View, Button } from 'react-native';
 import { Title } from 'react-native-paper';
 
@@ -26,7 +26,7 @@ export default function TreeScreen({ navigation }) {
 }
 
 TreeScreen.propTypes = {
-  navigation: objectOf({
+  navigation: shape({
     navigate: func,
   }),
 };

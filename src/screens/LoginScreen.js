@@ -6,7 +6,7 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase/compat/app';
-import PropTypes from 'prop-types';
+import PropTypes, { func, shape } from 'prop-types';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
@@ -125,7 +125,7 @@ export default function LoginScreen({ navigation }) {
 }
 
 LoginScreen.propTypes = {
-  navigation: PropTypes.objectOf({
-    navigate: PropTypes.func,
+  navigation: shape({
+    navigate: func,
   }),
 };

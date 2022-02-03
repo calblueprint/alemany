@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'firebase/compat/app';
-import { objectOf, func, string } from 'prop-types';
+import { shape, func, string } from 'prop-types';
 import {
   Text,
   View,
@@ -78,8 +78,8 @@ export default function VerificationScreen({ route, navigation }) {
 }
 
 VerificationScreen.propTypes = {
-  navigation: objectOf({
+  navigation: shape({
     navigate: func,
   }),
-  route: objectOf({ params: objectOf({ verificationId: string }) }),
+  route: shape({ params: shape({ verificationId: string }) }),
 };

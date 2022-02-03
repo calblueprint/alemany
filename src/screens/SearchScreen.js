@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { func, objectOf } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { ScrollView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
@@ -61,7 +61,7 @@ export default function SearchScreen({ navigation }) {
 }
 
 SearchScreen.propTypes = {
-  navigation: objectOf({
+  navigation: shape({
     push: func,
   }),
 };

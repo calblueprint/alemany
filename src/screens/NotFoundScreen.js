@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { func, objectOf } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Title } from 'react-native-paper';
 
@@ -43,5 +43,5 @@ export default function NotFoundScreen({ navigation }) {
 }
 
 NotFoundScreen.propTypes = {
-  navigation: objectOf({ replace: func }),
+  navigation: shape({ replace: func }),
 };

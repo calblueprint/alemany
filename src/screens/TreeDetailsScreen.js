@@ -5,7 +5,7 @@ import React, {
   useState,
 } from 'react';
 
-import { objectOf, func, string } from 'prop-types';
+import { shape, func, string } from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
@@ -81,11 +81,11 @@ export default function TreeDetailsScreen({ route, navigation }) {
 }
 
 TreeDetailsScreen.propTypes = {
-  navigation: objectOf({
+  navigation: shape({
     setOptions: func,
   }),
-  route: objectOf({
-    params: objectOf({
+  route: shape({
+    params: shape({
       uuid: string,
     }),
   }),
