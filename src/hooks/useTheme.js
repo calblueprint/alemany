@@ -56,7 +56,7 @@ const colors = {
 export default function useTheme() {
   return {
     ...DefaultTheme,
-    colors: colors,
+    colors,
     fonts: configureFonts(fontConfig),
   };
 }

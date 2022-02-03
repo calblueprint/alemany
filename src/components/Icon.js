@@ -1,15 +1,8 @@
 import * as React from 'react';
 
 import { FontAwesome } from '@expo/vector-icons';
-import { StyleSheet, Pressable } from 'react-native';
-
-interface IconProps {
-  onPress?: () => void;
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color?: string;
-  size?: number;
-  style?: object;
-}
+import PropTypes from 'prop-types';
+import { StyleSheet, Pressable, ViewPropTypes } from 'react-native';
 
 const styles = StyleSheet.create({
   default: {
@@ -26,8 +19,15 @@ const styles = StyleSheet.create({
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-export default function Icon(props: IconProps) {
-  const { onPress, size, style } = props;
+export default function Icon(
+  { onPress, size, style, ...props } = {
+    onPress: null,
+    size: 24,
+    style: styles.default,
+    color: '#333333',
+  },
+) {
+  // eslint-disable-next-line react/jsx-props-no-spreading
   const icon = <FontAwesome size={size} style={style} {...props} />;
 
   return (
@@ -41,9 +41,8 @@ export default function Icon(props: IconProps) {
   );
 }
 
-Icon.defaultProps = {
-  onPress: null,
-  size: 24,
-  style: styles.default,
-  color: '#333333',
+Icon.propTypes = {
+  onPress: PropTypes.func,
+  size: PropTypes.number,
+  style: ViewPropTypes.style,
 };

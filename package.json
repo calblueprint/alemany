@@ -46,6 +46,7 @@
     "expo-status-bar": "~1.2.0",
     "expo-web-browser": "~10.1.0",
     "firebase": "^9.6.4",
+    "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "^16.13.1",
     "react-native": "^0.64.3",

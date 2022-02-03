@@ -6,13 +6,14 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import firebase from 'firebase/compat/app';
+import PropTypes from 'prop-types';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Title } from 'react-native-paper';
 import { isPossiblePhoneNumber } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/react-native-input';
 
-import ViewContainer from 'components/ViewContainer';
-import { checkPhoneNumber, config } from 'database/firebase';
+import ViewContainer from '../components/ViewContainer';
+import { checkPhoneNumber, config } from '../database/firebase';
 
 const styles = StyleSheet.create({
   separator: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Login({ navigation }) {
+export default function LoginScreen({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
@@ -43,7 +44,7 @@ export default function Login({ navigation }) {
     }
   }, [verificationId, navigation]);
 
-  function checkNumber(num: string) {
+  function checkNumber(num) {
     if (isPossiblePhoneNumber(num)) {
       setPhoneNumber(num);
     }
@@ -122,3 +123,9 @@ export default function Login({ navigation }) {
     </ViewContainer>
   );
 }
+
+LoginScreen.propTypes = {
+  navigation: PropTypes.objectOf({
+    navigate: PropTypes.func,
+  }),
+};

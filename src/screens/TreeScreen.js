@@ -1,10 +1,10 @@
 import * as React from 'react';
 
+import { func, objectOf } from 'prop-types';
 import { StyleSheet, View, Button } from 'react-native';
 import { Title } from 'react-native-paper';
 
-import { RootTabScreenProps } from '@types';
-import ViewContainer from 'components/ViewContainer';
+import ViewContainer from '../components/ViewContainer';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,9 +15,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TreeScreen({
-  navigation,
-}: RootTabScreenProps<'Search'>) {
+export default function TreeScreen({ navigation }) {
   return (
     <ViewContainer>
       <Title>Tree Screen</Title>
@@ -26,3 +24,9 @@ export default function TreeScreen({
     </ViewContainer>
   );
 }
+
+TreeScreen.propTypes = {
+  navigation: objectOf({
+    navigate: func,
+  }),
+};

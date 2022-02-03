@@ -3,10 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-import { Tree } from '@types';
-import ViewContainer from 'components/ViewContainer';
-import { DEFAULT_LOCATION } from 'constants/DefaultLocation';
-import { getAllTrees } from 'database/firebase';
+import ViewContainer from '../components/ViewContainer';
+import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import { getAllTrees } from '../database/firebase';
 
 const styles = StyleSheet.create({
   map: {
@@ -16,9 +15,9 @@ const styles = StyleSheet.create({
 });
 
 export default function HomeScreen() {
-  const [trees, setTrees] = useState<Tree[]>([]);
+  const [trees, setTrees] = useState([]);
 
-  const isValidLocation = (tree: Tree) =>
+  const isValidLocation = tree =>
     tree.location && tree.location.latitude && tree.location.longitude;
 
   useEffect(() => {
@@ -41,8 +40,8 @@ export default function HomeScreen() {
           <Marker
             key={tree.uuid}
             coordinate={{
-              latitude: tree.location!.latitude,
-              longitude: tree.location!.longitude,
+              latitude: tree.location?.latitude,
+              longitude: tree.location?.longitude,
             }}
           />
         ))}

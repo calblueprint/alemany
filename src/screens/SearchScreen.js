@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
+import { func, objectOf } from 'prop-types';
 import { ScrollView } from 'react-native';
 import { Searchbar, Title } from 'react-native-paper';
 
-import { Tree, RootTabScreenProps } from '@types';
-import SearchCard from 'components/SearchCard';
-import ViewContainer from 'components/ViewContainer';
-import { getAllTrees, checkID } from 'database/firebase';
+import SearchCard from '../components/SearchCard';
+import ViewContainer from '../components/ViewContainer';
+import { getAllTrees, checkID } from '../database/firebase';
 
-export default function SearchScreen({
-  navigation,
-}: RootTabScreenProps<'Search'>) {
+export default function SearchScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [trees, setTrees] = useState<Tree[]>([]);
+  const [trees, setTrees] = useState([]);
   const filtered = trees
-    .filter(
-      (tree: Tree) =>
-        tree !== null && tree.name && tree.id && checkID(tree.uuid),
-    )
-    .filter((tree: Tree) => {
+    .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
+    .filter(tree => {
       const query = searchQuery.toLowerCase();
       return (
         tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
@@ -34,7 +29,7 @@ export default function SearchScreen({
     return unsubscribe;
   }, [navigation]);
 
-  const onSearchChange = (searchValue: string) => {
+  const onSearchChange = searchValue => {
     setSearchQuery(searchValue);
   };
 
@@ -49,7 +44,7 @@ export default function SearchScreen({
           value={searchQuery}
           autoComplete={undefined}
         />
-        {filtered.map((tree: Tree) => {
+        {filtered.map(tree => {
           const { uuid, name, id } = tree;
           return (
             <SearchCard
@@ -64,3 +59,9 @@ export default function SearchScreen({
     </ViewContainer>
   );
 }
+
+SearchScreen.propTypes = {
+  navigation: objectOf({
+    push: func,
+  }),
+};

@@ -5,12 +5,12 @@ import React, {
   useState,
 } from 'react';
 
+import { objectOf, func, string } from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
-import { RootStackScreenProps, Tree } from '@types';
-import ViewContainer from 'components/ViewContainer';
-import { getTree, setTree } from 'database/firebase';
+import ViewContainer from '../components/ViewContainer';
+import { getTree, setTree } from '../database/firebase';
 
 const styles = StyleSheet.create({
   input: {
@@ -24,12 +24,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TreeDetailsScreen({
-  route,
-  navigation,
-}: RootStackScreenProps<'TreeDetails'>) {
+export default function TreeDetailsScreen({ route, navigation }) {
   const { uuid } = route.params;
-  const [entry, setEntry] = useState<Tree>({
+  const [entry, setEntry] = useState({
     id: '',
     name: '',
     uuid: '',
@@ -37,7 +34,7 @@ export default function TreeDetailsScreen({
     planted: null,
   });
 
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = useCallback(() => {
     setIsEditing(!isEditing);
   }, [isEditing]);
@@ -82,3 +79,14 @@ export default function TreeDetailsScreen({
     </ViewContainer>
   );
 }
+
+TreeDetailsScreen.propTypes = {
+  navigation: objectOf({
+    setOptions: func,
+  }),
+  route: objectOf({
+    params: objectOf({
+      uuid: string,
+    }),
+  }),
+};

@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-const spaceMono = require('assets/fonts/SpaceMono-Regular.ttf');
+const spaceMono = require('../../assets/fonts/SpaceMono-Regular.ttf');
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
