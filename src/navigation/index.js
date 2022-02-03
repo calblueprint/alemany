@@ -5,8 +5,11 @@
  */
 import * as React from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as Linking from 'expo-linking';
+import { Alert } from 'react-native';
 
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -24,6 +27,22 @@ import TabNavigator from './TabNavigator';
 function RootNavigator() {
   const Stack = createNativeStackNavigator();
   const { Navigator, Screen, Group } = Stack;
+  const navigation = useNavigation();
+
+  const handleDeepLinkingUrl = async (event: { url: string }) => {
+    const { queryParams } = Linking.parse(event.url);
+    const userToken = await AsyncStorage.getItem('userToken');
+    if (userToken) {
+      navigation.navigate('TreeDetails', { uuid: queryParams.uuid });
+    } else {
+      // TODO: remove this auth check once 'Guest Mode's is supported
+      Alert.alert(
+        'Authentication Requrired',
+        'Log in/create an account to see this page.',
+      );
+    }
+  };
+  Linking.addEventListener('url', handleDeepLinkingUrl);
 
   return (
     <Navigator initialRouteName="AuthLoading">
