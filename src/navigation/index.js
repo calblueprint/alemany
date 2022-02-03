@@ -29,7 +29,7 @@ function RootNavigator() {
   const { Navigator, Screen, Group } = Stack;
   const navigation = useNavigation();
 
-  const handleDeepLinkingUrl = async (event: { url: string }) => {
+  const handleDeepLinkingUrl = async event => {
     const { queryParams } = Linking.parse(event.url);
     const userToken = await AsyncStorage.getItem('userToken');
     if (userToken) {
