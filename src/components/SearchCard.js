@@ -13,6 +13,6 @@ export default function SearchCard({ name, id, onPress }) {
 
 SearchCard.propTypes = {
   name: PropTypes.string,
-  id: PropTypes.number,
+  id: PropTypes.string,
   onPress: PropTypes.func,
 };
