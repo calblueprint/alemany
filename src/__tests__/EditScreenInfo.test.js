@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cleanup, render } from '@testing-library/react-native';
 
-import EditScreenInfo from 'components/EditScreenInfo';
+import EditScreenInfo from '../components/EditScreenInfo';
 
 afterEach(cleanup);
 
