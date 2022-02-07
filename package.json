@@ -37,6 +37,7 @@
     "eslint-import-resolver-babel-module": "^5.3.1",
     "expo": "^44.0.5",
     "expo-asset": "~8.4.6",
+    "expo-blur": "^11.0.0",
     "expo-constants": "~13.0.1",
     "expo-firebase-recaptcha": "^2.0.2",
     "expo-font": "~10.0.4",

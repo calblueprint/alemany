@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
+import { StyleSheet } from 'react-native';
 
 import Icon from '../components/Icon';
 import AddScreen from '../screens/AddScreen';
 import HomeScreen from '../screens/HomeScreen';
-import SearchScreen from '../screens/SearchScreen';
-import TreeScreen from '../screens/TreeScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -18,48 +18,51 @@ export default function TabNavigator() {
   const { Navigator, Screen } = createBottomTabNavigator();
 
   return (
-    <Navigator initialRouteName="Home">
+    <Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: '#52bd41',
+        tabBarStyle: { position: 'absolute', height: 80 },
+        tabBarBackground: () => (
+          <BlurView
+            tint="light"
+            intensity={100}
+            style={StyleSheet.absoluteFill}
+          />
+        ),
+      }}
+    >
       <Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }) => ({
+        options={() => ({
           title: 'Home',
-          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
-          headerRight: () => (
-            <Icon
-              name="sign-out"
-              onPress={async () => {
-                await AsyncStorage.removeItem('userToken');
-                navigation.navigate('AuthLoading');
-              }}
-              size={25}
-              style={{ marginRight: 15 }}
-            />
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <Icon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         })}
-      />
-      <Screen
-        name="Trees"
-        component={TreeScreen}
-        options={{
-          title: 'Trees',
-          tabBarIcon: ({ color }) => <Icon name="tree" color={color} />,
-        }}
       />
       <Screen
         name="Add"
         component={AddScreen}
         options={{
           title: 'Add',
-          tabBarIcon: ({ color }) => <Icon name="plus" color={color} />,
+          tabBarIcon: ({ color }) => <Icon name="md-add" color={color} />,
         }}
       />
       <Screen
-        name="Search"
-        component={SearchScreen}
+        name="Settings"
+        component={SettingsScreen}
         options={{
-          title: 'Search',
-          tabBarIcon: ({ color }) => <Icon name="search" color={color} />,
+          title: 'Settings',
+          headerShown: true,
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={focused ? 'settings' : 'settings-outline'}
+              color={color}
+            />
+          ),
         }}
       />
     </Navigator>

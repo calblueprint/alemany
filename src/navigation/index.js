@@ -15,6 +15,7 @@ import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import SearchScreen from '../screens/SearchScreen';
 import TreeDetailsScreen from '../screens/TreeDetailsScreen';
 import VerificationScreen from '../screens/VerificationScreen';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -70,6 +71,13 @@ function RootNavigator() {
         component={TreeDetailsScreen}
         options={{
           title: 'View Tree',
+        }}
+      />
+      <Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerShown: false,
         }}
       />
       <Screen

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { StyleSheet } from 'react-native';
+import { func, shape } from 'prop-types';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
+import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import { getAllTrees } from '../database/firebase';
@@ -14,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [trees, setTrees] = useState([]);
 
   const isValidLocation = tree =>
@@ -46,6 +48,39 @@ export default function HomeScreen() {
           />
         ))}
       </MapView>
+      <Inset
+        style={{
+          position: 'absolute',
+          top: 48,
+          right: 0,
+          left: 0,
+        }}
+      >
+        <Pressable
+          style={{
+            backgroundColor: 'white',
+            borderRadius: 8,
+            padding: 20,
+            width: '100%',
+          }}
+          onPress={() => {
+            navigation.navigate('Search');
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 17,
+            }}
+          >
+            Search
+          </Text>
+        </Pressable>
+      </Inset>
     </ViewContainer>
   );
 }
+HomeScreen.propTypes = {
+  navigation: shape({
+    navigate: func,
+  }),
+};

@@ -3273,11 +3273,6 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
-  integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
-
 cli-cursor@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"
@@ -3538,11 +3533,6 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
-
-country-flag-icons@^1.0.2:
-  version "1.4.20"
-  resolved "https://registry.yarnpkg.com/country-flag-icons/-/country-flag-icons-1.4.20.tgz#6676e68ad62dab4c0dcaa09f900f163609b32b92"
-  integrity sha512-f9/cO9IEDIkLdOQeTUMDLEWMcDk4qbTRjbQLpy5pm+yil7Fa7QkKxgiMOQ2z1+Jht8/BAD3JJAmPG4qtK/tbUw==
 
 create-react-class@^15.7.0:
   version "15.7.0"
@@ -4281,6 +4271,11 @@ expo-asset@~8.4.6:
     md5-file "^3.2.3"
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
+
+expo-blur@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-11.0.0.tgz#3542afed5c0037554657d98c31a5933dd78098dd"
+  integrity sha512-EmIYXFwaqvVDhV4JnG9+nENU7FGZkCcuYZhoOOHjnHyADCGNsT6LIVv9/Q/rO0+qWJJxlUG6bziPHC2wbWcC9A==
 
 expo-constants@~13.0.0, expo-constants@~13.0.1:
   version "13.0.1"
@@ -5121,13 +5116,6 @@ inline-style-prefixer@^6.0.0:
   integrity sha512-AsqazZ8KcRzJ9YPN1wMH2aNM7lkWQ8tSPrW5uDk1ziYwiAPWSZnUsC7lfZq+BDqLqz0B4Pho5wscWcJzVvRzDQ==
   dependencies:
     css-in-js-utils "^2.0.0"
-
-input-format@^0.3.7:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/input-format/-/input-format-0.3.7.tgz#08d63fc629985d604d1910e1d1a220b7a521bdc3"
-  integrity sha512-hgwiCjV7MnhFvX4Hwrvk7hB2a2rcB2CQb7Ex7GlK1ISbEXuLtflwBUnadFSA1rVNDPFh9yWBaJJ4/o1XkzhPIg==
-  dependencies:
-    prop-types "^15.7.2"
 
 internal-slot@^1.0.3:
   version "1.0.3"
@@ -6200,11 +6188,6 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
-
-libphonenumber-js@^1.9.46:
-  version "1.9.46"
-  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.9.46.tgz#7ddae167654fb96306209b09e4a05cb7e41e0524"
-  integrity sha512-QqTX4UVsGy24njtCgLRspiKpxfRniRBZE/P+d0vQXuYWQ+hwDS6X0ouo0O/SRyf7bhhMCE71b6vAvLMtY5PfEw==
 
 libphonenumber-js@^1.9.48:
   version "1.9.48"
@@ -7695,17 +7678,6 @@ react-native@^0.64.3:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
     ws "^6.1.4"
-
-react-phone-number-input@^3.1.41:
-  version "3.1.45"
-  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.1.45.tgz#3ef3a409ddb0cddabe81419aeaa6c7ea3bde8f32"
-  integrity sha512-4rkoTqzp0RvhKR03CApO5obOKxKJrg2uMEWg1ayMoqLF4zg1XFAzfrfkaRZOfUD09Vrod1l7Mzgs8If8ilWCuw==
-  dependencies:
-    classnames "^2.2.5"
-    country-flag-icons "^1.0.2"
-    input-format "^0.3.7"
-    libphonenumber-js "^1.9.46"
-    prop-types "^15.7.2"
 
 react-refresh@^0.4.0:
   version "0.4.3"

@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 const styles = ({ topPadding }) =>
   StyleSheet.create({
     container: {
+      position: 'relative',
       flex: 1,
       alignItems: 'center',
       backgroundColor: '#fff',
