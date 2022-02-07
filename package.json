@@ -11,19 +11,20 @@
   "jest": {
     "preset": "jest-expo",
     "transform": {
-      "\\.[jt]sx?$": "babel-jest"
+      "\\.[j]sx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@react-native|@sentry/.*)"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "src/(components|screens)/*.{js,jsx,ts,tsx}",
+      "src/(components|screens)/*.{js,jsx}",
       "!**/coverage/**",
       "!**/node_modules/**",
       "!**/babel.config.js",
       "!**/jest.setup.js"
-    ]
+    ],
+    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"]
   },
   "dependencies": {
     "@babel/preset-env": "^7.16.11",

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings Screen should have an attribution 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#fff",
+      "flex": 1,
+      "paddingTop": 0,
+      "position": "relative",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "paddingHorizontal": 16,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+      title="Sign out"
+    >
+      <View
+        style={
+          Object {
+            "backgroundColor": "#eaeaef",
+            "borderRadius": 8,
+            "marginTop": 10,
+            "padding": 20,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "fontSize": 18,
+              "fontWeight": "600",
+              "textAlign": "center",
+            }
+          }
+        >
+          Sign out
+        </Text>
+      </View>
+    </View>
+    <Text
+      style={
+        Object {
+          "color": "#777",
+          "marginTop": 20,
+        }
+      }
+    >
+      Built by Blueprint.
+    </Text>
+  </View>
+</View>
+`;
