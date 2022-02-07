@@ -2,10 +2,7 @@ import React from 'react';
 
 import * as WebBrowser from 'expo-web-browser';
 import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper';
-
-import MonoText from './StyledText';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   getStartedContainer: {
@@ -54,7 +51,7 @@ export default function EditScreenInfo({ path }) {
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
         >
-          <MonoText>{path}</MonoText>
+          <Text>{path}</Text>
         </View>
 
         <Text style={styles.getStartedText}>
