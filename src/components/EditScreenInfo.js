@@ -1,10 +1,8 @@
 import React from 'react';
 
 import * as WebBrowser from 'expo-web-browser';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native-paper';
-
-import MonoText from './StyledText';
+import PropTypes from 'prop-types';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   getStartedContainer: {
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function EditScreenInfo({ path }: { path: string }) {
+export default function EditScreenInfo({ path }) {
   const handleHelpPress = () => {
     WebBrowser.openBrowserAsync(
       'https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet',
@@ -53,7 +51,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         <View
           style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
         >
-          <MonoText>{path}</MonoText>
+          <Text>{path}</Text>
         </View>
 
         <Text style={styles.getStartedText}>
@@ -73,3 +71,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
     </View>
   );
 }
+
+EditScreenInfo.propTypes = {
+  path: PropTypes.node.isRequired,
+};

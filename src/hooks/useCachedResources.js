@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-const spaceMono = require('assets/fonts/SpaceMono-Regular.ttf');
+const spaceMono = require('../../assets/fonts/SpaceMono-Regular.ttf');
 
 export default function useCachedResources() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -17,7 +17,7 @@ export default function useCachedResources() {
 
         // Load fonts
         await Font.loadAsync({
-          ...FontAwesome.font,
+          ...Ionicons.font,
           'space-mono': spaceMono,
         });
       } catch (e) {
