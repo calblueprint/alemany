@@ -1,21 +1,5 @@
 {
   "plugins": [
-    [
-      "module-resolver",
-      {
-        "root": ["./"],
-        "alias": {
-          "src": "./src",
-          "assets": "./assets",
-          "components": "./src/components",
-          "constants": "./src/constants",
-          "database": "./src/database",
-          "hooks": "./src/hooks",
-          "navigation": "./src/navigation",
-          "screens": "./src/screens",
-          "@types": "./"
-        }
-      }
-    ]
+      "module-resolver"
   ]
 }

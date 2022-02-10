@@ -1,12 +1,5 @@
+/* eslint-disable camelcase */
 import React from 'react';
-
-import { StatusBar } from 'expo-status-bar';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-import useCachedResources from 'hooks/useCachedResources';
-import useTheme from 'hooks/useTheme';
-import Navigation from 'navigation/index';
 
 import {
   useFonts,
@@ -16,6 +9,13 @@ import {
   Inter_700Bold,
   Inter_800ExtraBold,
 } from '@expo-google-fonts/inter';
+import { StatusBar } from 'expo-status-bar';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import useCachedResources from './src/hooks/useCachedResources';
+import useTheme from './src/hooks/useTheme';
+import Navigation from './src/navigation/index';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

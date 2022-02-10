@@ -3,10 +3,8 @@ import { useCallback } from 'react';
 
 import * as MapLocation from 'expo-location';
 
-import { Location } from '@types';
-
 export const useCurrentLocation = () =>
-  useCallback(async (): Promise<Location> => {
+  useCallback(async () => {
     const { status } = await MapLocation.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       /* TODO: Nagivate to error screen instead of throwing Error which breaks app. */

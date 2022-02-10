@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Switch, Title, TextInput, Button } from 'react-native-paper';
 
-import { Tree, Location } from '@types';
-import ViewContainer from 'components/ViewContainer';
-import { addTree } from 'database/firebase';
-import { DEFAULT_LOCATION } from 'src/constants/DefaultLocation';
-import { useCurrentLocation } from 'src/hooks/useCurrentLocation';
+import ViewContainer from '../components/ViewContainer';
+import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import { addTree } from '../database/firebase';
+import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
 const styles = StyleSheet.create({
   input: {
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
 
 export default function AddScreen() {
   const getCurrentLocation = useCurrentLocation();
-  const [entry, setEntry] = React.useState<Tree>({
+  const [entry, setEntry] = React.useState({
     id: '',
     name: '',
     uuid: '',
@@ -27,7 +26,7 @@ export default function AddScreen() {
     planted: null,
     comment: null,
   });
-  const [location, setLocation] = useState<Location>({
+  const [location, setLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
@@ -41,7 +40,7 @@ export default function AddScreen() {
     getData();
   }, [getCurrentLocation]);
 
-  const onPress = (): void => {
+  const onPress = () => {
     let result = entry;
     if (checked) {
       result = { ...result, location };

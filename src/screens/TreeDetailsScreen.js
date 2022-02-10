@@ -5,17 +5,17 @@ import React, {
   useState,
 } from 'react';
 
+import { shape, func, string } from 'prop-types';
 import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
-import { RootStackScreenProps, Tree, Comment } from '@types';
-import ViewContainer from 'components/ViewContainer';
+import ViewContainer from '../components/ViewContainer';
 import {
   getTree,
   setTree,
   addComment,
   saveComment,
-} from 'src/database/firebase';
+} from '../database/firebase';
 
 const styles = StyleSheet.create({
   input: {
@@ -31,12 +31,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TreeDetailsScreen({
-  route,
-  navigation,
-}: RootStackScreenProps<'TreeDetails'>) {
+export default function TreeDetailsScreen({ route, navigation }) {
   const { uuid } = route.params;
-  const [entry, setEntry] = useState<Tree>({
+  const [entry, setEntry] = useState({
     id: '',
     name: '',
     uuid: '',
@@ -45,15 +42,12 @@ export default function TreeDetailsScreen({
     comments: [],
   });
 
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = useCallback(() => {
     setIsEditing(!isEditing);
   }, [isEditing]);
 
-  const [comment, setComment] = useState<Comment>({
-    uuid: '',
-    input: '',
-  });
+  const [comment, setComment] = useState < Comment > { uuid: '', input: '' };
 
   useEffect(() => {
     async function getEntry() {
@@ -115,3 +109,14 @@ export default function TreeDetailsScreen({
     </ViewContainer>
   );
 }
+
+TreeDetailsScreen.propTypes = {
+  navigation: shape({
+    setOptions: func,
+  }),
+  route: shape({
+    params: shape({
+      uuid: string,
+    }),
+  }),
+};
