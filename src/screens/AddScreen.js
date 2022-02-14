@@ -12,9 +12,9 @@ import { useCurrentLocation } from '../hooks/useCurrentLocation';
 const styles = StyleSheet.create({
   input: {
     width: '90%',
+    backgroundColor: 'white',
   },
 });
-// TODO: research date picker options (drop down, calender view, etc)
 
 export default function AddScreen() {
   const getCurrentLocation = useCurrentLocation();
@@ -24,6 +24,7 @@ export default function AddScreen() {
     uuid: '',
     location: null,
     planted: null,
+    comment: null,
   });
   const [location, setLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,

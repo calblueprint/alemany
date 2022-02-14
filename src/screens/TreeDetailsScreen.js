@@ -3,6 +3,7 @@ import React, {
   useLayoutEffect,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
@@ -10,11 +11,13 @@ import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
-import { getTree, setTree } from '../database/firebase';
+import { getTree, setTree, addComment } from '../database/firebase';
 
 const styles = StyleSheet.create({
   input: {
     width: '90%',
+    marginBottom: 5,
+    backgroundColor: 'white',
   },
   separator: {
     marginVertical: 30,
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TreeDetailsScreen({ route, navigation }) {
+  const addCommentText = useRef();
   const { uuid } = route.params;
   const [entry, setEntry] = useState({
     id: '',
@@ -32,12 +36,15 @@ export default function TreeDetailsScreen({ route, navigation }) {
     uuid: '',
     location: null,
     planted: null,
+    comments: [],
   });
 
   const [isEditing, setIsEditing] = useState(false);
   const toggleEditing = useCallback(() => {
     setIsEditing(!isEditing);
   }, [isEditing]);
+
+  const [comment, setComment] = useState({ uuid: '', input: '' });
 
   useEffect(() => {
     async function getEntry() {
@@ -59,6 +66,15 @@ export default function TreeDetailsScreen({ route, navigation }) {
     toggleEditing();
   };
 
+  const handleSaveComment = () => {
+    if (comment) {
+      addComment(comment, entry.uuid);
+      setEntry({ ...entry, comments: [...entry.comments, comment] });
+      addCommentText.current.clear();
+      setComment('');
+    }
+  };
+
   return (
     <ViewContainer>
       <TextInput
@@ -66,7 +82,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
         label="Name"
         onChangeText={value => setEntry({ ...entry, name: value.toString() })}
         style={styles.input}
-        value={entry.name ?? ''}
+        value={entry.name}
       />
       <TextInput
         disabled={!isEditing}
@@ -76,6 +92,29 @@ export default function TreeDetailsScreen({ route, navigation }) {
         value={entry.id}
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
+
+      {entry.comments?.map((c, i) => (
+        <TextInput
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          disabled="true"
+          label="Comment"
+          style={styles.input}
+          value={c.input}
+        />
+      ))}
+      <TextInput
+        label="Add Comment"
+        onChangeText={
+          value => setComment({ ...comment, input: value.toString() })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        ref={addCommentText}
+        style={styles.input}
+        value={comment.input}
+      />
+
+      <Button title="Add Comment" onPress={handleSaveComment} />
     </ViewContainer>
   );
 }

@@ -110,6 +110,33 @@ export const addTree = async tree => {
 };
 
 /**
+ * same functionality as addTree but for comments:
+ * assigns uuid to comment and adds to commentCollection.
+ */
+export const saveComment = async comment => {
+  try {
+    const ref = await commentCollection.add(comment);
+    commentCollection.doc(ref.id).update({ uuid: ref.id });
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
+export const addComment = async (comment, uuid) => {
+  try {
+    treeCollection
+      .doc(uuid)
+      .update({ comments: firebase.firestore.FieldValue.arrayUnion(comment) });
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
+/**
  * getComment queries the `comments` table and
  * returns a Comment if the ID is found and an empty entry otherwise.
  */
