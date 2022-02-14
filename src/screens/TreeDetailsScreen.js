@@ -7,16 +7,11 @@ import React, {
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
-import {
-  getTree,
-  setTree,
-  addComment,
-  saveComment,
-} from '../database/firebase';
+import { getTree, setTree, addComment } from '../database/firebase';
 
 const styles = StyleSheet.create({
   input: {
@@ -110,8 +105,9 @@ export default function TreeDetailsScreen({ route, navigation }) {
       ))}
       <TextInput
         label="Add Comment"
-        onChangeText={value =>
-          setComment({ ...comment, input: value.toString() })
+        onChangeText={
+          value => setComment({ ...comment, input: value.toString() })
+          // eslint-disable-next-line react/jsx-curly-newline
         }
         ref={addCommentText}
         style={styles.input}
