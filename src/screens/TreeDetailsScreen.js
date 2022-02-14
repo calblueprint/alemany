@@ -3,10 +3,11 @@ import React, {
   useLayoutEffect,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, Alert } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TreeDetailsScreen({ route, navigation }) {
+  const addCommentText = useRef();
   const { uuid } = route.params;
   const [entry, setEntry] = useState({
     id: '',
@@ -47,7 +49,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
     setIsEditing(!isEditing);
   }, [isEditing]);
 
-  const [comment, setComment] = useState < Comment > { uuid: '', input: '' };
+  const [comment, setComment] = useState({ uuid: '', input: '' });
 
   useEffect(() => {
     async function getEntry() {
@@ -72,11 +74,12 @@ export default function TreeDetailsScreen({ route, navigation }) {
   const handleSaveComment = () => {
     saveComment(comment);
     addComment(comment, entry.uuid);
+    Alert.alert(
+      null,
+      `Comment "${comment.input}" has been saved under ${entry.name}`,
+    );
+    addCommentText.current.clear();
   };
-
-  navigation.setOptions({
-    headerRight: () => <IconButton icon="pencil" onPress={toggleEditing} />,
-  });
 
   return (
     <ViewContainer>
@@ -101,6 +104,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
         onChangeText={value =>
           setComment({ ...comment, input: value.toString() })
         }
+        ref={addCommentText}
         style={styles.input}
         value={comment.input}
       />
