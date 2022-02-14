@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button, Alert } from 'react-native';
+import { StyleSheet, Button, Alert, ScrollView } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
@@ -72,13 +72,17 @@ export default function TreeDetailsScreen({ route, navigation }) {
   };
 
   const handleSaveComment = () => {
-    saveComment(comment);
-    addComment(comment, entry.uuid);
-    Alert.alert(
-      null,
-      `Comment "${comment.input}" has been saved under ${entry.name}`,
-    );
-    addCommentText.current.clear();
+    if (comment) {
+      saveComment(comment);
+      addComment(comment, entry.uuid);
+      setEntry({ ...entry, comments: [...entry.comments, comment] });
+      Alert.alert(
+        null,
+        `Comment "${comment.input}" has been saved under ${entry.name}`,
+      );
+      addCommentText.current.clear();
+      setComment('');
+    }
   };
 
   return (
@@ -99,6 +103,16 @@ export default function TreeDetailsScreen({ route, navigation }) {
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
 
+      {entry.comments?.map((c, i) => (
+        <TextInput
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          disabled="true"
+          label="Comment"
+          style={styles.input}
+          value={c.input}
+        />
+      ))}
       <TextInput
         label="Add Comment"
         onChangeText={value =>
