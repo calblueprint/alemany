@@ -8,6 +8,12 @@ import {
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
 import firebase from 'firebase/compat/app';
+import {
+  getStorage,
+  ref as refStorage,
+  uploadBytes,
+  getDownloadURL,
+} from 'firebase/storage';
 import 'firebase/compat/firestore';
 
 export const config = {
@@ -164,4 +170,30 @@ export const setAdditional = async additional => {
     // TODO: Add error handling.
   }
 };
+
+export const uploadImageAsync = async (uri, uuid) => {
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onload = () => {
+      resolve(xhr.response);
+    };
+    xhr.onerror = () => {
+      reject(new TypeError('Network request failed'));
+    };
+
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const fileRef = refStorage(getStorage(), uuid);
+  const result = await uploadBytes(fileRef, blob);
+
+  blob.close();
+
+  const imageUrl = await getDownloadURL(result);
+  return imageUrl;
+};
+
 export default firebase;

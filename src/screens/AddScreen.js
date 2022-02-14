@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { Switch, Title, TextInput, Button } from 'react-native-paper';
 
+import ImageUpload from '../components/ImageUpload';
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import { addTree } from '../database/firebase';
@@ -72,6 +73,8 @@ export default function AddScreen() {
       <Button mode="contained" onPress={onPress}>
         Submit
       </Button>
+
+      <ImageUpload />
     </ViewContainer>
   );
 }
