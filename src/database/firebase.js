@@ -113,7 +113,7 @@ export const addTree = async tree => {
  * same functionality as addTree but for comments:
  * assigns uuid to comment and adds to commentCollection.
  */
-export const saveComment = async (comment: Comment) => {
+export const saveComment = async comment => {
   try {
     const ref = await commentCollection.add(comment);
     commentCollection.doc(ref.id).update({ uuid: ref.id });
@@ -124,9 +124,8 @@ export const saveComment = async (comment: Comment) => {
   }
 };
 
-export const addComment = async (comment: Comment, uuid: string) => {
+export const addComment = async (comment, uuid) => {
   try {
-    // const ref = await treeCollection.doc(uuid).get();
     treeCollection
       .doc(uuid)
       .update({ comments: firebase.firestore.FieldValue.arrayUnion(comment) });
