@@ -73,13 +73,8 @@ export default function TreeDetailsScreen({ route, navigation }) {
 
   const handleSaveComment = () => {
     if (comment) {
-      saveComment(comment);
       addComment(comment, entry.uuid);
       setEntry({ ...entry, comments: [...entry.comments, comment] });
-      Alert.alert(
-        null,
-        `Comment "${comment.input}" has been saved under ${entry.name}`,
-      );
       addCommentText.current.clear();
       setComment('');
     }
