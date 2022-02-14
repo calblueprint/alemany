@@ -1,12 +1,19 @@
 ## Summary
-- quick overview of your feature and what it aims to accomplish
+What does this PR contribute?
+
 ## Test Plan
-- plan to review
-## Other
+How should the person reviewing this PR test it out? For example, what screens in the app should they go to?
+
+## Notes
+(You can leave this empty if you don't have anything.)
+
 ### Next Steps
+
 ### Relevant Links
+
 ### Online Sources
+
 ### Related PRs
+
 ## Screenshots and Tests
-- if your feature is visual, attach before/after screenshots and ensure that tests still pass
-CC: @mylesdomingo
+If your feature is visual, attach before/after screenshots and ensure that tests still pass

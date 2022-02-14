@@ -1,11 +1,10 @@
 import * as React from 'react';
 
-import PropTypes from 'prop-types';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Title } from 'react-native-paper';
+import { func, shape } from 'prop-types';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Title } from 'react-native-paper';
 
-import { RootStackScreenProps } from '@types';
-import ViewContainer from 'src/components/ViewContainer';
+import ViewContainer from '../components/ViewContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,9 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function NotFoundScreen({
-  navigation,
-}: RootStackScreenProps<'NotFound'>) {
+export default function NotFoundScreen({ navigation }) {
   return (
     <ViewContainer>
       <Title>This screen does&pos;t exist.</Title>
@@ -46,8 +43,5 @@ export default function NotFoundScreen({
 }
 
 NotFoundScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
+  navigation: shape({ replace: func }),
 };

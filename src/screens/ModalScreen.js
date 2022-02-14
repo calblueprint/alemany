@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Title } from 'react-native-paper';
 
-import EditScreenInfo from 'components/EditScreenInfo';
-import ViewContainer from 'src/components/ViewContainer';
+import EditScreenInfo from '../components/EditScreenInfo';
+import ViewContainer from '../components/ViewContainer';
 
 const styles = StyleSheet.create({
   separator: {

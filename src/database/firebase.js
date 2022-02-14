@@ -7,9 +7,8 @@ import {
   APP_ID,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
-import firebase from 'firebase';
-
-import { Tree, Comment, Additional } from '@types';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
 
 export const config = {
   apiKey: API_KEY,
@@ -24,16 +23,31 @@ export const config = {
 
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
-const storage = firebase.storage();
+const userCollection = database.collection('users');
 const commentCollection = database.collection('comments');
 const additionalCollection = database.collection('additional');
 
 /**
  * checkID validates that this ID exists in the `trees` table.
  */
-export const checkID = async (uuid: string): Promise<boolean> => {
+export const checkID = async uuid => {
   try {
     const doc = await treeCollection.doc(uuid).get();
+    return doc.exists;
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+/**
+ * checkPhoneNumber queries the `users` table and returns True if the phone number
+ * is a valid id and False otherwise.
+ */
+export const checkPhoneNumber = async phoneNumber => {
+  try {
+    const formattedPhoneNumber = phoneNumber.substring(2); // Remove +1
+    const doc = await userCollection.doc(formattedPhoneNumber).get();
     return doc.exists;
   } catch (e) {
     console.warn(e);
@@ -46,10 +60,10 @@ export const checkID = async (uuid: string): Promise<boolean> => {
  * getTree queries the `trees` table and returns a Tree if the ID is found
  * and an empty entry otherwise.
  */
-export const getTree = async (uuid: string): Promise<Tree> => {
+export const getTree = async uuid => {
   try {
     const doc = await treeCollection.doc(uuid).get();
-    return doc.data() as Tree;
+    return doc.data();
   } catch (e) {
     console.warn(e);
     throw e;
@@ -60,10 +74,10 @@ export const getTree = async (uuid: string): Promise<Tree> => {
 /**
  * getAllTrees returns an array containing all entries in the `trees` table.
  */
-export const getAllTrees = async (): Promise<Tree[]> => {
+export const getAllTrees = async () => {
   try {
     const response = await treeCollection.get();
-    return response.docs.map(doc => doc.data() as Tree);
+    return response.docs.map(doc => doc.data());
   } catch (e) {
     console.warn(e);
     throw e;
@@ -74,7 +88,7 @@ export const getAllTrees = async (): Promise<Tree[]> => {
 /**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
-export const setTree = async (tree: Tree) => {
+export const setTree = async tree => {
   try {
     await treeCollection.doc(tree.uuid).set(tree);
   } catch (e) {
@@ -84,7 +98,7 @@ export const setTree = async (tree: Tree) => {
   }
 };
 
-export const addTree = async (tree: Tree) => {
+export const addTree = async tree => {
   try {
     const ref = await treeCollection.add(tree);
     treeCollection.doc(ref.id).update({ uuid: ref.id });
@@ -99,10 +113,10 @@ export const addTree = async (tree: Tree) => {
  * getComment queries the `comments` table and
  * returns a Comment if the ID is found and an empty entry otherwise.
  */
-export const getComment = async (uuid: string): Promise<Comment> => {
+export const getComment = async uuid => {
   try {
     const doc = await commentCollection.doc(uuid).get();
-    return doc.data() as Comment;
+    return doc.data();
   } catch (e) {
     console.warn(e);
     throw e;
@@ -113,7 +127,7 @@ export const getComment = async (uuid: string): Promise<Comment> => {
 /**
  * setComment creates/updates an entry in the `comments` table given a Comment.
  */
-export const setComment = async (comment: Comment) => {
+export const setComment = async comment => {
   try {
     await commentCollection.doc(comment.uuid).set(comment);
   } catch (e) {
@@ -127,10 +141,10 @@ export const setComment = async (comment: Comment) => {
  * getAdditional queries the `additional` table and
  * returns an Additional if the ID is found and an empty entry otherwise.
  */
-export const getAdditional = async (uuid: string): Promise<Additional> => {
+export const getAdditional = async uuid => {
   try {
     const doc = await additionalCollection.doc(uuid).get();
-    return doc.data() as Additional;
+    return doc.data();
   } catch (e) {
     console.warn(e);
     throw e;
@@ -141,7 +155,7 @@ export const getAdditional = async (uuid: string): Promise<Additional> => {
 /**
  * setAdditional creates/updates an entry in the `additional` table given a Additional.
  */
-export const setAdditional = async (additional: Additional) => {
+export const setAdditional = async additional => {
   try {
     await additionalCollection.doc(additional.uuid).set(additional);
   } catch (e) {
@@ -150,32 +164,4 @@ export const setAdditional = async (additional: Additional) => {
     // TODO: Add error handling.
   }
 };
-export const uploadImageAsync = async (
-  uri: string,
-  uuid: string,
-): Promise<any> => {
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.onload = () => {
-      resolve(xhr.response);
-    };
-    xhr.onerror = e => {
-      console.log(e);
-      reject(new TypeError('Network request failed'));
-    };
-
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-    xhr.send(null);
-  });
-
-  const ref = firebase.storage().ref().child(uuid);
-  const snapshot = await ref.put(blob as Blob);
-  blob.close();
-
-  const imageUrl = await snapshot.ref.getDownloadURL();
-  return imageUrl;
-};
-
 export default firebase;

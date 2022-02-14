@@ -13,7 +13,6 @@
     "plugin:jest/style",
     "airbnb"
   ],
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -21,30 +20,10 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "jest", "react-hooks"],
-  "settings": {
-    "import/resolver": {
-      "typescript": {},
-      "babel-module": {},
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  },
+  "plugins": ["react", "jest", "react-hooks"],
   "rules": {
-    "@typescript-eslint/no-use-before-define": ["error"],
     "arrow-parens": [2, "as-needed"],
     "implicit-arrow-linebreak": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
     "import/order": [
       "error",
       {
@@ -70,12 +49,6 @@
     "jest/prefer-to-have-length": "warn",
     "jest/valid-expect": "error",
     "no-console": ["error", { "allow": ["warn"] }],
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": ["../*"]
-      }
-    ],
     "no-unused-expressions": [
       "error",
       {
@@ -83,14 +56,10 @@
         "allowTernary": true
       }
     ],
-    "no-use-before-define": "off",
     "object-curly-newline": "off",
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
-    "react/jsx-props-no-spreading": "off",
-    "react/jsx-filename-extension": [
-      1,
-      { "extensions": [".test.js", ".tsx", ".ts"] }
-    ]
+    "react/jsx-filename-extension": "off",
+    "react/require-default-props": [1, { "ignoreFunctionalComponents": true }]
   }
 }
