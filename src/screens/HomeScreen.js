@@ -58,17 +58,6 @@ export default function HomeScreen({ navigation }) {
     }
     getData();
   }, []);
-  // eslint-disable-next-line no-lone-blocks
-  {
-    /* {personLocation && (
-          <Marker
-            coordinate={{
-              latitude: personLocation.coords.latitude,
-              longitude: personLocation.coords.longitude,
-            }}
-          />
-        )} */
-  }
 
   return (
     <ViewContainer>
