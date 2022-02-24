@@ -16,13 +16,15 @@ export default function ImageUpload() {
         const { status: statusPicker } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (statusPicker !== 'granted') {
+          alert('first'); // REMOVE THIS
           alert('Sorry, we need camera roll permissions to make this work!');
         }
-        const { status: statusCamera } =
-          await ImagePicker.getCameraPermissionsAsync();
-        if (statusCamera !== 'granted') {
-          alert('Sorry, we need camera permissions to make this work!');
-        }
+        // const { status: statusCamera } =
+        //   await ImagePicker.getCameraPermissionsAsync();
+        // if (statusCamera !== 'granted') {
+        //   alert('second'); // REMOVE THIS
+        //   alert('Sorry, we need camera permissions to make this work!');
+        // }
       }
     })();
   }, []);
