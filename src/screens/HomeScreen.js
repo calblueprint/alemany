@@ -16,11 +16,18 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   marker: {
-    backgroundColor: '#000FFF',
-    padding: 5,
-    borderRadius: 10,
+    backgroundColor: '#4285F4',
+    padding: 8,
+    borderRadius: 18,
     borderColor: '#FFFFFF',
-    borderWidth: 1,
+    borderWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
   },
 });
 
@@ -66,8 +73,8 @@ export default function HomeScreen({ navigation }) {
           <Marker
             key={tree.uuid}
             coordinate={{
-              latitude: tree.location?.latitude,
-              longitude: tree.location?.longitude,
+              latitude: tree.location.latitude,
+              longitude: tree.location.longitude,
             }}
           />
         ))}
