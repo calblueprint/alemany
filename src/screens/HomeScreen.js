@@ -11,6 +11,7 @@ import { Searchbar, Switch } from 'react-native-paper';
 
 import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
+import ViewToggle from '../components/ViewToggle';
 import { getAllTrees, checkID } from '../database/firebase';
 import ListScreen from './ListScreen';
 import MapScreen from './MapScreen';
@@ -31,6 +32,10 @@ export default function HomeScreen({ navigation }) {
       );
     });
   const toggleView = useCallback(() => {
+    setIsListView(!isListView);
+  }, [isListView]);
+
+  const listView = useCallback(() => {
     setIsListView(!isListView);
   }, [isListView]);
 
@@ -90,17 +95,16 @@ export default function HomeScreen({ navigation }) {
             value={searchQuery}
             autoComplete={undefined}
           />
-          <Switch
-            style={{
-              minWidth: '100%',
-              display: 'block',
-              marginLeft: '40%',
-              shadowOpacity: 0,
-            }}
+          <ViewToggle
+            onToggle={setIsListView}
+            // style={{
+            //   minWidth: '100%',
+            //   display: 'block',
+            //   marginLeft: '40%',
+            //   shadowOpacity: 0,
+            // }}
             trackColor={{ false: '#767577', true: '#81b0ff' }}
             value={isListView}
-            activeText="Map"
-            inActiveText="List"
             onValueChange={() => {
               setIsListView(!isListView);
             }}
