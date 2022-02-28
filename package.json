@@ -24,7 +24,9 @@
       "!**/babel.config.js",
       "!**/jest.setup.js"
     ],
-    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"]
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "dependencies": {
     "@babel/preset-env": "^7.16.11",

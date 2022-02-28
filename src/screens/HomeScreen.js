@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import * as Location from 'expo-location';
 import { func, shape } from 'prop-types';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 import Inset from '../components/Inset';
@@ -14,10 +15,40 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  marker: {
+    backgroundColor: '#4285F4',
+    padding: 8,
+    borderRadius: 18,
+    borderColor: '#FFFFFF',
+    borderWidth: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+  },
 });
 
 export default function HomeScreen({ navigation }) {
   const [trees, setTrees] = useState([]);
+  const [personLocation, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        // eslint-disable-next-line no-alert
+        alert('Permission to access location was denied');
+        return;
+      }
+      const newLoc = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
+      setLocation(newLoc);
+    })();
+  }, []);
 
   const isValidLocation = tree =>
     tree.location && tree.location.latitude && tree.location.longitude;
@@ -42,11 +73,21 @@ export default function HomeScreen({ navigation }) {
           <Marker
             key={tree.uuid}
             coordinate={{
-              latitude: tree.location?.latitude,
-              longitude: tree.location?.longitude,
+              latitude: tree.location.latitude,
+              longitude: tree.location.longitude,
             }}
           />
         ))}
+        {personLocation && (
+          <Marker
+            coordinate={{
+              latitude: personLocation.coords.latitude,
+              longitude: personLocation.coords.longitude,
+            }}
+          >
+            <View style={styles.marker} />
+          </Marker>
+        )}
       </MapView>
       <Inset
         style={{
