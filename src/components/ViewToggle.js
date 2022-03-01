@@ -4,21 +4,20 @@ import { func, bool } from 'prop-types';
 import { View, Text } from 'react-native';
 import Toggle from 'react-native-toggle-element';
 
-export default function ViewToggle({ onToggle, isListView }) {
+export default function ViewToggle({ value, onToggle }) {
   return (
     <View
       style={{
         position: 'aboslute',
         width: 364,
         height: 49,
-        left: '32',
-        top: '122',
         margin: 10,
         justifyContent: 'space-evenly',
         alignItems: 'center',
       }}
     >
       <Toggle
+        value={value}
         onPress={newState => onToggle(newState)}
         leftComponent={
           // eslint-disable-next-line react/jsx-wrap-multilines
@@ -26,7 +25,7 @@ export default function ViewToggle({ onToggle, isListView }) {
             style={{
               fontWeight: '600',
               fontSize: 17,
-              color: isListView ? 'black' : 'white',
+              color: value ? 'black' : 'white',
             }}
           >
             Map
@@ -38,7 +37,7 @@ export default function ViewToggle({ onToggle, isListView }) {
             style={{
               fontWeight: '600',
               fontSize: 17,
-              color: isListView ? 'white' : 'black',
+              color: value ? 'white' : 'black',
             }}
           >
             List
@@ -61,5 +60,5 @@ export default function ViewToggle({ onToggle, isListView }) {
 
 ViewToggle.propTypes = {
   onToggle: func,
-  isListView: bool,
+  value: bool,
 };

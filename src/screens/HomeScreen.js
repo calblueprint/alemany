@@ -94,7 +94,7 @@ export default function HomeScreen({ navigation }) {
           <ViewToggle
             onToggle={setIsListView}
             value={isListView}
-            onValueChange={() => {
+            onPress={() => {
               setIsListView(!isListView);
             }}
           />
