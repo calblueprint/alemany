@@ -9,7 +9,7 @@ export default function ViewToggle({ onToggle, isListView }) {
     <View
       style={{
         position: 'aboslute',
-        width: '364',
+        width: 364,
         height: 49,
         left: '32',
         top: '122',
