@@ -1,66 +1,60 @@
-import * as React from 'react';
+import React from 'react';
 
 import { func, bool } from 'prop-types';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
+import Toggle from 'react-native-toggle-element';
 
 export default function ViewToggle({ onToggle, isListView }) {
   return (
     <View
       style={{
-        flexDirection: 'row',
+        position: 'aboslute',
+        width: '364',
+        height: 49,
+        left: '32',
+        top: '122',
         margin: 10,
-        position: 'relative',
-        alignItems: 'center',
         justifyContent: 'space-evenly',
-        backgroundColor: 'white',
-        borderRadius: 5,
-        height: 50,
+        alignItems: 'center',
       }}
     >
-      <Pressable
-        sytle={{
-          borderRadius: 8,
-          padding: 20,
-          width: '100%',
-          margin: 50,
+      <Toggle
+        onPress={newState => onToggle(newState)}
+        leftComponent={
+          // eslint-disable-next-line react/jsx-wrap-multilines
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 17,
+              color: isListView ? 'black' : 'white',
+            }}
+          >
+            Map
+          </Text>
+        }
+        rightComponent={
+          // eslint-disable-next-line react/jsx-wrap-multilines
+          <Text
+            style={{
+              fontWeight: '600',
+              fontSize: 17,
+              color: isListView ? 'white' : 'black',
+            }}
+          >
+            List
+          </Text>
+        }
+        trackBar={{ width: 380, height: 49, radius: 8 }}
+        thumbButton={{
+          width: 190,
+          height: 41,
+          radius: 13,
+          activeBackgroundColor: '#52BD41',
+          inActiveBackgroundColor: '#52BD41',
         }}
-        onPress={() => onToggle(false)}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            marginTop: 10,
-            backgroundColor: isListView ? 'white' : 'green',
-            width: 150,
-            height: 38,
-          }}
-        >
-          Map
-        </Text>
-      </Pressable>
-      <Pressable
-        sytle={{
-          borderRadius: 8,
-          padding: 20,
-          width: '100%',
-          margin: 50,
-          alignItems: 'center',
-          justifyContent: 'space-evenly',
-        }}
-        onPress={() => onToggle(true)}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            marginTop: 10,
-            backgroundColor: isListView ? 'green' : 'red',
-            width: 150,
-            height: 38,
-          }}
-        >
-          List
-        </Text>
-      </Pressable>
+        thumbStyle={{ margin: 5 }}
+        trackBarStyle={{ backgroundColor: 'white' }}
+      />
     </View>
   );
 }

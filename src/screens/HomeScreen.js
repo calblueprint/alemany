@@ -7,7 +7,7 @@ import React, {
 
 import { func, shape } from 'prop-types';
 import { StyleSheet, View } from 'react-native';
-import { Searchbar, Switch } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 
 import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
@@ -32,10 +32,6 @@ export default function HomeScreen({ navigation }) {
       );
     });
   const toggleView = useCallback(() => {
-    setIsListView(!isListView);
-  }, [isListView]);
-
-  const listView = useCallback(() => {
     setIsListView(!isListView);
   }, [isListView]);
 
@@ -97,13 +93,6 @@ export default function HomeScreen({ navigation }) {
           />
           <ViewToggle
             onToggle={setIsListView}
-            // style={{
-            //   minWidth: '100%',
-            //   display: 'block',
-            //   marginLeft: '40%',
-            //   shadowOpacity: 0,
-            // }}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
             value={isListView}
             onValueChange={() => {
               setIsListView(!isListView);
