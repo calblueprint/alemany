@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 
 import { func, shape } from 'prop-types';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 import Inset from '../components/Inset';
@@ -49,6 +49,9 @@ export default function HomeScreen({ navigation }) {
     navigation.setOptions({
       title: isListView ? 'List' : 'Map',
     });
+    if (!isListView) {
+      Keyboard.dismiss();
+    }
   }, [navigation, isListView, toggleView]);
 
   const onSearchChange = searchValue => {
