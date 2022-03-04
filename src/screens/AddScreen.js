@@ -25,6 +25,7 @@ export default function AddScreen() {
     location: null,
     planted: null,
     comment: null,
+    active: true,
   });
   const [location, setLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,

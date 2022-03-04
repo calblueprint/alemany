@@ -36,6 +36,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
     uuid: '',
     location: null,
     planted: null,
+    active: true,
     comments: [],
   });
 
@@ -91,6 +92,12 @@ export default function TreeDetailsScreen({ route, navigation }) {
         style={styles.input}
         value={entry.id}
       />
+      {isEditing && (
+        <Button
+          title={entry.active ? 'Archive tree' : 'Unarchive tree'}
+          onPress={() => setEntry({ ...entry, active: !entry.active })}
+        />
+      )}
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
 
       {entry.comments?.map((c, i) => (

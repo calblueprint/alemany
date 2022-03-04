@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { func, shape } from 'prop-types';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, Button } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 
 import Inset from '../components/Inset';
@@ -12,7 +12,9 @@ import { getAllTrees, checkID } from '../database/firebase';
 export default function SearchScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [trees, setTrees] = useState([]);
+  const [active, setActive] = useState(true);
   const filtered = trees
+    .filter(tree => !active || tree.active)
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
       const query = searchQuery.toLowerCase();
@@ -52,6 +54,12 @@ export default function SearchScreen({ navigation }) {
             Search
           </Text>
         </Inset>
+        <Button
+          title={!active ? 'Show All Trees' : 'Show Active Trees'}
+          onPress={() => {
+            setActive(!active);
+          }}
+        />
         <Searchbar
           style={{ minWidth: '100%', shadowOpacity: 0 }}
           placeholder="Search"

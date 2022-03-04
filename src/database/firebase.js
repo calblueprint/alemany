@@ -72,6 +72,21 @@ export const getTree = async uuid => {
 };
 
 /**
+ * getActiveTrees returns an array of all Trees with state prop 'active' set to true.
+ * @param tree
+ */
+export const getActiveTrees = async () => {
+  try {
+    const response = await treeCollection.where('active', '==', true).get();
+    return response.docs.map(doc => doc.data());
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling
+  }
+};
+
+/**
  * getAllTrees returns an array containing all entries in the `trees` table.
  */
 export const getAllTrees = async () => {
