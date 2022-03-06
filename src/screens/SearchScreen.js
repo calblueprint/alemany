@@ -1,8 +1,13 @@
+/* eslint-disable linebreak-style */
 import React, { useEffect, useState } from 'react';
 
 import { func, shape } from 'prop-types';
 import { ScrollView, Text } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+// import {
+//   blueGrey400,
+//   blueGrey500,
+// } from 'react-native-paper/lib/typescript/styles/colors';
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
@@ -59,6 +64,21 @@ export default function SearchScreen({ navigation }) {
           value={searchQuery}
           autoComplete={undefined}
         />
+        <Text
+          style={{
+            fontSize: 11,
+            color: '#3B3F51',
+            marginTop: 20,
+            // marginBottom: 30,
+            textAlign: 'right',
+            marginRight: 35,
+          }}
+        >
+          {/* eslint-disable-next-line prettier/prettier */}
+          {filtered.length}
+          {' '}
+          {filtered.length === 1 ? 'result' : 'results'}
+        </Text>
         <Inset>
           {filtered.map(tree => {
             const { uuid, name, id } = tree;
