@@ -69,7 +69,6 @@ export default function SearchScreen({ navigation }) {
             fontSize: 11,
             color: '#3B3F51',
             marginTop: 20,
-            // marginBottom: 30,
             textAlign: 'right',
             marginRight: 35,
           }}
