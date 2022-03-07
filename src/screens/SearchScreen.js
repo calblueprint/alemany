@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 import React, { useEffect, useState } from 'react';
 
 import { func, shape } from 'prop-types';
