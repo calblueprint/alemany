@@ -76,8 +76,20 @@ export const getTree = async uuid => {
  */
 export const getAllTrees = async () => {
   try {
-    const response = await treeCollection.get();
-    return response.docs.map(doc => doc.data());
+    var response = await treeCollection.get();
+    var a = response.docs.map(doc => doc.data());
+    // Temporary to add a location to any tree
+    a.map(tree => {
+      if (!tree.location) {
+        tree = addTreeLocationTemp(tree)
+      }
+      setTree(tree)
+    }
+    )
+    response = await treeCollection.get();
+    a = response.docs.map(doc => doc.data());
+    //end temporary
+    return a;
   } catch (e) {
     console.warn(e);
     throw e;
@@ -97,8 +109,43 @@ export const setTree = async tree => {
     // TODO: Add error handling.
   }
 };
+/**
+ * addTreeLocationTemp temporary function that adds a random location if the location is null
+ * imports Math and the map values from Default locations
+ */
+
+const DEFAULT_LOCATION = {
+  latitude: 37.733053,
+  longitude: -122.419756,
+  latitudeDelta: 0.00275,
+  longitudeDelta: 0.00275,
+};
+
+export const addTreeLocationTemp = tree => {
+  if (tree.location) {
+    return tree;
+  }
+  const longitudeFinal = calculateLatitude(DEFAULT_LOCATION.longitude, DEFAULT_LOCATION.longitudeDelta);
+  const latitudeFinal = calculateLongitude(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.latitudeDelta)
+  tree.location = { longitude: longitudeFinal, latitude: latitudeFinal };
+  return tree;
+}
+
+const calculateLatitude = (location, delta) => {
+  var a = 2 * delta;
+  var deltaRange = (Math.random() * (a));
+  var finalLocation = (location - delta + deltaRange);
+  return Number(finalLocation);
+}
+const calculateLongitude = (location, delta) => {
+  var a = 2 * delta;
+  var deltaRange = (Math.random() * (a));
+  var finalLocation = (location - delta + deltaRange);
+  return Number(finalLocation);
+}
 
 export const addTree = async tree => {
+  tree = addTreeLocationTemp(tree); // remove when finalized
   try {
     const ref = await treeCollection.add(tree);
     treeCollection.doc(ref.id).update({ uuid: ref.id });
