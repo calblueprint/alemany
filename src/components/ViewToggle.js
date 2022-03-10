@@ -8,7 +8,7 @@ export default function ViewToggle({ value, onToggle }) {
   return (
     <View
       style={{
-        position: 'aboslute',
+        position: 'absolute',
         width: 364,
         height: 49,
         margin: 10,
@@ -19,6 +19,7 @@ export default function ViewToggle({ value, onToggle }) {
       <Toggle
         value={value}
         onPress={newState => onToggle(newState)}
+        animationDuration={0}
         leftComponent={
           // eslint-disable-next-line react/jsx-wrap-multilines
           <Text
@@ -47,7 +48,7 @@ export default function ViewToggle({ value, onToggle }) {
         thumbButton={{
           width: 190,
           height: 41,
-          radius: 13,
+          radius: 8,
           activeBackgroundColor: '#52BD41',
           inActiveBackgroundColor: '#52BD41',
         }}
