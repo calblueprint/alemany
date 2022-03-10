@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { func, bool } from 'prop-types';
-import { View, Text, Keyboard } from 'react-native';
+import { View, Text } from 'react-native';
 import Toggle from 'react-native-toggle-element';
 
 export default function ViewToggle({ value, onToggle }) {
