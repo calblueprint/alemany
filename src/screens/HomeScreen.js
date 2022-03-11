@@ -69,8 +69,18 @@ export default function HomeScreen({ navigation }) {
     setIsListView(!isListView);
   }, [isListView]);
 
+  const isValidLocation = tree =>
+    tree.location && tree.location.latitude && tree.location.longitude;
+
   useEffect(() => {
     async function getTrees() {
+      try {
+        const data = await getAllTrees();
+        const validTrees = data.filter(tree => isValidLocation(tree));
+        setTrees(validTrees);
+      } catch (e) {
+        console.warn(e);
+      }
       const data = await getAllTrees();
       setTrees(data);
     }
