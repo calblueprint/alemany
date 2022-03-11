@@ -5,10 +5,10 @@ import React, {
   useEffect,
 } from 'react';
 
-import { func, shape } from 'prop-types';
-import { StyleSheet, View, Keyboard } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { func, shape, string } from 'prop-types';
+import { View, Keyboard, TextInput } from 'react-native';
 
+import Icon from '../components/Icon';
 import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
 import ViewToggle from '../components/ViewToggle';
@@ -16,8 +16,42 @@ import { getAllTrees, checkID } from '../database/firebase';
 import ListScreen from './ListScreen';
 import MapScreen from './MapScreen';
 
-// eslint-disable-next-line no-unused-vars
-const styles = StyleSheet.create({});
+function Search({ onQueryChange, query }) {
+  return (
+    <View
+      style={{
+        backgroundColor: '#fff',
+        padding: 15,
+        borderRadius: 8,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        shadowColor: '#000000',
+        shadowOpacity: 0.05,
+        shadowOffset: {
+          x: 0,
+          y: 4,
+        },
+        shadowRadius: 7,
+      }}
+    >
+      <Icon style={{ marginRight: 5 }} size={20} name="search" />
+      <TextInput
+        style={{
+          fontSize: 18,
+          flex: 1,
+        }}
+        placeholder="Search"
+        value={query}
+        onChangeText={onQueryChange}
+      />
+    </View>
+  );
+}
+Search.propTypes = {
+  onQueryChange: func,
+  query: string,
+};
 
 export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -84,23 +118,8 @@ export default function HomeScreen({ navigation }) {
         />
 
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
-          <Searchbar
-            style={{
-              minWidth: '100%',
-              shadowOpacity: 0,
-            }}
-            placeholder="Search"
-            onChangeText={onSearchChange}
-            value={searchQuery}
-            autoComplete={undefined}
-          />
-          <ViewToggle
-            onToggle={setIsListView}
-            value={isListView}
-            onPress={() => {
-              setIsListView(!isListView);
-            }}
-          />
+          <Search onQueryChange={onSearchChange} query={searchQuery} />
+          <ViewToggle setIsListView={setIsListView} isListView={isListView} />
         </Inset>
       </View>
     </ViewContainer>
