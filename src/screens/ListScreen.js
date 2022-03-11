@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { array, func, shape } from 'prop-types';
-import { ScrollView, StyleSheet, ViewPropTypes } from 'react-native';
+import { ScrollView, StyleSheet, View, ViewPropTypes } from 'react-native';
 
 import SearchCard from '../components/SearchCard';
 
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   list: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#eee',
     paddingTop: 140,
   },
 });
@@ -17,17 +17,19 @@ const styles = StyleSheet.create({
 export default function ListScreen({ navigation, style, data }) {
   return (
     <ScrollView style={[styles.list, style]}>
-      {data.map(tree => {
-        const { uuid, name, id } = tree;
-        return (
-          <SearchCard
-            key={uuid}
-            name={name}
-            id={id}
-            onPress={() => navigation.push('TreeDetails', { uuid })}
-          />
-        );
-      })}
+      <View style={{ marginTop: 48, marginBottom: 248 }}>
+        {data.map(tree => {
+          const { uuid, name, comments } = tree;
+          return (
+            <SearchCard
+              key={uuid}
+              name={name}
+              comments={comments}
+              onPress={() => navigation.push('TreeDetails', { uuid })}
+            />
+          );
+        })}
+      </View>
     </ScrollView>
   );
 }
