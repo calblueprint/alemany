@@ -46,8 +46,7 @@ export default function SearchCard({ name, onPress, comments }) {
       <View>
         <Text style={styles.title}>{name}</Text>
         <Text style={styles.meta}>
-          {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-          {comments?.length || 0} comment
+          {`${comments?.length || 0} comment`}
           {comments?.length !== 1 && 's'}
         </Text>
       </View>
