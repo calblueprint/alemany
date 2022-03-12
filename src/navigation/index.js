@@ -12,10 +12,11 @@ import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
+import ListScreen from '../screens/ListScreen';
 import LoginScreen from '../screens/LoginScreen';
+import MapScreen from '../screens/MapScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import SearchScreen from '../screens/SearchScreen';
 import TreeDetailsScreen from '../screens/TreeDetailsScreen';
 import VerificationScreen from '../screens/VerificationScreen';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -56,6 +57,20 @@ function RootNavigator() {
         }}
       />
       <Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          title: 'Map View',
+        }}
+      />
+      <Screen
+        name="List"
+        component={ListScreen}
+        options={{
+          title: 'List View',
+        }}
+      />
+      <Screen
         name="Login"
         options={{ headerShown: false, gestureEnabled: false }}
         component={LoginScreen}
@@ -71,13 +86,6 @@ function RootNavigator() {
         component={TreeDetailsScreen}
         options={{
           title: 'View Tree',
-        }}
-      />
-      <Screen
-        name="Search"
-        component={SearchScreen}
-        options={{
-          headerShown: false,
         }}
       />
       <Screen

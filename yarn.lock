@@ -7606,6 +7606,22 @@ react-native-screens@^3.10.2:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-testing-library@^1.13.2:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-testing-library/-/react-native-testing-library-1.14.0.tgz#d3f3d39225d2f0c1ed4d857a187b787307cd96c0"
+  integrity sha512-AzWmhe4VfkaWAvetqsbQkPVC/aMcixj26WMxtiOpXRXsKuqwR3ijQMAG/OjO5IXNixueO0VoPhvL4FeDfDtBKQ==
+  dependencies:
+    pretty-format "^26.0.1"
+
+react-native-toggle-element@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-toggle-element/-/react-native-toggle-element-1.0.1.tgz#d26e6d5d685d4d802515a9c20e6bae8a423cefb1"
+  integrity sha512-KpMB33BxZp6Zpfm1YfXuHum3GjNMnCKTdicQHDWLcSbi2WMqyLQekGhyWfvqMEVGsmbDV2XF/6jhkmxfvMRcfA==
+  dependencies:
+    prop-types "^15.7.2"
+    react-native-testing-library "^1.13.2"
+    react-test-renderer "^16.13.1"
+
 react-native-vector-icons@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-9.0.0.tgz#ab38ec6941f3f340d39846f1e8300e59863e2fb1"
@@ -7691,6 +7707,16 @@ react-shallow-renderer@^16.13.1:
   dependencies:
     object-assign "^4.1.1"
     react-is "^16.12.0 || ^17.0.0"
+
+react-test-renderer@^16.13.1:
+  version "16.14.0"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.14.0.tgz#e98360087348e260c56d4fe2315e970480c228ae"
+  integrity sha512-L8yPjqPE5CZO6rKsKXRO/rVPiaCOy0tQQJbC+UjPNlobl5mad59lvPjwFsQHTvL03caVDIVr9x9/OSgDe6I5Eg==
+  dependencies:
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    react-is "^16.8.6"
+    scheduler "^0.19.1"
 
 react-test-renderer@^17.0.2:
   version "17.0.2"

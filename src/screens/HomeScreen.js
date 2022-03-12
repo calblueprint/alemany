@@ -1,60 +1,79 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useEffect,
+} from 'react';
 
-import * as Location from 'expo-location';
-import { func, shape } from 'prop-types';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { func, shape, string } from 'prop-types';
+import { View, Keyboard, TextInput } from 'react-native';
 
+import Icon from '../components/Icon';
 import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
-import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import { getAllTrees } from '../database/firebase';
+import ViewToggle from '../components/ViewToggle';
+import { getAllTrees, checkID } from '../database/firebase';
+import ListScreen from './ListScreen';
+import MapScreen from './MapScreen';
 
-const styles = StyleSheet.create({
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-  marker: {
-    backgroundColor: '#4285F4',
-    padding: 8,
-    borderRadius: 18,
-    borderColor: '#FFFFFF',
-    borderWidth: 2,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-  },
-});
+function Search({ onQueryChange, query }) {
+  return (
+    <View
+      style={{
+        backgroundColor: '#fff',
+        padding: 15,
+        borderRadius: 8,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        shadowColor: '#000000',
+        shadowOpacity: 0.05,
+        shadowOffset: {
+          x: 0,
+          y: 4,
+        },
+        shadowRadius: 7,
+      }}
+    >
+      <Icon style={{ marginRight: 5 }} size={20} name="search" />
+      <TextInput
+        style={{
+          fontSize: 18,
+          flex: 1,
+        }}
+        placeholder="Search"
+        value={query}
+        onChangeText={onQueryChange}
+      />
+    </View>
+  );
+}
+Search.propTypes = {
+  onQueryChange: func,
+  query: string,
+};
 
 export default function HomeScreen({ navigation }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
-  const [personLocation, setLocation] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        // eslint-disable-next-line no-alert
-        alert('Permission to access location was denied');
-        return;
-      }
-      const newLoc = await Location.getCurrentPositionAsync({
-        enableHighAccuracy: true,
-      });
-      setLocation(newLoc);
-    })();
-  }, []);
+  const filtered = trees
+    .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
+    .filter(tree => {
+      const query = searchQuery.toLowerCase();
+      return (
+        tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
+      );
+    });
+  const toggleView = useCallback(() => {
+    setIsListView(!isListView);
+  }, [isListView]);
 
   const isValidLocation = tree =>
     tree.location && tree.location.latitude && tree.location.longitude;
 
   useEffect(() => {
-    async function getData() {
+    async function getTrees() {
       try {
         const data = await getAllTrees();
         const validTrees = data.filter(tree => isValidLocation(tree));
@@ -62,61 +81,57 @@ export default function HomeScreen({ navigation }) {
       } catch (e) {
         console.warn(e);
       }
+      const data = await getAllTrees();
+      setTrees(data);
     }
-    getData();
-  }, []);
+    getTrees();
+    const unsubscribe = navigation.addListener('focus', () => getTrees());
+    return unsubscribe;
+  }, [navigation]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isListView ? 'List' : 'Map',
+    });
+    if (!isListView) {
+      Keyboard.dismiss();
+    }
+  }, [navigation, isListView, toggleView]);
+
+  const onSearchChange = searchValue => {
+    setSearchQuery(searchValue);
+    setIsListView(true);
+  };
 
   return (
     <ViewContainer>
-      <MapView style={styles.map} region={DEFAULT_LOCATION}>
-        {trees.map(tree => (
-          <Marker
-            key={tree.uuid}
-            coordinate={{
-              latitude: tree.location.latitude,
-              longitude: tree.location.longitude,
-            }}
-          />
-        ))}
-        {personLocation && (
-          <Marker
-            coordinate={{
-              latitude: personLocation.coords.latitude,
-              longitude: personLocation.coords.longitude,
-            }}
-          >
-            <View style={styles.marker} />
-          </Marker>
-        )}
-      </MapView>
-      <Inset
-        style={{
-          position: 'absolute',
-          top: 48,
-          right: 0,
-          left: 0,
-        }}
-      >
-        <Pressable
+      <View style={{ position: 'relative', width: '100%', height: '100%' }}>
+        <ListScreen
+          data={filtered}
+          navigation={navigation}
           style={{
-            backgroundColor: 'white',
-            borderRadius: 8,
-            padding: 20,
-            width: '100%',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: isListView ? 5 : 0,
           }}
-          onPress={() => {
-            navigation.navigate('Search');
+        />
+        <MapScreen
+          data={filtered}
+          navigation={navigation}
+          style={{
+            position: 'absolute',
+            zIndex: 2,
           }}
-        >
-          <Text
-            style={{
-              fontSize: 17,
-            }}
-          >
-            Search
-          </Text>
-        </Pressable>
-      </Inset>
+        />
+
+        <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
+          <Search onQueryChange={onSearchChange} query={searchQuery} />
+          <ViewToggle setIsListView={setIsListView} isListView={isListView} />
+        </Inset>
+      </View>
     </ViewContainer>
   );
 }
