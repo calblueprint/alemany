@@ -1,8 +1,15 @@
 import React from 'react';
 
 import { array, func, shape } from 'prop-types';
-import { ScrollView, StyleSheet, View, ViewPropTypes } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewPropTypes,
+} from 'react-native';
 
+import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
 
 const styles = StyleSheet.create({
@@ -17,7 +24,19 @@ const styles = StyleSheet.create({
 export default function ListScreen({ navigation, style, data }) {
   return (
     <ScrollView style={[styles.list, style]}>
-      <View style={{ marginTop: 48, marginBottom: 248 }}>
+      <Inset>
+        <Text
+          style={{
+            fontSize: 11,
+            color: '#3b3f51',
+            marginTop: 48,
+            textAlign: 'right',
+          }}
+        >
+          {`${data.length} ${data.length === 1 ? 'result' : 'results'}`}
+        </Text>
+      </Inset>
+      <View style={{ marginTop: 10, marginBottom: 248 }}>
         {data.map(tree => {
           const { uuid, name, comments } = tree;
           return (
