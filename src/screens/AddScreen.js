@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
+import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { Switch, Title, TextInput, Button } from 'react-native-paper';
+import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AddScreen() {
+export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
   const [entry, setEntry] = React.useState({
     id: '',
@@ -24,7 +25,7 @@ export default function AddScreen() {
     uuid: '',
     location: null,
     planted: null,
-    comment: null,
+    comments: [],
   });
   const [location, setLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
@@ -40,17 +41,21 @@ export default function AddScreen() {
     getData();
   }, [getCurrentLocation]);
 
+  async function addTreeAndNavigate(tree) {
+    const newId = await addTree(tree);
+    navigation.push('TreeDetails', { uuid: newId });
+  }
+
   const onPress = () => {
     let result = entry;
     if (checked) {
       result = { ...result, location };
     }
-    addTree(result);
+    addTreeAndNavigate(result);
   };
 
   return (
     <ViewContainer>
-      <Title>Create Screen</Title>
       <TextInput
         label="Name"
         value={entry.name}
@@ -76,3 +81,9 @@ export default function AddScreen() {
     </ViewContainer>
   );
 }
+
+AddScreen.propTypes = {
+  navigation: shape({
+    push: func,
+  }),
+};
