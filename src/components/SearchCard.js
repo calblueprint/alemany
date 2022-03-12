@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { arrayOf, func, node, object, string } from 'prop-types';
-import { Pressable, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ViewPropTypes,
+  Image,
+} from 'react-native';
+
+import firebase from '../database/firebase';
 
 const styles = StyleSheet.create({
   card: {
@@ -19,6 +28,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
+// const gsReference = ref(storage, 'gs://bucket/images/test_uuid.jpg');
 
 function Card({ onPress, children, style }) {
   return (
@@ -34,6 +44,17 @@ Card.propTypes = {
 };
 
 export default function SearchCard({ name, onPress, comments }) {
+  const [imageURL, setImageURL] = useState(null);
+  useEffect(() => {
+    async function fetchImageURL() {
+      const httpsReference = await firebase
+        .storage()
+        .ref('test_uuid')
+        .getDownloadURL();
+      setImageURL(httpsReference);
+    }
+    fetchImageURL();
+  }, []);
   return (
     <Card
       style={{
@@ -50,7 +71,8 @@ export default function SearchCard({ name, onPress, comments }) {
           {comments?.length !== 1 && 's'}
         </Text>
       </View>
-      <View
+      <Image
+        source={{ uri: imageURL }}
         style={{
           height: 96,
           width: 96,
