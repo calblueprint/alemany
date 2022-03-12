@@ -24,7 +24,9 @@
       "!**/babel.config.js",
       "!**/jest.setup.js"
     ],
-    "setupFilesAfterEnv": ["@testing-library/jest-native/extend-expect"]
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "dependencies": {
     "@babel/preset-env": "^7.16.11",
@@ -58,6 +60,7 @@
     "react-native-paper": "^4.8.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
+    "react-native-toggle-element": "^1.0.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
     "react-native-webview": "11.15.0",
