@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { Button, Image, View, Platform } from 'react-native';
 
-import { uploadImageAsync } from 'database/firebase';
+import { uploadImageAsync } from '../database/firebase';
 
 export default function ImageUpload() {
   const [image, setImage] = useState(null);
@@ -16,19 +16,21 @@ export default function ImageUpload() {
         const { status: statusPicker } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (statusPicker !== 'granted') {
+          alert('first'); // REMOVE THIS
           alert('Sorry, we need camera roll permissions to make this work!');
         }
-        const { status: statusCamera } =
-          await ImagePicker.getCameraPermissionsAsync();
-        if (statusCamera !== 'granted') {
-          alert('Sorry, we need camera permissions to make this work!');
-        }
+        // const { status: statusCamera } =
+        //   await ImagePicker.getCameraPermissionsAsync();
+        // if (statusCamera !== 'granted') {
+        //   alert('second'); // REMOVE THIS
+        //   alert('Sorry, we need camera permissions to make this work!');
+        // }
       }
     })();
   }, []);
 
   /* TODO: Define pickResult type. Possibly: ExpandImagePickerResult */
-  const handleImagePicked = async (pickerResult: any) => {
+  const handleImagePicked = async pickerResult => {
     try {
       setUploading(true);
 
@@ -38,7 +40,6 @@ export default function ImageUpload() {
         setImage(uploadUrl);
       }
     } catch (e) {
-      console.log('ERROR UPLOADING:', e);
       alert('Upload failed, sorry :(');
     } finally {
       setUploading(false);
