@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { Switch, Title, TextInput, Button } from 'react-native-paper';
+import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
@@ -25,7 +25,7 @@ export default function AddScreen({ navigation }) {
     uuid: '',
     location: null,
     planted: null,
-    comments: [''],
+    comments: [],
   });
   const [location, setLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
@@ -41,8 +41,8 @@ export default function AddScreen({ navigation }) {
     getData();
   }, [getCurrentLocation]);
 
-  async function onPressHelper(result) {
-    const newId = await addTree(result);
+  async function addTreeAndNavigate(tree) {
+    const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
   }
 
@@ -51,12 +51,11 @@ export default function AddScreen({ navigation }) {
     if (checked) {
       result = { ...result, location };
     }
-    onPressHelper(result);
+    addTreeAndNavigate(result);
   };
 
   return (
     <ViewContainer>
-      <Title>Create Screen</Title>
       <TextInput
         label="Name"
         value={entry.name}
