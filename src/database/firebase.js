@@ -28,6 +28,50 @@ const commentCollection = database.collection('comments');
 const additionalCollection = database.collection('additional');
 
 /**
+ * addTreeLocationTemp temporary function that adds a random location if the location is null
+ * imports Math and the map values from Default locations
+ */
+
+const DEFAULT_LOCATION = {
+  // latitude: 37.733053,
+  // longitude: -122.419756,
+  latitude: 0,
+  longitude: 0,
+  latitudeDelta: 0.00275,
+  longitudeDelta: 0.00275,
+};
+
+export const addTreeLocationTemp = tree => {
+  if (tree.location) {
+    return tree;
+  }
+  const treeCopy = tree;
+  const calculateLatitude = (location, delta) => {
+    const a = 2 * delta;
+    const deltaRange = Math.random() * a;
+    const finalLocation = location - delta + deltaRange;
+    return Number(finalLocation);
+  };
+  const calculateLongitude = (location, delta) => {
+    const a = 2 * delta;
+    const deltaRange = Math.random() * a;
+    const finalLocation = location - delta + deltaRange;
+    return Number(finalLocation);
+  };
+
+  const longitudeFinal = calculateLatitude(
+    DEFAULT_LOCATION.longitude,
+    DEFAULT_LOCATION.longitudeDelta,
+  );
+  const latitudeFinal = calculateLongitude(
+    DEFAULT_LOCATION.latitude,
+    DEFAULT_LOCATION.latitudeDelta,
+  );
+  treeCopy.location = { longitude: longitudeFinal, latitude: latitudeFinal };
+  return treeCopy;
+};
+
+/**
  * checkID validates that this ID exists in the `trees` table.
  */
 export const checkID = async uuid => {
@@ -72,32 +116,6 @@ export const getTree = async uuid => {
 };
 
 /**
- * getAllTrees returns an array containing all entries in the `trees` table.
- */
-export const getAllTrees = async () => {
-  try {
-    var response = await treeCollection.get();
-    var a = response.docs.map(doc => doc.data());
-    // Temporary to add a location to any tree
-    a.map(tree => {
-      if (!tree.location) {
-        tree = addTreeLocationTemp(tree)
-      }
-      setTree(tree)
-    }
-    )
-    response = await treeCollection.get();
-    a = response.docs.map(doc => doc.data());
-    //end temporary
-    return a;
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling
-  }
-};
-
-/**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
 export const setTree = async tree => {
@@ -109,43 +127,34 @@ export const setTree = async tree => {
     // TODO: Add error handling.
   }
 };
-/**
- * addTreeLocationTemp temporary function that adds a random location if the location is null
- * imports Math and the map values from Default locations
- */
 
-const DEFAULT_LOCATION = {
-  latitude: 37.733053,
-  longitude: -122.419756,
-  latitudeDelta: 0.00275,
-  longitudeDelta: 0.00275,
+/**
+ * getAllTrees returns an array containing all entries in the `trees` table.
+ */
+export const getAllTrees = async () => {
+  try {
+    let response = await treeCollection.get();
+    let a = response.docs.map(doc => doc.data());
+    // Temporary to add a location to any tree
+    a.forEach(tree => {
+      if (!tree.location) {
+        const treeCopy = addTreeLocationTemp(tree);
+        setTree(treeCopy);
+      }
+    });
+    response = await treeCollection.get();
+    a = response.docs.map(doc => doc.data());
+    return a;
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling
+  }
 };
 
-export const addTreeLocationTemp = tree => {
-  if (tree.location) {
-    return tree;
-  }
-  const longitudeFinal = calculateLatitude(DEFAULT_LOCATION.longitude, DEFAULT_LOCATION.longitudeDelta);
-  const latitudeFinal = calculateLongitude(DEFAULT_LOCATION.latitude, DEFAULT_LOCATION.latitudeDelta)
-  tree.location = { longitude: longitudeFinal, latitude: latitudeFinal };
-  return tree;
-}
-
-const calculateLatitude = (location, delta) => {
-  var a = 2 * delta;
-  var deltaRange = (Math.random() * (a));
-  var finalLocation = (location - delta + deltaRange);
-  return Number(finalLocation);
-}
-const calculateLongitude = (location, delta) => {
-  var a = 2 * delta;
-  var deltaRange = (Math.random() * (a));
-  var finalLocation = (location - delta + deltaRange);
-  return Number(finalLocation);
-}
-
 export const addTree = async tree => {
-  tree = addTreeLocationTemp(tree); // remove when finalized
+  const treeCopy = addTreeLocationTemp(tree);
+  setTree(treeCopy);
   try {
     const ref = await treeCollection.add(tree);
     treeCollection.doc(ref.id).update({ uuid: ref.id });
