@@ -33,10 +33,8 @@ const additionalCollection = database.collection('additional');
  */
 
 const DEFAULT_LOCATION = {
-  // latitude: 37.733053,
-  // longitude: -122.419756,
-  latitude: 0,
-  longitude: 0,
+  latitude: 37.733053,
+  longitude: -122.419756,
   latitudeDelta: 0.00275,
   longitudeDelta: 0.00275,
 };
