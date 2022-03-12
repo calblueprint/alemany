@@ -22,11 +22,11 @@ export default function AddScreen() {
     id: '',
     name: '',
     uuid: '',
-    location: null,
+    location: { latitude: '', longitude: '' },
     planted: null,
     comment: null,
   });
-  const [location, setLocation] = useState({
+  const [newLocation, setNewLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
@@ -35,7 +35,7 @@ export default function AddScreen() {
   useEffect(() => {
     async function getData() {
       const data = await getCurrentLocation();
-      setLocation(data);
+      setNewLocation(data);
     }
     getData();
   }, [getCurrentLocation]);
@@ -43,8 +43,9 @@ export default function AddScreen() {
   const onPress = () => {
     let result = entry;
     if (checked) {
-      result = { ...result, location };
+      result = { ...result, location: newLocation };
     }
+    setChecked(false);
     addTree(result);
   };
 
@@ -61,6 +62,32 @@ export default function AddScreen() {
         label="ID"
         value={entry.id}
         onChangeText={id => setEntry({ ...entry, id: id.toString() })}
+        style={styles.input}
+      />
+      <TextInput
+        label="Latitude"
+        value={entry.location.latitude && entry.location.latitude.toString()}
+        onChangeText={
+          lat =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, latitude: Number(lat) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+      />
+      <TextInput
+        label="Longitude"
+        value={entry.location.longitude && entry.location.longitude.toString()}
+        onChangeText={
+          long =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, longitude: Number(long) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
         style={styles.input}
       />
       {/* TODO: Add Switch label that shows location */}
