@@ -74,7 +74,8 @@ export default function TreeDetailsScreen({ route, navigation }) {
       setComment('');
     }
   };
-  console.log(entry.planted);
+
+  return (
     <ViewContainer>
       <TextInput
         disabled={!isEditing}
@@ -153,7 +154,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
       />
 
       <Button title="Add Comment" onPress={handleSaveComment} />
-    </ViewContainer>,
+    </ViewContainer>
   );
 }
 
