@@ -58,7 +58,7 @@ export default function AddScreen({ navigation }) {
 
   const handleConfirm = date => {
     let result = entry;
-    result = { ...result, planted: date };
+    result = { ...result, planted: new Date(date) };
     setEntry(result);
     hideDatePicker();
   };
