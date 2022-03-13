@@ -34,7 +34,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
     id: '',
     name: '',
     uuid: '',
-    location: null,
+    location: { latitude: '', longitude: '' },
     planted: null,
     comments: [],
   });
@@ -74,8 +74,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
       setComment('');
     }
   };
-
-  return (
+  console.log(entry.planted);
     <ViewContainer>
       <TextInput
         disabled={!isEditing}
@@ -90,6 +89,45 @@ export default function TreeDetailsScreen({ route, navigation }) {
         onChangeText={value => setEntry({ ...entry, id: value.toString() })}
         style={styles.input}
         value={entry.id}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Latitude"
+        onChangeText={
+          value =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, latitude: Number(value) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+        value={entry.location.latitude.toString()}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Longitude"
+        onChangeText={
+          value =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, longitude: Number(value) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+        value={entry.location.longitude.toString()}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Date Planted"
+        placeholder="MM/DD/YYYY"
+        style={styles.input}
+        value={
+          entry.planted &&
+          entry.planted instanceof Date &&
+          entry.planted.toLocaleDateString().toString()
+        }
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
 
@@ -115,7 +153,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
       />
 
       <Button title="Add Comment" onPress={handleSaveComment} />
-    </ViewContainer>
+    </ViewContainer>,
   );
 }
 

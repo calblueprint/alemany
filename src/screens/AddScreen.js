@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
@@ -18,7 +19,13 @@ const styles = StyleSheet.create({
 });
 
 export default function AddScreen({ navigation }) {
+  const clearName = useRef();
+  const clearId = useRef();
+  const clearLat = useRef();
+  const clearLong = useRef();
+  const clearDate = useRef();
   const getCurrentLocation = useCurrentLocation();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [entry, setEntry] = React.useState({
     id: '',
     name: '',
@@ -41,17 +48,35 @@ export default function AddScreen({ navigation }) {
     getData();
   }, [getCurrentLocation]);
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    let result = entry;
+    result = { ...result, planted: date };
+    setEntry(result);
+    hideDatePicker();
+  };
+
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
   }
-
   const onPress = () => {
     let result = entry;
     if (checked) {
       result = { ...result, location: newLocation };
     }
     setChecked(false);
+    clearName.current.clear();
+    clearId.current.clear();
+    clearLat.current.clear();
+    clearLong.current.clear();
     addTreeAndNavigate(result);
   };
 
@@ -59,18 +84,21 @@ export default function AddScreen({ navigation }) {
     <ViewContainer>
       <TextInput
         label="Name"
+        ref={clearName}
         value={entry.name}
         onChangeText={name => setEntry({ ...entry, name: name.toString() })}
         style={styles.input}
       />
       <TextInput
         label="ID"
+        ref={clearId}
         value={entry.id}
         onChangeText={id => setEntry({ ...entry, id: id.toString() })}
         style={styles.input}
       />
       <TextInput
         label="Latitude"
+        ref={clearLat}
         value={entry.location.latitude && entry.location.latitude.toString()}
         onChangeText={
           lat =>
@@ -84,6 +112,7 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Longitude"
+        ref={clearLong}
         value={entry.location.longitude && entry.location.longitude.toString()}
         onChangeText={
           long =>
@@ -94,6 +123,20 @@ export default function AddScreen({ navigation }) {
           // eslint-disable-next-line react/jsx-curly-newline
         }
         style={styles.input}
+      />
+      <TextInput
+        label="Date Planted"
+        ref={clearDate}
+        onFocus={showDatePicker}
+        placeholder="MM/DD/YYYY"
+        value={entry.planted && entry.planted.toLocaleDateString()}
+        style={styles.input}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
       {/* TODO: Add Switch label that shows location */}
       <Switch
