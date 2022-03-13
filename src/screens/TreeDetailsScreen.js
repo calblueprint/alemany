@@ -118,6 +118,13 @@ export default function TreeDetailsScreen({ route, navigation }) {
         style={styles.input}
         value={entry.location.longitude.toString()}
       />
+      <TextInput
+        disabled={!isEditing}
+        label="Date Planted"
+        style={styles.input}
+        // eslint-disable-next-line react/jsx-no-bind
+        value={entry.planted && entry.planted.toDate().toLocaleDateString()}
+      />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
       {entry.comments?.map((c, i) => (
         <TextInput

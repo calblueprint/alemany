@@ -58,7 +58,7 @@ export default function AddScreen({ navigation }) {
 
   const handleConfirm = date => {
     let result = entry;
-    result = { ...result, planted: new Date(date) };
+    result = { ...result, planted: date };
     setEntry(result);
     hideDatePicker();
   };
@@ -77,6 +77,7 @@ export default function AddScreen({ navigation }) {
     clearId.current.clear();
     clearLat.current.clear();
     clearLong.current.clear();
+    clearDate.current.clear();
     addTreeAndNavigate(result);
   };
 
