@@ -6,10 +6,17 @@ import React, {
 } from 'react';
 
 import { func, shape, string } from 'prop-types';
-import { View, Keyboard, TextInput } from 'react-native';
+import {
+  View,
+  Keyboard,
+  TextInput,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 
 import Icon from '../components/Icon';
 import Inset from '../components/Inset';
+import SearchCard from '../components/SearchCard';
 import ViewContainer from '../components/ViewContainer';
 import ViewToggle from '../components/ViewToggle';
 import { getAllTrees, checkID } from '../database/firebase';
@@ -103,6 +110,7 @@ export default function HomeScreen({ navigation }) {
     setIsListView(true);
   };
 
+  const CARD_WIDTH = Dimensions.get('window').width * 0.8;
   return (
     <ViewContainer>
       <View style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -126,10 +134,42 @@ export default function HomeScreen({ navigation }) {
             zIndex: 2,
           }}
         />
-
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
           <Search onQueryChange={onSearchChange} query={searchQuery} />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />
+          <View
+            style={{
+              alignItems: 'center',
+              marginTop: 10,
+              marginBottom: 248,
+              justifyContent: 'space-between',
+            }}
+          >
+            <ScrollView
+              style={{
+                width: '85%',
+                height: '80%',
+                backgroundColor: '#eee',
+              }}
+              horizontal
+              pagingEnabled
+              decelerationRate={0}
+              snapToInterval={CARD_WIDTH + 10}
+              snapToAlignment="center"
+            >
+              {filtered.map(tree => {
+                const { uuid, name, comments } = tree;
+                return (
+                  <SearchCard
+                    key={uuid}
+                    name={name}
+                    comments={comments}
+                    onPress={() => navigation.push('TreeDetails', { uuid })}
+                  />
+                );
+              })}
+            </ScrollView>
+          </View>
         </Inset>
       </View>
     </ViewContainer>
