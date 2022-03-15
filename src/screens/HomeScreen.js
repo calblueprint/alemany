@@ -31,6 +31,7 @@ function Search({ onQueryChange, query }) {
         padding: 15,
         borderRadius: 8,
         display: 'flex',
+        flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: '#000000',
@@ -41,6 +42,7 @@ function Search({ onQueryChange, query }) {
         },
         shadowRadius: 7,
       }}
+      contentContainerStyle={{ flexWrap: 'wrap' }}
     >
       <Icon style={{ marginRight: 5 }} size={20} name="search" />
       <TextInput
@@ -110,7 +112,6 @@ export default function HomeScreen({ navigation }) {
     setIsListView(true);
   };
 
-  const CARD_WIDTH = Dimensions.get('window').width * 0.8;
   return (
     <ViewContainer>
       <View style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -137,39 +138,6 @@ export default function HomeScreen({ navigation }) {
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
           <Search onQueryChange={onSearchChange} query={searchQuery} />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />
-          <View
-            style={{
-              alignItems: 'center',
-              marginTop: 10,
-              marginBottom: 248,
-              justifyContent: 'space-between',
-            }}
-          >
-            <ScrollView
-              style={{
-                width: '85%',
-                height: '80%',
-                backgroundColor: '#eee',
-              }}
-              horizontal
-              pagingEnabled
-              decelerationRate={0}
-              snapToInterval={CARD_WIDTH + 10}
-              snapToAlignment="center"
-            >
-              {filtered.map(tree => {
-                const { uuid, name, comments } = tree;
-                return (
-                  <SearchCard
-                    key={uuid}
-                    name={name}
-                    comments={comments}
-                    onPress={() => navigation.push('TreeDetails', { uuid })}
-                  />
-                );
-              })}
-            </ScrollView>
-          </View>
         </Inset>
       </View>
     </ViewContainer>

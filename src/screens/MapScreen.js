@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { array, func, shape } from 'prop-types';
 import {
   StyleSheet,
   ViewPropTypes,
-  View,
-  Text,
   ScrollView,
+  Dimensions,
+  SafeAreaView,
+  FlatList,
+  View,
 } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
+import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 
 const styles = StyleSheet.create({
@@ -43,45 +46,62 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data }) {
-  const viewRef = useRef();
-  const [dataSource, setDataSource] = useState([]);
-  const [scrollToIndex, setScrollToIndex] = useState(0);
-  const [dataSourceCords, setDataSourceCords] = useState([]);
-  const [ref, setRef] = useState(null);
+  const CARD_WIDTH = Dimensions.get('window').width * 0.8;
+  const renderItem = ({ item }) => (
+    <SearchCard key={item.uuid} name={item.name} comments={item.comments} />
+  );
+
+  const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop);
+  // General scroll to element function
+  const myRef = useRef(null);
+  const executeScroll = () => scrollToRef(myRef);
+
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={DEFAULT_LOCATION}
-      showsUserLocation
-    >
-      {data.map(tree => (
-        <Marker
-          key={tree.uuid}
-          coordinate={{
-            latitude: tree.location.latitude,
-            longitude: tree.location.longitude,
-          }}
-          onPress={() => console.log('Click')}
-        >
-          <Callout tooltip>
-            {/* <SearchCard
-              key={tree.uuid}
-              name={tree.name}
-              comments={tree.comments}
-              style={{
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'absolute',
-              }}
-            /> */}
-          </Callout>
-        </Marker>
-      ))}
-    </MapView>
+    <View>
+      <MapView
+        style={styles.map}
+        initialRegion={DEFAULT_LOCATION}
+        showsUserLocation
+      >
+        {data.map(tree => (
+          <Marker
+            ref={myRef}
+            key={tree.uuid}
+            coordinate={{
+              latitude: tree.location.latitude,
+              longitude: tree.location.longitude,
+            }}
+          >
+            <Callout tooltip onPress={executeScroll}>
+              {/* <SearchCard
+                key={tree.uuid}
+                name={tree.name}
+                comments={tree.comments}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  position: 'absolute',
+                }}
+              /> */}
+            </Callout>
+          </Marker>
+        ))}
+      </MapView>
+      <SafeAreaView backgroundColor="black" style={{ zIndex: -5 }}>
+        <FlatList
+          data={data}
+          horizontal
+          renderItem={renderItem}
+          keyExtractor={item => item.uuid}
+          contentContainerStyle={{ flexGrow: 1 }}
+          ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
+        />
+      </SafeAreaView>
+    </View>
   );
 }
 MapScreen.propTypes = {
