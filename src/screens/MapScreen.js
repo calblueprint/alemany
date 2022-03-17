@@ -39,6 +39,7 @@ const getCoordinates = mapboxJSON => {
     return (
       <Polygon
         id={mapboxJSON}
+        key={feature.name}
         coordinates={coordinates}
         fillColor="rgba(0,0,255,0.5)"
         strokeColor="rgba(0,0,255,0.5)"

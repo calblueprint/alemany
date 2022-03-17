@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
+import { isPointInPolygon } from 'geolib';
 import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -8,6 +9,7 @@ import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import MAPBOX_COORDS from '../constants/Features';
 import { addTree } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
@@ -28,12 +30,14 @@ export default function AddScreen({ navigation }) {
     location: { latitude: '', longitude: '' },
     planted: null,
     comments: [],
+    region: null,
   });
   const [newLocation, setNewLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
   const [checked, setChecked] = React.useState(false);
+  const polygon = {};
 
   useEffect(() => {
     async function getData() {
@@ -58,6 +62,13 @@ export default function AddScreen({ navigation }) {
     hideDatePicker();
   };
 
+  useEffect(() => {
+    const { features } = MAPBOX_COORDS;
+    return features.forEach(feature => {
+      polygon[feature.properties.Name] = feature.geometry.coordinates;
+    });
+  });
+
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
@@ -67,6 +78,11 @@ export default function AddScreen({ navigation }) {
     if (checked) {
       result = { ...result, location: newLocation };
     }
+    Object.entries(polygon).forEach(([key, value]) => {
+      if (isPointInPolygon(result.location, value)) {
+        result = { ...result, name: key };
+      }
+    });
     setChecked(false);
     setEntry({
       id: '',
@@ -75,6 +91,7 @@ export default function AddScreen({ navigation }) {
       location: { latitude: '', longitude: '' },
       planted: null,
       comments: [],
+      region: null,
     });
     addTreeAndNavigate(result);
   };
