@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { array, func, node, string } from 'prop-types';
+import { arrayOf, func, node, object, string } from 'prop-types';
 import { Pressable, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -64,6 +64,6 @@ export default function SearchCard({ name, onPress, comments }) {
 SearchCard.propTypes = {
   name: string,
   // eslint-disable-next-line react/forbid-prop-types
-  comments: array,
+  comments: arrayOf(object),
   onPress: func,
 };
