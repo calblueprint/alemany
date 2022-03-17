@@ -2179,6 +2179,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/datetimepicker@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.0.1.tgz#9cbb8d1f325bab184d4291f2db891bc0ef048207"
+  integrity sha512-tVEJIe67gCidgmU6BzTrPZgDi5jJe+sndUBu6Yvjs6jeW8ktul76G28MxEniIq4M6jdoMX6JAsh/7zUTOTlLdg==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -7583,6 +7590,13 @@ react-native-maps@0.29.4:
   integrity sha512-Td2KE8+KODcHOxfB1GBNnzFo4/89rlLiC7yTvqQZh0tGVrEzIcgSleUZRrjtq/WvSWSR4rql4AS+0VsBgDkYrw==
   dependencies:
     "@types/geojson" "^7946.0.7"
+
+react-native-modal-datetime-picker@^13.1.0:
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-13.1.0.tgz#9aeb99d83f30e8ea1168d5c17cb84e21630278df"
+  integrity sha512-AfhaC2XhhY6KF7wjcoi1ja1w7NcmNnpldD0M+qCjVbUKz3GXN7gphjGBgJ9U9AY5hqDTsuTYdLjJdNMpiU6gmg==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-paper@^4.8.1:
   version "4.11.2"

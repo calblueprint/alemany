@@ -10,7 +10,9 @@ export const useCurrentLocation = () =>
       /* TODO: Nagivate to error screen instead of throwing Error which breaks app. */
       throw new Error('Permission to access location was denied');
     } else {
-      const currentLocation = await MapLocation.getCurrentPositionAsync({});
+      const currentLocation = await MapLocation.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+      });
       return {
         latitude: currentLocation.coords.latitude,
         longitude: currentLocation.coords.longitude,
