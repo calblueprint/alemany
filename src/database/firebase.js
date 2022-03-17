@@ -101,6 +101,20 @@ export const getAllTrees = async () => {
 };
 
 /**
+ * getInactiveTrees returns an array of all Trees with state prop 'active' set to false.
+ */
+export const getInactiveTrees = async () => {
+  try {
+    const response = await treeCollection.where('active', '==', false).get();
+    return response.docs.map(doc => doc.data());
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling
+  }
+};
+
+/**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
 export const setTree = async tree => {

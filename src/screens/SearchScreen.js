@@ -15,6 +15,7 @@ export default function SearchScreen({ navigation }) {
   const [active, setActive] = useState(true);
   const filtered = trees
     .filter(tree => !active || tree.active)
+    .filter(tree => active || !tree.active)
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
       const query = searchQuery.toLowerCase();
@@ -55,7 +56,7 @@ export default function SearchScreen({ navigation }) {
           </Text>
         </Inset>
         <Button
-          title={!active ? 'Show All Trees' : 'Show Active Trees'}
+          title={!active ? 'Show Active Trees' : 'Show Inactive Trees'}
           onPress={() => {
             setActive(!active);
           }}
