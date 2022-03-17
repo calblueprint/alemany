@@ -30,6 +30,8 @@ const additionalCollection = database.collection('additional');
 /**
  * addTreeLocationTemp temporary function that adds a random location if the location is null
  * imports Math and the map values from Default locations
+ *
+ * NOTE: We should delete this function and all uses at deployment
  */
 
 const DEFAULT_LOCATION = {
@@ -151,6 +153,7 @@ export const getAllTrees = async () => {
 };
 
 export const addTree = async tree => {
+  // TODO: Delete addTreeLocationTemp at deployment
   const treeCopy = addTreeLocationTemp(tree);
   setTree(treeCopy);
   try {
