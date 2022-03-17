@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
@@ -19,11 +19,6 @@ const styles = StyleSheet.create({
 });
 
 export default function AddScreen({ navigation }) {
-  const clearName = useRef();
-  const clearId = useRef();
-  const clearLat = useRef();
-  const clearLong = useRef();
-  const clearDate = useRef();
   const getCurrentLocation = useCurrentLocation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [entry, setEntry] = React.useState({
@@ -88,21 +83,18 @@ export default function AddScreen({ navigation }) {
     <ViewContainer>
       <TextInput
         label="Name"
-        ref={clearName}
         value={entry.name}
         onChangeText={name => setEntry({ ...entry, name: name.toString() })}
         style={styles.input}
       />
       <TextInput
         label="ID"
-        ref={clearId}
         value={entry.id}
         onChangeText={id => setEntry({ ...entry, id: id.toString() })}
         style={styles.input}
       />
       <TextInput
         label="Latitude"
-        ref={clearLat}
         value={entry.location.latitude && entry.location.latitude.toString()}
         onChangeText={
           lat =>
@@ -116,7 +108,6 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Longitude"
-        ref={clearLong}
         value={entry.location.longitude && entry.location.longitude.toString()}
         onChangeText={
           long =>
@@ -130,7 +121,6 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Date Planted"
-        ref={clearDate}
         onFocus={showDatePicker}
         placeholder="MM/DD/YYYY"
         value={entry.planted && entry.planted.toLocaleDateString()}
