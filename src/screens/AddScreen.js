@@ -73,11 +73,14 @@ export default function AddScreen({ navigation }) {
       result = { ...result, location: newLocation };
     }
     setChecked(false);
-    clearName.current.clear();
-    clearId.current.clear();
-    clearLat.current.clear();
-    clearLong.current.clear();
-    clearDate.current.clear();
+    setEntry({
+      id: '',
+      name: '',
+      uuid: '',
+      location: { latitude: '', longitude: '' },
+      planted: null,
+      comments: [],
+    });
     addTreeAndNavigate(result);
   };
 
