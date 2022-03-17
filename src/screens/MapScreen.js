@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { array, func, shape } from 'prop-types';
-import { StyleSheet, ViewPropTypes } from 'react-native';
+import { StyleSheet, ViewPropTypes, Image } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 
+import TreeIcon from '../../assets/images/tree.png';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import MAPBOX_COORDS from '../constants/Features';
 
@@ -53,6 +54,8 @@ export default function MapScreen({ style, navigation, data }) {
     <MapView
       style={styles.map}
       initialRegion={DEFAULT_LOCATION}
+      mapType="satellite"
+      maxZoomLevel={20}
       showsUserLocation
     >
       {getCoordinates(MAPBOX_COORDS)}
@@ -60,10 +63,12 @@ export default function MapScreen({ style, navigation, data }) {
         <Marker
           key={tree.uuid}
           coordinate={{
-            latitude: tree.location.latitude,
-            longitude: tree.location.longitude,
+            latitude: tree.location?.latitude,
+            longitude: tree.location?.longitude,
           }}
-        />
+        >
+          <Image source={TreeIcon} />
+        </Marker>
       ))}
     </MapView>
   );
