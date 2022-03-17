@@ -2,9 +2,10 @@ import React from 'react';
 
 import { array, func, shape } from 'prop-types';
 import { StyleSheet, ViewPropTypes } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polygon } from 'react-native-maps';
 
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import MAPBOX_COORDS from '../constants/Features';
 
 const styles = StyleSheet.create({
   map: {
@@ -27,6 +28,25 @@ const styles = StyleSheet.create({
   },
 });
 
+const getCoordinates = mapboxJSON => {
+  const { features } = mapboxJSON;
+  return features.map(feature => {
+    const coordinates = feature.geometry.coordinates.map(coord => ({
+      latitude: coord[1],
+      longitude: coord[0],
+    }));
+    return (
+      <Polygon
+        id={mapboxJSON}
+        coordinates={coordinates}
+        fillColor="rgba(0,0,255,0.5)"
+        strokeColor="rgba(0,0,255,0.5)"
+        strokeWidth={2}
+      />
+    );
+  });
+};
+
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data }) {
   return (
@@ -35,6 +55,7 @@ export default function MapScreen({ style, navigation, data }) {
       initialRegion={DEFAULT_LOCATION}
       showsUserLocation
     >
+      {getCoordinates(MAPBOX_COORDS)}
       {data.map(tree => (
         <Marker
           key={tree.uuid}
