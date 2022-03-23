@@ -72,8 +72,8 @@ export default function MapScreen({ style, navigation, data }) {
               longitude: tree.location.longitude,
             }}
           >
-            <Callout tooltip onPress={executeScroll}>
-              {/* <SearchCard
+            <Callout tooltip>
+              <SearchCard
                 key={tree.uuid}
                 name={tree.name}
                 comments={tree.comments}
@@ -86,7 +86,7 @@ export default function MapScreen({ style, navigation, data }) {
                   alignItems: 'center',
                   position: 'absolute',
                 }}
-              /> */}
+              />
             </Callout>
           </Marker>
         ))}
