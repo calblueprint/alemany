@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 
+import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { Switch, Title, TextInput, Button } from 'react-native-paper';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
@@ -16,17 +18,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AddScreen() {
+export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [entry, setEntry] = React.useState({
     id: '',
     name: '',
     uuid: '',
-    location: null,
+    location: { latitude: '', longitude: '' },
     planted: null,
-    comment: null,
+    comments: [],
   });
-  const [location, setLocation] = useState({
+  const [newLocation, setNewLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
@@ -35,22 +38,49 @@ export default function AddScreen() {
   useEffect(() => {
     async function getData() {
       const data = await getCurrentLocation();
-      setLocation(data);
+      setNewLocation(data);
     }
     getData();
   }, [getCurrentLocation]);
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = date => {
+    let result = entry;
+    result = { ...result, planted: date };
+    setEntry(result);
+    hideDatePicker();
+  };
+
+  async function addTreeAndNavigate(tree) {
+    const newId = await addTree(tree);
+    navigation.push('TreeDetails', { uuid: newId });
+  }
   const onPress = () => {
     let result = entry;
     if (checked) {
-      result = { ...result, location };
+      result = { ...result, location: newLocation };
     }
-    addTree(result);
+    setChecked(false);
+    setEntry({
+      id: '',
+      name: '',
+      uuid: '',
+      location: { latitude: '', longitude: '' },
+      planted: null,
+      comments: [],
+    });
+    addTreeAndNavigate(result);
   };
 
   return (
     <ViewContainer>
-      <Title>Create Screen</Title>
       <TextInput
         label="Name"
         value={entry.name}
@@ -62,6 +92,45 @@ export default function AddScreen() {
         value={entry.id}
         onChangeText={id => setEntry({ ...entry, id: id.toString() })}
         style={styles.input}
+      />
+      <TextInput
+        label="Latitude"
+        value={entry.location.latitude && entry.location.latitude.toString()}
+        onChangeText={
+          lat =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, latitude: Number(lat) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+      />
+      <TextInput
+        label="Longitude"
+        value={entry.location.longitude && entry.location.longitude.toString()}
+        onChangeText={
+          long =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, longitude: Number(long) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+      />
+      <TextInput
+        label="Date Planted"
+        onFocus={showDatePicker}
+        placeholder="MM/DD/YYYY"
+        value={entry.planted && entry.planted.toLocaleDateString()}
+        style={styles.input}
+      />
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
       {/* TODO: Add Switch label that shows location */}
       <Switch
@@ -76,3 +145,9 @@ export default function AddScreen() {
     </ViewContainer>
   );
 }
+
+AddScreen.propTypes = {
+  navigation: shape({
+    push: func,
+  }),
+};
