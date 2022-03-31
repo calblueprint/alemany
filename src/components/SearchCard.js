@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
-// const gsReference = ref(storage, 'gs://bucket/images/test_uuid.jpg');
 
 function Card({ onPress, children, style }) {
   return (
@@ -43,18 +42,18 @@ Card.propTypes = {
   style: ViewPropTypes.style,
 };
 
-export default function SearchCard({ name, onPress, comments }) {
+export default function SearchCard({ name, onPress, comments, uuid }) {
   const [imageURL, setImageURL] = useState(null);
   useEffect(() => {
     async function fetchImageURL() {
       const httpsReference = await firebase
         .storage()
-        .ref('test_uuid')
+        .ref(uuid)
         .getDownloadURL();
       setImageURL(httpsReference);
     }
     fetchImageURL();
-  }, []);
+  }, [uuid]);
   return (
     <Card
       style={{
@@ -88,4 +87,5 @@ SearchCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   comments: arrayOf(object),
   onPress: func,
+  uuid: string,
 };
