@@ -9,6 +9,7 @@ import {
 } from '@env';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 export const config = {
   apiKey: API_KEY,

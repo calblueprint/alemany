@@ -42,6 +42,7 @@ export default function ListScreen({ navigation, style, data }) {
           return (
             <SearchCard
               key={uuid}
+              uuid="test_uuid"
               name={name}
               comments={comments}
               onPress={() => navigation.push('TreeDetails', { uuid })}
