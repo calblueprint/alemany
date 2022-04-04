@@ -73,11 +73,14 @@ export default function AddScreen({ navigation }) {
       result = { ...result, location: newLocation };
     }
     setChecked(false);
-    clearName.current.clear();
-    clearId.current.clear();
-    clearLat.current.clear();
-    clearLong.current.clear();
-    clearDate.current.clear();
+    setEntry({
+      id: '',
+      name: '',
+      uuid: '',
+      location: { latitude: '', longitude: '' },
+      planted: null,
+      comments: [],
+    });
     addTreeAndNavigate(result);
   };
 
@@ -99,7 +102,6 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Latitude"
-        ref={clearLat}
         value={entry.location.latitude && entry.location.latitude.toString()}
         onChangeText={
           lat =>
@@ -113,7 +115,6 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Longitude"
-        ref={clearLong}
         value={entry.location.longitude && entry.location.longitude.toString()}
         onChangeText={
           long =>
@@ -127,7 +128,6 @@ export default function AddScreen({ navigation }) {
       />
       <TextInput
         label="Date Planted"
-        ref={clearDate}
         onFocus={showDatePicker}
         placeholder="MM/DD/YYYY"
         value={entry.planted && entry.planted.toLocaleDateString()}
