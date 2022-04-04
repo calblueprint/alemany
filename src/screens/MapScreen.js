@@ -2,11 +2,11 @@ import React from 'react';
 
 import { array, func, shape } from 'prop-types';
 import { StyleSheet, ViewPropTypes, Image } from 'react-native';
-import MapView, { Marker, Polygon } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 import TreeIcon from '../../assets/images/tree.png';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import MAPBOX_COORDS from '../constants/Features';
+// import MAPBOX_COORDS from '../constants/Features';
 
 const styles = StyleSheet.create({
   map: {
