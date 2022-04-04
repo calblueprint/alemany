@@ -65,7 +65,11 @@ export default function AddScreen({ navigation }) {
   useEffect(() => {
     const { features } = MAPBOX_COORDS;
     return features.forEach(feature => {
-      polygon[feature.properties.Name] = feature.geometry.coordinates;
+      const coordinates = feature.geometry.coordinates.map(coord => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      }));
+      polygon[feature.properties.Name] = coordinates;
     });
   });
 
