@@ -78,9 +78,16 @@ export default function AddScreen({ navigation }) {
     if (checked) {
       result = { ...result, location: newLocation };
     }
+    result = {
+      ...result,
+      location: {
+        latitude: Number(result.location.latitude),
+        longitude: Number(result.location.longitude),
+      },
+    };
     Object.entries(polygon).forEach(([key, value]) => {
       if (isPointInPolygon(result.location, value)) {
-        result = { ...result, name: key };
+        result = { ...result, region: key };
       }
     });
     setChecked(false);
@@ -117,7 +124,7 @@ export default function AddScreen({ navigation }) {
           lat =>
             setEntry({
               ...entry,
-              location: { ...entry.location, latitude: Number(lat) },
+              location: { ...entry.location, latitude: lat },
             })
           // eslint-disable-next-line react/jsx-curly-newline
         }
@@ -130,7 +137,7 @@ export default function AddScreen({ navigation }) {
           long =>
             setEntry({
               ...entry,
-              location: { ...entry.location, longitude: Number(long) },
+              location: { ...entry.location, longitude: long },
             })
           // eslint-disable-next-line react/jsx-curly-newline
         }
