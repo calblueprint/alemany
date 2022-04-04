@@ -57,6 +57,7 @@ export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
+  const [searchStack] = useState([]);
   const filtered = trees
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
@@ -108,6 +109,7 @@ export default function HomeScreen({ navigation }) {
       <View style={{ position: 'relative', width: '100%', height: '100%' }}>
         <ListScreen
           data={filtered}
+          // data={searchStack}
           navigation={navigation}
           style={{
             position: 'absolute',
@@ -117,9 +119,12 @@ export default function HomeScreen({ navigation }) {
             right: 0,
             zIndex: isListView ? 5 : 0,
           }}
+          searchStack={searchStack}
+          searchQuery={searchQuery}
         />
         <MapScreen
           data={filtered}
+          // data={searchStack}
           navigation={navigation}
           style={{
             position: 'absolute',
@@ -128,7 +133,11 @@ export default function HomeScreen({ navigation }) {
         />
 
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
-          <Search onQueryChange={onSearchChange} query={searchQuery} />
+          <Search
+            onQueryChange={onSearchChange}
+            query={searchQuery}
+            // onSubmitEnding={addSearch}
+          />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />
         </Inset>
       </View>
