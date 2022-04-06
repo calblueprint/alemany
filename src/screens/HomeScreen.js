@@ -58,6 +58,7 @@ export default function HomeScreen({ navigation }) {
   const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
   const [searchStack] = useState([]);
+  const [searchEntered, setEnter] = useState(false);
   const filtered = trees
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
@@ -102,6 +103,19 @@ export default function HomeScreen({ navigation }) {
   const onSearchChange = searchValue => {
     setSearchQuery(searchValue);
     setIsListView(true);
+    // set enter var to false when typing is resumed
+    setEnter(false);
+  };
+
+  const submitSearch = enteredValue => {
+    // take first search card from suggested search alg w this query and add to searchStack
+    if (filtered.length !== 0) {
+      searchStack.unshift(filtered[0]);
+      if (searchStack.length > 5) {
+        searchStack.pop();
+    }
+    // set enter to true
+    setEnter(true);
   };
 
   return (
@@ -121,6 +135,7 @@ export default function HomeScreen({ navigation }) {
           }}
           searchStack={searchStack}
           searchQuery={searchQuery}
+          searchEntered={searchEntered}
         />
         <MapScreen
           data={filtered}
@@ -136,7 +151,7 @@ export default function HomeScreen({ navigation }) {
           <Search
             onQueryChange={onSearchChange}
             query={searchQuery}
-            // onSubmitEnding={addSearch}
+            onSubmitEnding={submitSearch}
           />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />
         </Inset>
@@ -144,6 +159,7 @@ export default function HomeScreen({ navigation }) {
     </ViewContainer>
   );
 }
+
 HomeScreen.propTypes = {
   navigation: shape({
     navigate: func,

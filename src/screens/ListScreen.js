@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React from 'react';
 
-import { array, func, shape, string } from 'prop-types';
+import { array, bool, func, shape, string } from 'prop-types';
 import {
   ScrollView,
   StyleSheet,
@@ -28,6 +28,7 @@ export default function ListScreen({
   data,
   searchStack,
   searchQuery,
+  searchEntered,
 }) {
   let scroll;
   let text;
@@ -36,18 +37,22 @@ export default function ListScreen({
       scroll = searchStack;
       if (searchStack.length === 0) {
         text = 'Try searching for something!';
+        // When no previous searches: show full list of cards w/ no text"
       } else {
-        text = "You've searched for...";
+        text = 'Recents';
       }
+    } else if (searchEntered) {
+      text = 'X results';
     } else {
       scroll = data;
       text = 'Suggestions';
+      // Should switch to results text when enter is hit
     }
   }
   return (
     <ScrollView style={[styles.list, style]}>
       <Inset>
-        <Text
+        {/* <Text
           style={{
             fontSize: 11,
             color: '#3b3f51',
@@ -56,7 +61,8 @@ export default function ListScreen({
           }}
         >
           {`${scroll.length} ${scroll.length === 1 ? 'result' : 'results'}`}
-        </Text>
+          Results counter should only appear when enter button is hit
+        </Text> */}
         <Text
           style={{
             fontSize: 15,
@@ -78,7 +84,9 @@ export default function ListScreen({
               onPress={() => {
                 navigation.push('TreeDetails', { uuid });
                 searchStack.unshift(tree);
-                searchStack = searchStack.slice(0, 3);
+                if (searchStack.length > 5) {
+                  searchStack.pop();
+                }
               }}
             />
           );
@@ -99,4 +107,5 @@ ListScreen.propTypes = {
     push: func,
   }),
   searchQuery: string,
+  searchEntered: bool,
 };
