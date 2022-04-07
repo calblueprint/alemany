@@ -12,6 +12,8 @@ import {
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
+// eslint-disable-next-line import/no-cycle
+import editSearchHistory from './HomeScreen';
 
 const styles = StyleSheet.create({
   list: {
@@ -32,18 +34,24 @@ export default function ListScreen({
 }) {
   let scroll;
   let text;
+  let align;
   {
     if (searchQuery.length === 0) {
-      scroll = searchStack;
+      align = 'left';
       if (searchStack.length === 0) {
-        text = 'Try searching for something!';
+        text = '';
         // When no previous searches: show full list of cards w/ no text"
+        scroll = data;
       } else {
         text = 'Recents';
+        scroll = searchStack;
       }
-    } else if (searchEntered) {
-      text = 'X results';
+    } else if (searchEntered === true) {
+      align = 'right';
+      scroll = data;
+      text = `${scroll.length} ${scroll.length === 1 ? 'result' : 'results'}`;
     } else {
+      align = 'left';
       scroll = data;
       text = 'Suggestions';
       // Should switch to results text when enter is hit
@@ -52,22 +60,12 @@ export default function ListScreen({
   return (
     <ScrollView style={[styles.list, style]}>
       <Inset>
-        {/* <Text
-          style={{
-            fontSize: 11,
-            color: '#3b3f51',
-            marginTop: 48,
-            textAlign: 'right',
-          }}
-        >
-          {`${scroll.length} ${scroll.length === 1 ? 'result' : 'results'}`}
-          Results counter should only appear when enter button is hit
-        </Text> */}
         <Text
           style={{
             fontSize: 15,
-            color: '#353535',
-            marginTop: 5,
+            color: '#3b3f51',
+            marginTop: 48,
+            textAlign: `${align}`,
           }}
         >
           {text}
@@ -83,10 +81,7 @@ export default function ListScreen({
               comments={comments}
               onPress={() => {
                 navigation.push('TreeDetails', { uuid });
-                searchStack.unshift(tree);
-                if (searchStack.length > 5) {
-                  searchStack.pop();
-                }
+                editSearchHistory(tree);
               }}
             />
           );

@@ -5,7 +5,8 @@ import React, {
   useEffect,
 } from 'react';
 
-import { func, shape, string } from 'prop-types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { bool, func, shape, string } from 'prop-types';
 import { View, Keyboard, TextInput } from 'react-native';
 
 import Icon from '../components/Icon';
@@ -16,7 +17,7 @@ import { getAllTrees, checkID } from '../database/firebase';
 import ListScreen from './ListScreen';
 import MapScreen from './MapScreen';
 
-function Search({ onQueryChange, query }) {
+function Search({ onQueryChange, query, onSubmitSearch }) {
   return (
     <View
       style={{
@@ -44,6 +45,7 @@ function Search({ onQueryChange, query }) {
         placeholder="Search"
         value={query}
         onChangeText={onQueryChange}
+        onSubmitEditing={onSubmitSearch}
       />
     </View>
   );
@@ -51,13 +53,14 @@ function Search({ onQueryChange, query }) {
 Search.propTypes = {
   onQueryChange: func,
   query: string,
+  onSubmitSearch: bool,
 };
 
 export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
-  const [searchStack] = useState([]);
+  const [searchStack, setSearchStack] = useState([]);
   const [searchEntered, setEnter] = useState(false);
   const filtered = trees
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
@@ -107,12 +110,39 @@ export default function HomeScreen({ navigation }) {
     setEnter(false);
   };
 
-  const submitSearch = enteredValue => {
+  const storeSearchStack = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getSearchStack = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const editSearchHistory = newSearch => {
+    if (getSearchStack() !== null) {
+      setSearchStack(getSearchStack());
+    }
+    searchStack.unshift(newSearch);
+    if (searchStack.length > 4) {
+      searchStack.pop();
+    }
+    storeSearchStack(searchStack);
+  };
+
+  const submitSearch = () => {
     // take first search card from suggested search alg w this query and add to searchStack
     if (filtered.length !== 0) {
-      searchStack.unshift(filtered[0]);
-      if (searchStack.length > 5) {
-        searchStack.pop();
+      editSearchHistory(filtered[0]);
     }
     // set enter to true
     setEnter(true);
@@ -151,7 +181,7 @@ export default function HomeScreen({ navigation }) {
           <Search
             onQueryChange={onSearchChange}
             query={searchQuery}
-            onSubmitEnding={submitSearch}
+            onSubmitSearch={submitSearch}
           />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />
         </Inset>
