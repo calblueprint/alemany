@@ -70,7 +70,26 @@ export default function HomeScreen({ navigation }) {
       return (
         tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
       );
+    })
+    // eslint-disable-next-line max-len
+    // QUESTION: suggested search only considers tree names, but can also search by tree ID. Does this make sense?
+    .sort((a, b) => {
+      const query = searchQuery.toLowerCase();
+      const first = a.name.toLowerCase();
+      const second = b.name.toLowerCase();
+      if (first.slice(0, query.length) === query) {
+        if (second.slice(0, query.length) === query) {
+          if (first < second) return -1;
+          if (first > second) return 1;
+          return 0;
+        }
+        return -1;
+      }
+      if (second.slice(0, query.length) === query) {
+        return 1;
+      }
     });
+
   const toggleView = useCallback(() => {
     setIsListView(!isListView);
   }, [isListView]);
