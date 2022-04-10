@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { bool, func, shape, string } from 'prop-types';
 import { View, Keyboard, TextInput } from 'react-native';
 
@@ -14,6 +14,7 @@ import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
 import ViewToggle from '../components/ViewToggle';
 import { getAllTrees, checkID } from '../database/firebase';
+// eslint-disable-next-line import/no-cycle
 import ListScreen from './ListScreen';
 import MapScreen from './MapScreen';
 
@@ -110,33 +111,31 @@ export default function HomeScreen({ navigation }) {
     setEnter(false);
   };
 
-  const storeSearchStack = async value => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('@storage_Key', jsonValue);
-    } catch (e) {
-      // saving error
-    }
-  };
+  // const storeSearchStack = async value => {
+  //   try {
+  //     const jsonValue = JSON.stringify(value);
+  //     await AsyncStorage.setItem('@storage_Key', jsonValue);
+  //   } catch (e) {
+  //     // saving error
+  //   }
+  // };
 
-  const getSearchStack = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@storage_Key');
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      // error reading value
-    }
-  };
+  // const getSearchStack = async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('@storage_Key');
+  //     return jsonValue != null ? JSON.parse(jsonValue) : searchStack;
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // };
 
   const editSearchHistory = newSearch => {
-    if (getSearchStack() !== null) {
-      setSearchStack(getSearchStack());
-    }
+    // setSearchStack(getSearchStack);
     searchStack.unshift(newSearch);
     if (searchStack.length > 4) {
       searchStack.pop();
     }
-    storeSearchStack(searchStack);
+    // storeSearchStack(searchStack);
   };
 
   const submitSearch = () => {

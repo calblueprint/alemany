@@ -81,7 +81,11 @@ export default function ListScreen({
               comments={comments}
               onPress={() => {
                 navigation.push('TreeDetails', { uuid });
-                editSearchHistory(tree);
+                // editSearchHistory(tree);
+                searchStack.unshift(tree);
+                if (searchStack.length > 4) {
+                  searchStack.pop();
+                }
               }}
             />
           );
