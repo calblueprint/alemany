@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { array, func, shape } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 import { StyleSheet, ViewPropTypes, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 import TreeIcon from '../../assets/images/tree.png';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   map: {
@@ -54,8 +55,7 @@ export default function MapScreen({ style, navigation, data }) {
 }
 MapScreen.propTypes = {
   style: ViewPropTypes.style,
-  // eslint-disable-next-line react/forbid-prop-types
-  data: array,
+  data: arrayOf(Tree),
   navigation: shape({
     navigate: func,
   }),
