@@ -38,7 +38,7 @@ function RootNavigator() {
     } else {
       // TODO: remove this auth check once 'Guest Mode's is supported
       Alert.alert(
-        'Authentication Requrired',
+        'Authentication Required',
         'Log in/create an account to see this page.',
       );
     }
@@ -58,7 +58,7 @@ function RootNavigator() {
       <Screen
         name="Login"
         options={{ headerShown: false, gestureEnabled: false }}
-        component={LoginScreen}
+        component={LoginScreen} // LoginScreen
       />
       <Screen name="Verify" component={VerificationScreen} />
       <Screen

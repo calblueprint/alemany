@@ -9,8 +9,20 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { AsYouType, parsePhoneNumber } from 'libphonenumber-js';
 import { any, func, node, shape, string } from 'prop-types';
-import { Button, StyleSheet, Text, TextInput } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  View,
+  Keyboard,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  ViewPagerAndroidBase
+} from 'react-native';
 
+import LoginScreenIcon from '../components//LoginScreenIcon'
 import ViewContainer from '../components/ViewContainer';
 import { checkPhoneNumber, config } from '../database/firebase';
 
@@ -22,19 +34,65 @@ const styles = StyleSheet.create({
   },
   caption: {
     marginTop: 10,
+    marginRight: 12,
+    marginLeft: 12,
     textAlign: 'center',
     fontSize: 17,
     color: '#777',
   },
+  captionPhoneNumber: {
+    justifyContent: 'center',
+    display: 'flex',
+    textAlign: 'right',
+    marginTop: 10,
+    marginRight: 12,
+    marginLeft: 12,
+    fontSize: 17,
+    color: 'black',
+  },
   input: {
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 15,
     marginBottom: 15,
+    marginRight: 15,
+    marginLeft: 15,
     padding: 15,
     fontSize: 18,
-    width: '100%',
+    position: 'relative',
+    width: '94%',
+    maxWidth: 800,
     borderWidth: 2,
     borderColor: '#52bd41',
     borderRadius: 8,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    borderRadius: 8,
+    elevation: 3,
+    backgroundColor: '#52bd41',
+    position: 'relative',
+    width: '94%',
+    bottom: 0,
+    marginBottom: '3%',
+    marginLeft: '3%',
+
+  },
+  startLeft: {
+    width: '100%',
+    alignItems: 'flex-start',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  backgroundWhite: {
+    backgroundColor: 'white',
   },
 });
 
@@ -78,16 +136,16 @@ function VerifyButton({
         });
       }
     } catch (err) {
-      setMessage({ text: `Error: ${err.message}` });
+      setMessage({ text: 'Invalid phone number' });
     }
   };
 
   return (
-    <Button
-      title="Send Verification Code"
-      disabled={!phoneNumber}
-      onPress={onPress}
-    />
+    <View className={styles.padding}>
+      <Pressable style={styles.button} onPress={onPress} title='buttonForPhone'>
+        <Text style={styles.text}>Next</Text>
+      </Pressable>
+    </View>
   );
 }
 VerifyButton.propTypes = {
@@ -129,48 +187,63 @@ export default function LoginScreen({ navigation }) {
     setPhoneNumber(formatted);
   };
 
+
   return (
-    <ViewContainer topPadding>
-      <FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={config}
-        attemptInvisibleVerification={attemptInvisibleVerification}
-      />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1 }}>
+        <ViewContainer topPadding>
+          <LoginScreenIcon login={true} />
+          <FirebaseRecaptchaVerifierModal
+            ref={recaptchaVerifier}
+            firebaseConfig={config}
+            attemptInvisibleVerification={attemptInvisibleVerification}
+          />
+          <Title>Log in</Title>
+          <Text style={styles.caption}>
+            Enter your phone number. You will receive a login code which you can
+            enter in the next step.
+          </Text>
+          <View style={styles.startLeft}>
+            <View style={styles.textStart}>
+              <Text style={styles.captionPhoneNumber}>
+                Code
+              </Text>
+            </View>
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder="(123) 456-7890"
+            placeholderTextColor="#777"
+            onChangeText={setFormattedPhoneNumber}
+            keyboardType="phone-pad"
+            value={phoneNumber}
+          />
 
-      <Title>Log in</Title>
-      <Text style={styles.caption}>
-        Enter your phone number. You will receive a login code which you can
-        enter in the next step.
-      </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="(123) 456-7890"
-        placeholderTextColor="#777"
-        onChangeText={setFormattedPhoneNumber}
-        keyboardType="phone-pad"
-        value={phoneNumber}
-      />
-      <VerifyButton
-        phoneNumber={phoneNumber}
-        setMessage={setMessage}
-        setVerificationId={setVerificationId}
-        recaptchaVerifier={recaptchaVerifier}
-      />
+          {message ? (
+            <Text
+              style={{
+                color: 'red',
+                fontSize: 17,
+                textAlign: 'center',
+                margin: 20,
+              }}
+            >
+              {message.text}
+            </Text>
+          ) : null}
+        </ViewContainer>
 
-      {message ? (
-        <Text
-          style={{
-            color: 'blue',
-            fontSize: 17,
-            textAlign: 'center',
-            margin: 20,
-          }}
-        >
-          {message.text}
-        </Text>
-      ) : null}
-      {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
-    </ViewContainer>
+        <VerifyButton
+          phoneNumber={phoneNumber}
+          setMessage={setMessage}
+          setVerificationId={setVerificationId}
+          recaptchaVerifier={recaptchaVerifier}
+
+        />
+
+        {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
