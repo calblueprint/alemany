@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, Image } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
@@ -30,6 +30,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
   const addCommentText = useRef();
   const { uuid } = route.params;
   const [entry, setEntry] = useState({
+    image: null,
     id: '',
     name: '',
     uuid: '',
@@ -76,6 +77,12 @@ export default function TreeDetailsScreen({ route, navigation }) {
 
   return (
     <ViewContainer>
+      {entry.image && (
+        <Image
+          style={{ width: 200, height: 200 }}
+          source={{ uri: entry.image }}
+        />
+      )}
       <TextInput
         disabled={!isEditing}
         label="Name"
