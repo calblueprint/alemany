@@ -5,7 +5,7 @@ import React, {
   useEffect,
 } from 'react';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { bool, func, shape, string } from 'prop-types';
 import { View, Keyboard, TextInput } from 'react-native';
 
@@ -14,7 +14,6 @@ import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
 import ViewToggle from '../components/ViewToggle';
 import { getAllTrees, checkID } from '../database/firebase';
-// eslint-disable-next-line import/no-cycle
 import ListScreen from './ListScreen';
 import MapScreen from './MapScreen';
 
@@ -88,6 +87,9 @@ export default function HomeScreen({ navigation }) {
       if (second.slice(0, query.length) === query) {
         return 1;
       }
+      if (first < second) return -1;
+      if (first > second) return 1;
+      return 0;
     });
 
   const toggleView = useCallback(() => {
@@ -126,43 +128,49 @@ export default function HomeScreen({ navigation }) {
   const onSearchChange = searchValue => {
     setSearchQuery(searchValue);
     setIsListView(true);
-    // set enter var to false when typing is resumed
     setEnter(false);
   };
 
-  // const storeSearchStack = async value => {
-  //   try {
-  //     const jsonValue = JSON.stringify(value);
-  //     await AsyncStorage.setItem('@storage_Key', jsonValue);
-  //   } catch (e) {
-  //     // saving error
-  //   }
-  // };
+  const storeSearchStack = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
 
-  // const getSearchStack = async () => {
-  //   try {
-  //     const jsonValue = await AsyncStorage.getItem('@storage_Key');
-  //     return jsonValue != null ? JSON.parse(jsonValue) : searchStack;
-  //   } catch (e) {
-  //     // error reading value
-  //   }
-  // };
+  const getSearchStack = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      jsonValue != null
+        ? setSearchStack(JSON.parse(jsonValue))
+        : setSearchStack([]);
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    getSearchStack();
+  }, []);
 
   const editSearchHistory = newSearch => {
-    // setSearchStack(getSearchStack);
-    searchStack.unshift(newSearch);
+    if (searchStack.length === 0) {
+      searchStack.unshift(newSearch);
+    } else if (newSearch.name !== searchStack[searchStack.length - 1].name) {
+      searchStack.unshift(newSearch);
+    }
     if (searchStack.length > 4) {
       searchStack.pop();
     }
-    // storeSearchStack(searchStack);
+    storeSearchStack(searchStack);
   };
 
   const submitSearch = () => {
-    // take first search card from suggested search alg w this query and add to searchStack
     if (filtered.length !== 0) {
       editSearchHistory(filtered[0]);
     }
-    // set enter to true
     setEnter(true);
   };
 
@@ -171,7 +179,6 @@ export default function HomeScreen({ navigation }) {
       <View style={{ position: 'relative', width: '100%', height: '100%' }}>
         <ListScreen
           data={filtered}
-          // data={searchStack}
           navigation={navigation}
           style={{
             position: 'absolute',
@@ -187,7 +194,6 @@ export default function HomeScreen({ navigation }) {
         />
         <MapScreen
           data={filtered}
-          // data={searchStack}
           navigation={navigation}
           style={{
             position: 'absolute',
