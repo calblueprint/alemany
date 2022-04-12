@@ -58,7 +58,7 @@ function RootNavigator() {
       <Screen
         name="Login"
         options={{ headerShown: false, gestureEnabled: false }}
-        component={LoginScreen} // LoginScreen
+        component={VerificationScreen} // LoginScreen
       />
       <Screen name="Verify" component={VerificationScreen} />
       <Screen
