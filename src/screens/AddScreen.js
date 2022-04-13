@@ -71,9 +71,12 @@ export default function AddScreen({ navigation }) {
         latitude: coord[1],
         longitude: coord[0],
       }));
-      setPolygon({ ...polygon, [feature.properties.Name]: coordinates });
+      setPolygon(prevState => ({
+        ...prevState,
+        [feature.properties.Name]: coordinates,
+      }));
     });
-  }, [polygon]);
+  }, []);
 
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
