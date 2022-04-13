@@ -7,13 +7,12 @@ import {
   SafeAreaView,
   FlatList,
   View,
-  Image
+  Image,
 } from 'react-native';
-import MapView, { Marker, Callout } from 'react-native-maps';
-
-import SearchCard from '../components/SearchCard';
+import MapView, { Marker } from 'react-native-maps';
 
 import TreeIcon from '../../assets/images/tree.png';
+import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 
 const styles = StyleSheet.create({
@@ -35,19 +34,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
   },
+  card: {
+    width: 428,
+    height: 214,
+    top: 649,
+    position: 'absolute',
+    zIndex: 500,
+  },
 });
 
 export default function MapScreen({ data }) {
+  const [test, setTest] = React.useState(<View />);
+
   const renderItem = ({ item }) => (
     <SearchCard key={item.uuid} name={item.name} comments={item.comments} />
   );
-
   return (
-<<<<<<< HEAD
     <View>
       <MapView
         style={styles.map}
         initialRegion={DEFAULT_LOCATION}
+        mapType="satellite"
+        maxZoomLevel={20}
         showsUserLocation
       >
         {data.map(tree => (
@@ -57,61 +65,26 @@ export default function MapScreen({ data }) {
               latitude: tree.location.latitude,
               longitude: tree.location.longitude,
             }}
-          >
-            <Callout tooltip>
-              <SearchCard
-                key={tree.uuid}
-                name={tree.name}
-                comments={tree.comments}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  position: 'absolute',
-                }}
-              />
-            </Callout>
-          </Marker>
+            onPress={() =>
+              setTest(
+                <SearchCard
+                  key={tree.uuid}
+                  name={tree.name}
+                  comments={tree.comments}
+                />,
+              )
+            }
+          />
         ))}
+        <View style={styles.card}>{test}</View>
       </MapView>
-      <SafeAreaView backgroundColor="black" style={{ zIndex: -5 }}>
-        <FlatList
-          data={data}
-          horizontal
-          renderItem={renderItem}
-          keyExtractor={item => item.uuid}
-          contentContainerStyle={{ flexGrow: 1 }}
-          ListFooterComponentStyle={{ flex: 1, justifyContent: 'flex-end' }}
-        />
-      </SafeAreaView>
     </View>
-=======
-    <MapView
-      style={styles.map}
-      initialRegion={DEFAULT_LOCATION}
-      mapType="satellite"
-      maxZoomLevel={20}
-      showsUserLocation
-    >
-      {data.map(tree => (
-        <Marker
-          key={tree.uuid}
-          coordinate={{
-            latitude: tree.location?.latitude,
-            longitude: tree.location?.longitude,
-          }}
-        >
-          <Image source={TreeIcon} />
-        </Marker>
-      ))}
-    </MapView>
->>>>>>> main
   );
 }
 MapScreen.propTypes = {
+  navigation: shape({
+    push: func,
+  }),
   // eslint-disable-next-line react/forbid-prop-types
   data: array,
 };
