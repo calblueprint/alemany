@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
   },
 });
-
 export default function TreeDetailsScreen({ route, navigation }) {
   const addCommentText = useRef();
   const { uuid } = route.params;
@@ -34,7 +33,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
     id: '',
     name: '',
     uuid: '',
-    location: null,
+    location: { latitude: '', longitude: '' },
     planted: null,
     comments: [],
   });
@@ -91,8 +90,42 @@ export default function TreeDetailsScreen({ route, navigation }) {
         style={styles.input}
         value={entry.id}
       />
+      <TextInput
+        disabled={!isEditing}
+        label="Latitude"
+        onChangeText={
+          value =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, latitude: Number(value) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+        value={entry.location.latitude.toString()}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Longitude"
+        onChangeText={
+          value =>
+            setEntry({
+              ...entry,
+              location: { ...entry.location, longitude: Number(value) },
+            })
+          // eslint-disable-next-line react/jsx-curly-newline
+        }
+        style={styles.input}
+        value={entry.location.longitude.toString()}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Date Planted"
+        style={styles.input}
+        // eslint-disable-next-line react/jsx-no-bind
+        value={entry.planted && entry.planted.toDate().toLocaleDateString()}
+      />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
-
       {entry.comments?.map((c, i) => (
         <TextInput
           // eslint-disable-next-line react/no-array-index-key
@@ -113,7 +146,6 @@ export default function TreeDetailsScreen({ route, navigation }) {
         style={styles.input}
         value={comment.input}
       />
-
       <Button title="Add Comment" onPress={handleSaveComment} />
     </ViewContainer>
   );

@@ -7,10 +7,13 @@ import {
   SafeAreaView,
   FlatList,
   View,
+  Image
 } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
+
+import TreeIcon from '../../assets/images/tree.png';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 
 const styles = StyleSheet.create({
@@ -40,6 +43,7 @@ export default function MapScreen({ data }) {
   );
 
   return (
+<<<<<<< HEAD
     <View>
       <MapView
         style={styles.map}
@@ -84,6 +88,27 @@ export default function MapScreen({ data }) {
         />
       </SafeAreaView>
     </View>
+=======
+    <MapView
+      style={styles.map}
+      initialRegion={DEFAULT_LOCATION}
+      mapType="satellite"
+      maxZoomLevel={20}
+      showsUserLocation
+    >
+      {data.map(tree => (
+        <Marker
+          key={tree.uuid}
+          coordinate={{
+            latitude: tree.location?.latitude,
+            longitude: tree.location?.longitude,
+          }}
+        >
+          <Image source={TreeIcon} />
+        </Marker>
+      ))}
+    </MapView>
+>>>>>>> main
   );
 }
 MapScreen.propTypes = {

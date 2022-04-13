@@ -1,24 +1,25 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
-import { func, shape } from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { TabRouter } from '@react-navigation/core';
+import { bool, func, shape, string } from 'prop-types';
+import { StyleSheet, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Switch, TextInput, Button } from 'react-native-paper';
 
-import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import { addTree } from '../database/firebase';
+import { addTree, getTree } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
+import ViewContainer from './ViewContainer';
 
 const styles = StyleSheet.create({
   input: {
     width: '90%',
     backgroundColor: 'white',
+    zIndex: 0,
   },
 });
 
-export default function AddScreen({ navigation }) {
+export default function AddOrEdit({ route, navigation, editView }) {
   const getCurrentLocation = useCurrentLocation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [entry, setEntry] = React.useState({
@@ -34,6 +35,15 @@ export default function AddScreen({ navigation }) {
     longitude: DEFAULT_LOCATION.longitude,
   });
   const [checked, setChecked] = React.useState(false);
+  const { uuid } = editView ? route.params : '';
+
+  useEffect(() => {
+    async function getEntry() {
+      const data = await getTree(uuid);
+      setEntry(data);
+    }
+    getEntry();
+  }, [uuid]);
 
   useEffect(() => {
     async function getData() {
@@ -133,20 +143,27 @@ export default function AddScreen({ navigation }) {
         onCancel={hideDatePicker}
       />
       {/* TODO: Add Switch label that shows location */}
-      <Switch
-        value={checked}
-        onValueChange={() => {
-          setChecked(!checked);
-        }}
-      />
-      <Button mode="contained" onPress={onPress}>
-        Submit
-      </Button>
+
+      {editView ? null : (
+        <View>
+          <Switch
+            value={checked}
+            onValueChange={() => {
+              setChecked(!checked);
+            }}
+          />
+          <Button mode="contained" onPress={onPress}>
+            Submit
+          </Button>
+        </View>
+      )}
     </ViewContainer>
   );
 }
 
-AddScreen.propTypes = {
+AddOrEdit.propTypes = {
+  route: shape({ params: shape({ uuid: string }) }),
+  editView: bool,
   navigation: shape({
     push: func,
   }),
