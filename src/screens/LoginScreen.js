@@ -118,6 +118,10 @@ function VerifyButton({
     // Users table (entered via Retool dashboard).
     const FIXME_BYPASS_MODE = true;
     try {
+      if (phoneNumber.length == 9) {
+        setMessage({ text: 'Invalid phone number' });
+
+      }
       const normalizedNumber = e164ify(phoneNumber);
 
       const authorizedPhoneNumber = await checkPhoneNumber(
@@ -136,7 +140,7 @@ function VerifyButton({
         });
       }
     } catch (err) {
-      setMessage({ text: 'Invalid phone number' });
+      setMessage({ text: `Error: ${err.message}` });
     }
   };
 
@@ -162,6 +166,7 @@ export default function LoginScreen({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
+  const [phoneInvalid, setPhoneInvalid] = React.useState(false);
   const [message, setMessage] = React.useState({
     text: '',
   });
@@ -206,7 +211,7 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.startLeft}>
             <View style={styles.textStart}>
               <Text style={styles.captionPhoneNumber}>
-                Code
+                Phone Number
               </Text>
             </View>
           </View>
