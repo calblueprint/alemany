@@ -243,7 +243,6 @@ export default function LoginScreen({ navigation }) {
           setMessage={setMessage}
           setVerificationId={setVerificationId}
           recaptchaVerifier={recaptchaVerifier}
-
         />
 
         {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}

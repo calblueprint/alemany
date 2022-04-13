@@ -141,20 +141,18 @@ export default function VerificationScreen({ route, navigation }) {
     const onBlur = () => setFocused(false)
 
     return (
-      <>
-        <TextInput
-          ref={inputRef}
-          style={focused ? styles.input : styles.inputUnfocused}
-          placeholder={number.toString()}
-          value={verifCode[number]}
-          placeholderTextColor="#777"
-          keyboardType={'numeric'}
-          maxLength={1}
-          onChange={handleChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      </>
+      <TextInput
+        ref={inputRef}
+        style={focused ? styles.input : styles.inputUnfocused}
+        placeholder={number.toString()}
+        value={verifCode[number]}
+        placeholderTextColor="#777"
+        keyboardType={'numeric'}
+        maxLength={1}
+        onChange={handleChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
     )
   }
 
@@ -165,11 +163,11 @@ export default function VerificationScreen({ route, navigation }) {
         title="Confirm Verification Code"
         disabled={!verificationId}
         onPress={async () => {
-          const verifcationCode = verifCode.join();
+          const verificationCode = verifCode.join();
           try {
             const credential = firebase.auth.PhoneAuthProvider.credential(
               verificationId,
-              verifcationCode,
+              verificationCode,
             );
             await AsyncStorage.setItem('userToken', credential.providerId);
             await firebase.auth().signInWithCredential(credential);
@@ -190,9 +188,8 @@ export default function VerificationScreen({ route, navigation }) {
   const input4 = useRef(null);
   const input5 = useRef(null);
   const input6 = useRef(null);
-  const currentInput = useRef(null)
 
-  const { verificationId } = true; // route.params;
+  const { verificationId } = route.params;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -244,8 +241,8 @@ export default function VerificationScreen({ route, navigation }) {
             />
           </View>
           <View style={styles.rowContainer}>
-            <Text >
-              {"\Didn't get a code? "}
+            <Text>
+              {"Didn't get a code? "}
             </Text>
             <Pressable>
               <Text onPress={() => {
