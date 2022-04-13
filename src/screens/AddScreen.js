@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { isPointInPolygon } from 'geolib';
 import { func, shape } from 'prop-types';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [entry, setEntry] = React.useState({
+  const [entry, setEntry] = useState({
     id: '',
     name: '',
     uuid: '',
@@ -36,8 +36,10 @@ export default function AddScreen({ navigation }) {
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
-  const [checked, setChecked] = React.useState(false);
-  const polygon = {};
+  const [checked, setChecked] = useState(false);
+  const [polygon, setPolygon] = useState({});
+  const latRef = useRef('');
+  const longRef = useRef('');
 
   useEffect(() => {
     async function getData() {
@@ -69,9 +71,9 @@ export default function AddScreen({ navigation }) {
         latitude: coord[1],
         longitude: coord[0],
       }));
-      polygon[feature.properties.Name] = coordinates;
+      setPolygon({ ...polygon, [feature.properties.Name]: coordinates });
     });
-  });
+  }, [polygon]);
 
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
@@ -81,14 +83,24 @@ export default function AddScreen({ navigation }) {
     let result = entry;
     if (checked) {
       result = { ...result, location: newLocation };
+    } else {
+      if (
+        // eslint-disable-next-line operator-linebreak
+        Number.isNaN(Number(result.location.latitude)) ||
+        Number.isNaN(Number(result.location.longitude))
+      ) {
+        // eslint-disable-next-line no-alert
+        alert('Either the latitude or longitude value is not a valid number.');
+        return;
+      }
+      result = {
+        ...result,
+        location: {
+          latitude: Number(result.location.latitude),
+          longitude: Number(result.location.longitude),
+        },
+      };
     }
-    result = {
-      ...result,
-      location: {
-        latitude: Number(result.location.latitude),
-        longitude: Number(result.location.longitude),
-      },
-    };
     Object.entries(polygon).forEach(([key, value]) => {
       if (isPointInPolygon(result.location, value)) {
         result = { ...result, region: key };
@@ -124,6 +136,8 @@ export default function AddScreen({ navigation }) {
       <TextInput
         label="Latitude"
         value={entry.location.latitude && entry.location.latitude.toString()}
+        ref={latRef}
+        editable={!checked}
         onChangeText={
           lat =>
             setEntry({
@@ -137,6 +151,8 @@ export default function AddScreen({ navigation }) {
       <TextInput
         label="Longitude"
         value={entry.location.longitude && entry.location.longitude.toString()}
+        ref={longRef}
+        editable={!checked}
         onChangeText={
           long =>
             setEntry({
@@ -165,6 +181,8 @@ export default function AddScreen({ navigation }) {
         value={checked}
         onValueChange={() => {
           setChecked(!checked);
+          longRef.current.clear();
+          latRef.current.clear();
         }}
       />
       <Button mode="contained" onPress={onPress}>
