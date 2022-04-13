@@ -37,13 +37,13 @@ const styles = StyleSheet.create({
   card: {
     width: 428,
     height: 214,
-    top: 649,
+    top: 660,
     position: 'absolute',
     zIndex: 500,
   },
 });
 
-export default function MapScreen({ data }) {
+export default function MapScreen({ data, navigation }) {
   const [test, setTest] = React.useState(<View />);
 
   const renderItem = ({ item }) => (
@@ -71,6 +71,9 @@ export default function MapScreen({ data }) {
                   key={tree.uuid}
                   name={tree.name}
                   comments={tree.comments}
+                  onPress={() =>
+                    navigation.push('TreeDetails', { uuid: tree.uuid })
+                  }
                 />,
               )
             }
