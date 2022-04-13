@@ -62,6 +62,43 @@ export default function HomeScreen({ navigation }) {
   const [trees, setTrees] = useState([]);
   const [searchStack, setSearchStack] = useState([]);
   const [searchEntered, setEnter] = useState(false);
+
+  const suggestedSearchStr = (query, first, second) => {
+    if (first.slice(0, query.length) === query) {
+      if (second.slice(0, query.length) === query) {
+        if (first < second) return -1;
+        if (first > second) return 1;
+        return 0;
+      }
+      return -1;
+    }
+    if (second.slice(0, query.length) === query) {
+      return 1;
+    }
+    if (first < second) return -1;
+    if (first > second) return 1;
+    return 0;
+  };
+
+  const suggestedSearchNum = (query, first, second) => {
+    const firstNum = parseInt(first, 10);
+    const secondNum = parseInt(second, 10);
+    if (first.slice(0, query.length) === query) {
+      if (second.slice(0, query.length) === query) {
+        if (firstNum < secondNum) return -1;
+        if (firstNum > secondNum) return 1;
+        return 0;
+      }
+      return -1;
+    }
+    if (second.slice(0, query.length) === query) {
+      return 1;
+    }
+    if (firstNum < secondNum) return -1;
+    if (firstNum > secondNum) return 1;
+    return 0;
+  };
+
   const filtered = trees
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
@@ -70,26 +107,16 @@ export default function HomeScreen({ navigation }) {
         tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
       );
     })
-    // eslint-disable-next-line max-len
-    // QUESTION: suggested search only considers tree names, but can also search by tree ID. Does this make sense?
     .sort((a, b) => {
       const query = searchQuery.toLowerCase();
-      const first = a.name.toLowerCase();
-      const second = b.name.toLowerCase();
-      if (first.slice(0, query.length) === query) {
-        if (second.slice(0, query.length) === query) {
-          if (first < second) return -1;
-          if (first > second) return 1;
-          return 0;
-        }
-        return -1;
+      const firstN = a.name.toLowerCase();
+      const secondN = b.name.toLowerCase();
+      const firstId = a.id.toLowerCase();
+      const secondId = b.id.toLowerCase();
+      if (parseInt(query, 10)) {
+        return suggestedSearchNum(query, firstId, secondId);
       }
-      if (second.slice(0, query.length) === query) {
-        return 1;
-      }
-      if (first < second) return -1;
-      if (first > second) return 1;
-      return 0;
+      return suggestedSearchStr(query, firstN, secondN);
     });
 
   const toggleView = useCallback(() => {
@@ -135,9 +162,7 @@ export default function HomeScreen({ navigation }) {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('@storage_Key', jsonValue);
-    } catch (e) {
-      // saving error
-    }
+    } catch (e) {}
   };
 
   const getSearchStack = async () => {
@@ -146,9 +171,7 @@ export default function HomeScreen({ navigation }) {
       jsonValue != null
         ? setSearchStack(JSON.parse(jsonValue))
         : setSearchStack([]);
-    } catch (e) {
-      // error reading value
-    }
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -156,12 +179,12 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const editSearchHistory = newSearch => {
-    if (searchStack.length === 0) {
+    if (searchStack.length < 1) {
       searchStack.unshift(newSearch);
-    } else if (newSearch.name !== searchStack[searchStack.length - 1].name) {
+    } else if (newSearch.name !== searchStack[0].name) {
       searchStack.unshift(newSearch);
     }
-    if (searchStack.length > 4) {
+    if (searchStack.length > 5) {
       searchStack.pop();
     }
     storeSearchStack(searchStack);

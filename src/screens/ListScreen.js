@@ -8,7 +8,6 @@ import {
   Text,
   View,
   ViewPropTypes,
-  TouchableOpacity,
 } from 'react-native';
 
 import Inset from '../components/Inset';
@@ -21,32 +20,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     paddingTop: 180,
   },
-  button: {
-    padding: '5px',
-    backgroundColor: 'green',
-    // width: '40%',
-    height: 10,
-  },
-  buttonText: {
-    fontSize: 11,
-  },
 });
 
 const storeSearchStack = async value => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem('@storage_Key', jsonValue);
-  } catch (e) {
-    // saving error
-  }
-};
-
-const clearStorage = async () => {
-  try {
-    await AsyncStorage.removeItem('@storage_Key');
-  } catch (e) {
-    // error  value
-  }
+  } catch (e) {}
 };
 
 const SearchCardsComp = ({
@@ -55,6 +35,8 @@ const SearchCardsComp = ({
   marginBottom,
   label,
   labelAlign,
+  addHistory,
+  searchStack,
 }) => (
   <View>
     <Inset>
@@ -79,15 +61,17 @@ const SearchCardsComp = ({
             comments={comments}
             onPress={() => {
               navigation.push('TreeDetails', { uuid });
-              if (scroll.length === 0) {
-                scroll.unshift(tree);
-              } else if (tree.name !== scroll[scroll.length - 1].name) {
-                scroll.unshift(tree);
+              if (addHistory) {
+                if (searchStack.length < 1) {
+                  searchStack.unshift(tree);
+                } else if (tree.name !== searchStack[0].name) {
+                  searchStack.unshift(tree);
+                }
+                if (searchStack.length > 5) {
+                  searchStack.pop();
+                }
+                storeSearchStack(searchStack);
               }
-              if (scroll.length > 4) {
-                scroll.pop();
-              }
-              storeSearchStack(scroll);
             }}
           />
         );
@@ -106,6 +90,9 @@ SearchCardsComp.propTypes = {
   marginBottom: number,
   label: string,
   labelAlign: string,
+  addHistory: bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  searchStack: array,
 };
 
 export default function ListScreen({
@@ -116,42 +103,23 @@ export default function ListScreen({
   searchQuery,
   searchEntered,
 }) {
-  // let scroll;
   let text;
-  // let align;
-  // if (searchQuery.length === 0) {
-  //   align = 'left';
-  //   if (searchStack.length === 0) {
-  //     text = 'All trees';
-  //     scroll = data;
-  //   } else {
-  //     text = 'Recents';
-  //     scroll = searchStack;
-  //   }
-  // } else if (searchEntered === true) {
-  //   align = 'right';
-  //   scroll = data;
-  //   text = `${scroll.length} ${scroll.length === 1 ? 'result' : 'results'}`;
-  // } else {
-  //   align = 'left';
-  //   scroll = data;
-  //   text = 'Suggestions';
-  // }
-
   if (searchQuery.length === 0) {
     text = 'All trees';
   } else if (searchEntered === true) {
     text = `${data.length} ${data.length === 1 ? 'result' : 'results'}`;
+  } else if (data.length === 0) {
+    text = "Oops, that's an invalid search. Try again!";
   } else {
     text = 'Suggestions';
   }
-
   return (
     <ScrollView style={[styles.list, style]}>
       <View>
         {searchQuery.length === 0 && searchStack.length !== 0 ? (
           <SearchCardsComp
             scroll={searchStack}
+            addHistory={false}
             navigation={navigation}
             marginBottom={0}
             label="Recents"
@@ -159,59 +127,17 @@ export default function ListScreen({
           />
         ) : null}
       </View>
-      {/* <TouchableOpacity onPress={clearStorage}>
-        <Text>Clear Recents</Text>
-      </TouchableOpacity> */}
       <View>
         <SearchCardsComp
           scroll={data}
+          addHistory
+          searchStack={searchStack}
           navigation={navigation}
           marginBottom={260}
           label={text}
           labelAlign={searchEntered === true ? 'right' : 'left'}
         />
       </View>
-      {/* <Inset>
-        <Text
-          style={{
-            fontSize: 15,
-            color: '#3b3f51',
-            marginTop: 10,
-            textAlign: `${align}`,
-          }}
-        >
-          {text}
-        </Text>
-        <TouchableOpacity onPress={clearStorage}>
-          <Text>Clear Recents</Text>
-        </TouchableOpacity>
-      </Inset>
-      <View style={{ marginTop: 10, marginBottom: 260 }}>
-        {scroll.map(tree => {
-          const { uuid, name, comments } = tree;
-          return (
-            <SearchCard
-              key={uuid}
-              name={name}
-              comments={comments}
-              onPress={() => {
-                navigation.push('TreeDetails', { uuid });
-                if (searchStack.length === 0) {
-                  searchStack.unshift(tree);
-                } else if (
-                  tree.name !== searchStack[searchStack.length - 1].name
-                ) {
-                  searchStack.unshift(tree);
-                }
-                if (searchStack.length > 4) {
-                  searchStack.pop();
-                }
-                storeSearchStack(searchStack);
-              }}
-            />
-          );
-        })}
-      </View> */}
     </ScrollView>
   );
 }
