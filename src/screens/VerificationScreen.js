@@ -5,22 +5,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'firebase/compat/app';
 import { shape, func, string } from 'prop-types';
 import {
-  Dimensions,
   Pressable,
   TouchableWithoutFeedback,
   Text,
   View,
   TextInput,
-  Button,
   Keyboard,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView
 } from 'react-native';
 import { Title } from 'react-native-paper';
 
+import LoginScreenIcon from '../components/LoginScreenIcon';
 import ViewContainer from '../components/ViewContainer';
-import { Inter_200ExtraLight } from '@expo-google-fonts/inter';
 
 const styles = StyleSheet.create({
   heading: {
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   rowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   input: {
     textAlign: 'center',
@@ -74,14 +71,14 @@ const styles = StyleSheet.create({
     borderColor: '#ADB0B9',
     borderRadius: 8,
   },
-  containerForVerficationInput: {
+  containerForVerificationInput: {
     padding: '2.3%',
-    backgroundColor: "#ffffff",
-    flexDirection: 'row'
+    backgroundColor: '#ffffff',
+    flexDirection: 'row',
   },
   codeResent: {
     padding: '2.3%',
-    color: "#52bd41",
+    color: '#52bd41',
   },
   button: {
     alignItems: 'center',
@@ -95,7 +92,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: '3%',
     marginLeft: '3%',
-
   },
   text: {
     fontSize: 16,
@@ -116,7 +112,7 @@ const styles = StyleSheet.create({
     margin: '0%',
     padding: '0%',
     fontSize: 20,
-  }
+  },
 });
 
 export default function VerificationScreen({ route, navigation }) {
@@ -124,21 +120,23 @@ export default function VerificationScreen({ route, navigation }) {
     text: '',
   });
 
-  const [verifCode, setVerifCode] = useState([])
-  const [messageResent, setMessageResent] = useState(false)
+  const [verifCode, setVerifCode] = useState([]);
+  const [messageResent, setMessageResent] = useState(false);
 
-
-  function VerficationFields({ inputRef, number, inputNextRef }) {
-    const [focused, setFocused] = React.useState(false)
-    const handleChange = (event) => {
+  function VerificationFields({ inputRef, number, inputNextRef }) {
+    if (!inputRef || !number || !inputNextRef) {
+      throw new Error('Missing argument for verification field');
+    }
+    const [focused, setFocused] = useState(false);
+    const handleChange = event => {
       const inputNumber = event.target.value;
       verifCode[number] = inputNumber;
       setVerifCode(verifCode);
       inputNextRef.current.focus();
     };
 
-    const onFocus = () => setFocused(true)
-    const onBlur = () => setFocused(false)
+    const onFocus = () => setFocused(true);
+    const onBlur = () => setFocused(false);
 
     return (
       <TextInput
@@ -147,14 +145,22 @@ export default function VerificationScreen({ route, navigation }) {
         placeholder={number.toString()}
         value={verifCode[number]}
         placeholderTextColor="#777"
-        keyboardType={'numeric'}
+        keyboardType="numeric"
         maxLength={1}
         onChange={handleChange}
         onFocus={onFocus}
         onBlur={onBlur}
       />
-    )
+    );
   }
+
+  VerificationFields.propTypes = {
+    inputRef: React.MutableRefObject,
+    number: Number,
+    inputNextRef: React.MutableRefObject,
+  };
+
+  const { verificationId } = route.params;
 
   function SubmitButton() {
     return (
@@ -174,12 +180,12 @@ export default function VerificationScreen({ route, navigation }) {
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('Root');
           } catch (err) {
-            setIsError(true);
-            showMessage({ text: `Incorrect Code` });
+            showMessage({ text: 'Incorrect Code' });
           }
         }}
-      ><Text style={styles.text}>Log in</Text></Pressable>
-
+      >
+        <Text style={styles.text}>Log in</Text>
+      </Pressable>
     );
   }
   const input1 = useRef(null);
@@ -188,8 +194,6 @@ export default function VerificationScreen({ route, navigation }) {
   const input4 = useRef(null);
   const input5 = useRef(null);
   const input6 = useRef(null);
-
-  const { verificationId } = route.params;
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -203,57 +207,53 @@ export default function VerificationScreen({ route, navigation }) {
           </Text>
           <View style={styles.startLeft}>
             <View style={styles.textStart}>
-              <Text style={styles.captionPhoneNumber}>
-                Code
-              </Text>
+              <Text style={styles.captionPhoneNumber}>Code</Text>
             </View>
           </View>
-          <View style={styles.containerForVerficationInput}>
-            <VerficationFields
+          <View style={styles.containerForVerificationInput}>
+            <VerificationFields
               inputRef={input1}
               number={1}
               inputNextRef={input2}
             />
-            <VerficationFields
+            <VerificationFields
               inputRef={input2}
               number={2}
               inputNextRef={input3}
             />
-            <VerficationFields
+            <VerificationFields
               inputRef={input3}
               number={3}
               inputNextRef={input4}
             />
-            <VerficationFields
+            <VerificationFields
               inputRef={input4}
               number={4}
               inputNextRef={input5}
             />
-            <VerficationFields
+            <VerificationFields
               inputRef={input5}
               number={5}
               inputNextRef={input6}
             />
-            <VerficationFields
+            <VerificationFields
               inputRef={input6}
               number={6}
               inputNextRef={input6}
             />
           </View>
           <View style={styles.rowContainer}>
-            <Text>
-              {"Didn't get a code? "}
-            </Text>
+            <Text>{"Didn't get a code? "}</Text>
             <Pressable>
-              <Text onPress={() => {
-                setMessageResent(true);
-
-
-              }} style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}>
+              <Text
+                onPress={() => {
+                  setMessageResent(true);
+                }}
+                style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}
+              >
                 Resend
               </Text>
             </Pressable>
-
           </View>
           {message && (
             <TouchableOpacity onPress={() => showMessage({ text: '' })}>
@@ -272,8 +272,8 @@ export default function VerificationScreen({ route, navigation }) {
           {messageResent && <Text style={styles.codeResent}>CODE RESENT</Text>}
         </ViewContainer>
         <SubmitButton />
-      </View >
-    </TouchableWithoutFeedback >
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

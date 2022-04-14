@@ -10,7 +10,6 @@ import 'firebase/compat/auth';
 import { AsYouType, parsePhoneNumber } from 'libphonenumber-js';
 import { any, func, node, shape, string } from 'prop-types';
 import {
-  Dimensions,
   Pressable,
   View,
   Keyboard,
@@ -18,11 +17,9 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  KeyboardAvoidingView,
-  ViewPagerAndroidBase
 } from 'react-native';
 
-import LoginScreenIcon from '../components//LoginScreenIcon'
+import LoginScreenIcon from '../components/LoginScreenIcon';
 import ViewContainer from '../components/ViewContainer';
 import { checkPhoneNumber, config } from '../database/firebase';
 
@@ -78,7 +75,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: '3%',
     marginLeft: '3%',
-
   },
   startLeft: {
     width: '100%',
@@ -118,9 +114,8 @@ function VerifyButton({
     // Users table (entered via Retool dashboard).
     const FIXME_BYPASS_MODE = true;
     try {
-      if (phoneNumber.length == 9) {
+      if (phoneNumber.length === 9) {
         setMessage({ text: 'Invalid phone number' });
-
       }
       const normalizedNumber = e164ify(phoneNumber);
 
@@ -146,7 +141,7 @@ function VerifyButton({
 
   return (
     <View className={styles.padding}>
-      <Pressable style={styles.button} onPress={onPress} title='buttonForPhone'>
+      <Pressable style={styles.button} onPress={onPress} title="buttonForPhone">
         <Text style={styles.text}>Next</Text>
       </Pressable>
     </View>
@@ -166,7 +161,6 @@ export default function LoginScreen({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [verificationId, setVerificationId] = React.useState('');
-  const [phoneInvalid, setPhoneInvalid] = React.useState(false);
   const [message, setMessage] = React.useState({
     text: '',
   });
@@ -191,13 +185,11 @@ export default function LoginScreen({ navigation }) {
     const formatted = new AsYouType('US').input(input);
     setPhoneNumber(formatted);
   };
-
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
         <ViewContainer topPadding>
-          <LoginScreenIcon login={true} />
+          <LoginScreenIcon login />
           <FirebaseRecaptchaVerifierModal
             ref={recaptchaVerifier}
             firebaseConfig={config}
@@ -210,9 +202,7 @@ export default function LoginScreen({ navigation }) {
           </Text>
           <View style={styles.startLeft}>
             <View style={styles.textStart}>
-              <Text style={styles.captionPhoneNumber}>
-                Phone Number
-              </Text>
+              <Text style={styles.captionPhoneNumber}>Phone Number</Text>
             </View>
           </View>
           <TextInput
