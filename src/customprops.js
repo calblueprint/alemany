@@ -1,6 +1,14 @@
 import PropTypes from 'prop-types';
 
-const Comment = PropTypes.arrayOf(PropTypes.string);
+function checkPlanted(props, propName, componentName) {
+  if (props[propName]) {
+    if (props[propName].toDate() === 'Invalid Date') {
+      return new Error(`${propName} in ${componentName} is not a date`);
+    }
+  }
+  return null;
+}
+const Comment = PropTypes.arrayOf(PropTypes.object);
 const Tree = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
@@ -9,7 +17,7 @@ const Tree = PropTypes.shape({
     latitude: PropTypes.number,
     longitude: PropTypes.number,
   }),
-  planted: PropTypes.instanceOf(Date),
+  planted: checkPlanted,
   comments: Comment,
   region: PropTypes.string,
 });
