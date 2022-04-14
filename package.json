@@ -51,6 +51,7 @@
     "expo-status-bar": "~1.2.0",
     "expo-web-browser": "~10.1.0",
     "firebase": "^9.6.4",
+    "geolib": "^3.3.3",
     "libphonenumber-js": "^1.9.48",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
