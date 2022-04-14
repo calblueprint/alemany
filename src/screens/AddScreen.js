@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
+import { isPointInPolygon } from 'geolib';
 import { func, shape } from 'prop-types';
 import { StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -8,6 +9,7 @@ import { Switch, TextInput, Button } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import MAPBOX_COORDS from '../constants/Features';
 import { addTree } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
@@ -21,19 +23,23 @@ const styles = StyleSheet.create({
 export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [entry, setEntry] = React.useState({
+  const [entry, setEntry] = useState({
     id: '',
     name: '',
     uuid: '',
     location: { latitude: '', longitude: '' },
     planted: null,
     comments: [],
+    region: null,
   });
   const [newLocation, setNewLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
     longitude: DEFAULT_LOCATION.longitude,
   });
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = useState(false);
+  const [polygon, setPolygon] = useState({});
+  const latRef = useRef('');
+  const longRef = useRef('');
 
   useEffect(() => {
     async function getData() {
@@ -58,6 +64,20 @@ export default function AddScreen({ navigation }) {
     hideDatePicker();
   };
 
+  useEffect(() => {
+    const { features } = MAPBOX_COORDS;
+    return features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates.map(coord => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      }));
+      setPolygon(prevState => ({
+        ...prevState,
+        [feature.properties.Name]: coordinates,
+      }));
+    });
+  }, []);
+
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
@@ -66,7 +86,29 @@ export default function AddScreen({ navigation }) {
     let result = entry;
     if (checked) {
       result = { ...result, location: newLocation };
+    } else {
+      if (
+        // eslint-disable-next-line operator-linebreak
+        Number.isNaN(Number(result.location.latitude)) ||
+        Number.isNaN(Number(result.location.longitude))
+      ) {
+        // eslint-disable-next-line no-alert
+        alert('Either the latitude or longitude value is not a valid number.');
+        return;
+      }
+      result = {
+        ...result,
+        location: {
+          latitude: Number(result.location.latitude),
+          longitude: Number(result.location.longitude),
+        },
+      };
     }
+    Object.entries(polygon).forEach(([key, value]) => {
+      if (isPointInPolygon(result.location, value)) {
+        result = { ...result, region: key };
+      }
+    });
     setChecked(false);
     setEntry({
       id: '',
@@ -75,6 +117,7 @@ export default function AddScreen({ navigation }) {
       location: { latitude: '', longitude: '' },
       planted: null,
       comments: [],
+      region: null,
     });
     addTreeAndNavigate(result);
   };
@@ -96,11 +139,13 @@ export default function AddScreen({ navigation }) {
       <TextInput
         label="Latitude"
         value={entry.location.latitude && entry.location.latitude.toString()}
+        ref={latRef}
+        editable={!checked}
         onChangeText={
           lat =>
             setEntry({
               ...entry,
-              location: { ...entry.location, latitude: Number(lat) },
+              location: { ...entry.location, latitude: lat },
             })
           // eslint-disable-next-line react/jsx-curly-newline
         }
@@ -109,11 +154,13 @@ export default function AddScreen({ navigation }) {
       <TextInput
         label="Longitude"
         value={entry.location.longitude && entry.location.longitude.toString()}
+        ref={longRef}
+        editable={!checked}
         onChangeText={
           long =>
             setEntry({
               ...entry,
-              location: { ...entry.location, longitude: Number(long) },
+              location: { ...entry.location, longitude: long },
             })
           // eslint-disable-next-line react/jsx-curly-newline
         }
@@ -137,6 +184,8 @@ export default function AddScreen({ navigation }) {
         value={checked}
         onValueChange={() => {
           setChecked(!checked);
+          longRef.current.clear();
+          latRef.current.clear();
         }}
       />
       <Button mode="contained" onPress={onPress}>
