@@ -1,14 +1,7 @@
 import React from 'react';
 
 import { array, func, shape } from 'prop-types';
-import {
-  StyleSheet,
-  ViewPropTypes,
-  SafeAreaView,
-  FlatList,
-  View,
-  Image,
-} from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 import TreeIcon from '../../assets/images/tree.png';
@@ -46,9 +39,6 @@ const styles = StyleSheet.create({
 export default function MapScreen({ data, navigation }) {
   const [test, setTest] = React.useState(<View />);
 
-  const renderItem = ({ item }) => (
-    <SearchCard key={item.uuid} name={item.name} comments={item.comments} />
-  );
   return (
     <View>
       <MapView
@@ -77,7 +67,9 @@ export default function MapScreen({ data, navigation }) {
                 />,
               )
             }
-          />
+          >
+            <Image source={TreeIcon} />
+          </Marker>
         ))}
         <View style={styles.card}>{test}</View>
       </MapView>

@@ -6,17 +6,10 @@ import React, {
 } from 'react';
 
 import { func, shape, string } from 'prop-types';
-import {
-  View,
-  Keyboard,
-  TextInput,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { View, Keyboard, TextInput } from 'react-native';
 
 import Icon from '../components/Icon';
 import Inset from '../components/Inset';
-import SearchCard from '../components/SearchCard';
 import ViewContainer from '../components/ViewContainer';
 import ViewToggle from '../components/ViewToggle';
 import { getAllTrees, checkID } from '../database/firebase';
