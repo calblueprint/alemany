@@ -4,7 +4,8 @@ import { array, func, shape } from 'prop-types';
 import { StyleSheet, View, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-import TreeIcon from '../../assets/images/tree.png';
+import TreeIcon from '../../assets/images/defaultMarker.png';
+import TreeIconBig from '../../assets/images/markerBig.png';
 import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 
@@ -38,6 +39,8 @@ const styles = StyleSheet.create({
 
 export default function MapScreen({ data, navigation }) {
   const [test, setTest] = React.useState(<View />);
+  const [active, setActive] = React.useState(null);
+  const [prevValue, setPrevValue] = React.useState(null);
 
   return (
     <View>
@@ -55,20 +58,29 @@ export default function MapScreen({ data, navigation }) {
               latitude: tree.location.latitude,
               longitude: tree.location.longitude,
             }}
-            onPress={() =>
+            onPress={() => {
+              setPrevValue(tree.uuid);
+              if (active === tree.uuid) {
+                setActive(null);
+              } else {
+                setActive(tree.uuid);
+              }
               setTest(
                 <SearchCard
                   key={tree.uuid}
                   name={tree.name}
                   comments={tree.comments}
-                  onPress={() =>
-                    navigation.push('TreeDetails', { uuid: tree.uuid })
-                  }
+                  onPress={() => {
+                    navigation.push('TreeDetails', { uuid: tree.uuid });
+                  }}
                 />,
-              )
-            }
+              );
+              if (active !== null && tree.uuid === prevValue) {
+                setTest(<View />);
+              }
+            }}
           >
-            <Image source={TreeIcon} />
+            <Image source={tree.uuid === active ? TreeIconBig : TreeIcon} />
           </Marker>
         ))}
         <View style={styles.card}>{test}</View>
