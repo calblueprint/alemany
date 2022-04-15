@@ -4,47 +4,92 @@ import { useState, useEffect } from 'react';
 
 import * as ImagePicker from 'expo-image-picker';
 import { func, shape } from 'prop-types';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Switch, TextInput, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 
-import ViewContainer from '../components/ViewContainer';
+import Inset from '../components/Inset';
+import Button from '../components/ui/Button';
+import { color } from '../components/ui/colors';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import firebase, { addTree } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
 const styles = StyleSheet.create({
-  input: {
-    width: '90%',
+  nameInput: {
+    width: '100%',
     backgroundColor: 'white',
+    paddingVertical: 18,
+    paddingLeft: 16,
+    fontSize: 34,
+    fontWeight: '800',
+  },
+  image: {
+    width: '100%',
+    height: undefined,
+    marginBottom: 20,
+    aspectRatio: 1,
+    maxHeight: 700,
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: 200,
+    backgroundColor: color('gray.300'),
+    marginBottom: 20,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageText: {
+    color: color('gray.500'),
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  input: {
+    padding: 12,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginTop: 15,
+    fontSize: 16,
   },
 });
 
 async function uploadImageAsync(uri) {
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      resolve(xhr.response);
-    };
-    xhr.onerror = () => {
-      // TODO: handle error
-      reject(new TypeError('Network request failed'));
-    };
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-    xhr.send(null);
-  });
+  // const blob = await new Promise((resolve, reject) => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.onload = () => {
+  //     resolve(xhr.response);
+  //   };
+  //   xhr.onerror = () => {
+  //     // TODO: handle error
+  //     reject(new TypeError('Network request failed'));
+  //   };
+  //   xhr.responseType = 'blob';
+  //   xhr.open('GET', uri, true);
+  //   xhr.send(null);
+  // });
 
-  const fileRef = firebase.storage().ref(uuidv4());
-  await fileRef.put(blob);
+  // const fileRef = firebase.storage().ref(uuidv4());
+  const fileRef = firebase.storage().ref();
+  const res = await fileRef.listAll();
+  await Promise.all(res.items.map(item => item.delete()));
+  // await fileRef.put(blob);
 
   // We're done with the blob, close and release it
-  blob.close();
+  // blob.close();
 
-  return fileRef.getDownloadURL();
+  // return fileRef.getDownloadURL();
 }
 
 export default function AddScreen({ navigation }) {
@@ -73,19 +118,11 @@ export default function AddScreen({ navigation }) {
     getData();
   }, [getCurrentLocation]);
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
   const handleConfirm = date => {
     let result = entry;
     result = { ...result, planted: date };
     setEntry(result);
-    hideDatePicker();
+    setDatePickerVisibility(false);
   };
 
   const pickImage = async () => {
@@ -106,7 +143,7 @@ export default function AddScreen({ navigation }) {
     const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
   }
-  const onPress = async () => {
+  const handleSubmit = async () => {
     let result = entry;
     if (checked) {
       result = { ...result, location: newLocation };
@@ -120,81 +157,81 @@ export default function AddScreen({ navigation }) {
       planted: null,
       comments: [],
     });
-    const imageURL = await uploadImageAsync(image);
+    let imageURL;
+    try {
+      imageURL = await uploadImageAsync(image);
+    } catch (err) {
+      imageURL = null;
+    }
     setImage(null);
-    addTreeAndNavigate({ ...result, image: imageURL });
+    addTreeAndNavigate({ ...result, images: [imageURL] });
   };
 
   return (
-    <ViewContainer>
-      <Pressable onPress={pickImage}>
-        <Text>Pick an image</Text>
-      </Pressable>
-      {image && (
-        <Image style={{ width: 200, height: 200 }} source={{ uri: image }} />
-      )}
+    <ScrollView>
       <TextInput
-        label="Name"
+        placeholder="Name"
         value={entry.name}
         onChangeText={name => setEntry({ ...entry, name: name.toString() })}
-        style={styles.input}
+        style={styles.nameInput}
       />
-      <TextInput
-        label="ID"
-        value={entry.id}
-        onChangeText={id => setEntry({ ...entry, id: id.toString() })}
-        style={styles.input}
-      />
-      <TextInput
-        label="Latitude"
-        value={entry.location.latitude && entry.location.latitude.toString()}
-        onChangeText={
-          lat =>
-            setEntry({
-              ...entry,
-              location: { ...entry.location, latitude: Number(lat) },
-            })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-        style={styles.input}
-      />
-      <TextInput
-        label="Longitude"
-        value={entry.location.longitude && entry.location.longitude.toString()}
-        onChangeText={
-          long =>
-            setEntry({
-              ...entry,
-              location: { ...entry.location, longitude: Number(long) },
-            })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-        style={styles.input}
-      />
-      <TextInput
-        label="Date Planted"
-        onFocus={showDatePicker}
-        placeholder="MM/DD/YYYY"
-        value={entry.planted && entry.planted.toLocaleDateString()}
-        style={styles.input}
-      />
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      {/* TODO: Add Switch label that shows location */}
-      <Switch
-        value={checked}
-        onValueChange={() => {
-          setChecked(!checked);
-        }}
-      />
-      <Button mode="contained" onPress={onPress}>
-        Submit
-      </Button>
-    </ViewContainer>
+      <Pressable onPress={pickImage}>
+        {image ? (
+          <Image style={styles.image} source={{ uri: image }} />
+        ) : (
+          <View style={styles.imagePlaceholder}>
+            <Text style={styles.imageText}>Press to add image...</Text>
+          </View>
+        )}
+      </Pressable>
+      <Inset>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Switch
+            value={checked}
+            onValueChange={() => {
+              setChecked(!checked);
+            }}
+          />
+          <Text style={{ marginLeft: 5, fontWeight: '500' }}>
+            Capture location
+          </Text>
+        </View>
+        <TextInput
+          placeholder="Address"
+          value={entry.id}
+          onChangeText={id => setEntry({ ...entry, id: id.toString() })}
+          style={styles.input}
+        />
+        <Pressable
+          style={styles.input}
+          onPress={() => setDatePickerVisibility(true)}
+        >
+          <Text style={{ fontSize: 16 }}>
+            {entry.planted?.toLocaleDateString() || 'Date'}
+          </Text>
+        </Pressable>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={() => setDatePickerVisibility(false)}
+        />
+        <View style={{ marginTop: 10 }} />
+        <Button
+          backgroundColor="#52bd41"
+          color="#fff"
+          title="Add"
+          onPress={handleSubmit}
+        />
+        <View style={{ marginTop: 20 }} />
+      </Inset>
+    </ScrollView>
   );
 }
 

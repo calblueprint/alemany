@@ -30,7 +30,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
   const addCommentText = useRef();
   const { uuid } = route.params;
   const [entry, setEntry] = useState({
-    image: null,
+    images: [],
     id: '',
     name: '',
     uuid: '',
@@ -77,10 +77,10 @@ export default function TreeDetailsScreen({ route, navigation }) {
 
   return (
     <ViewContainer>
-      {entry.image && (
+      {entry.images?.length > 0 && (
         <Image
-          style={{ width: 200, height: 200 }}
-          source={{ uri: entry.image }}
+          style={{ width: '100%', height: undefined, aspectRatio: 1 }}
+          source={{ uri: entry.images[0] }}
         />
       )}
       <TextInput
