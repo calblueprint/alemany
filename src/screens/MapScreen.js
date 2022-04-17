@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { array, func, shape } from 'prop-types';
 import { StyleSheet, View, Image } from 'react-native';
@@ -38,9 +38,7 @@ const styles = StyleSheet.create({
 });
 
 export default function MapScreen({ data, navigation }) {
-  const [test, setTest] = React.useState(<View />);
-  const [active, setActive] = React.useState(null);
-  const [prevValue, setPrevValue] = React.useState(null);
+  const [active, setActive] = useState(null);
 
   return (
     <View>
@@ -59,31 +57,30 @@ export default function MapScreen({ data, navigation }) {
               longitude: tree.location.longitude,
             }}
             onPress={() => {
-              setPrevValue(tree.uuid);
-              if (active === tree.uuid) {
+              if (active?.uuid === tree.uuid) {
                 setActive(null);
               } else {
-                setActive(tree.uuid);
-              }
-              setTest(
-                <SearchCard
-                  key={tree.uuid}
-                  name={tree.name}
-                  comments={tree.comments}
-                  onPress={() => {
-                    navigation.push('TreeDetails', { uuid: tree.uuid });
-                  }}
-                />,
-              );
-              if (active !== null && tree.uuid === prevValue) {
-                setTest(<View />);
+                setActive(tree);
               }
             }}
           >
-            <Image source={tree.uuid === active ? TreeIconBig : TreeIcon} />
+            <Image
+              source={tree.uuid === active?.uuid ? TreeIconBig : TreeIcon}
+            />
           </Marker>
         ))}
-        <View style={styles.card}>{test}</View>
+        <View style={styles.card}>
+          {active && (
+            <SearchCard
+              key={active.uuid}
+              name={active.name}
+              comments={active.comments}
+              onPress={() => {
+                navigation.push('TreeDetails', { uuid: active.uuid });
+              }}
+            />
+          )}
+        </View>
       </MapView>
     </View>
   );
