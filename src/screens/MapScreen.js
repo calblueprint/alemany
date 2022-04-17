@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   card: {
-    width: 428,
-    height: 214,
-    top: 660,
+    width: '100%',
+    bottom: 60,
     position: 'absolute',
     zIndex: 500,
   },
