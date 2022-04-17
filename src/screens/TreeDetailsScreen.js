@@ -36,6 +36,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
     uuid: '',
     location: { latitude: '', longitude: '' },
     planted: null,
+    region: null,
     comments: [],
   });
 
@@ -131,6 +132,13 @@ export default function TreeDetailsScreen({ route, navigation }) {
         style={styles.input}
         // eslint-disable-next-line react/jsx-no-bind
         value={entry.planted && entry.planted.toDate().toLocaleDateString()}
+      />
+      <TextInput
+        disabled={!isEditing}
+        label="Region"
+        style={styles.input}
+        // eslint-disable-next-line react/jsx-no-bind
+        value={entry.region && entry.region.toString()}
       />
       {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
       {entry.comments?.map((c, i) => (

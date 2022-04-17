@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { array, func, shape } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 import { StyleSheet, ViewPropTypes, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polygon } from 'react-native-maps';
 
 import TreeIcon from '../../assets/images/tree.png';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import MAPBOX_COORDS from '../constants/Features';
+import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   map: {
@@ -28,6 +30,32 @@ const styles = StyleSheet.create({
   },
 });
 
+const getCoordinates = mapboxJSON => {
+  const { features } = mapboxJSON;
+  const alternateColors = [
+    'rgba(128, 0, 0, 0.4)',
+    'rgba(0, 0, 255, 0.4)',
+    'rgba(128, 0, 128, 0.4)',
+    'rgba(255, 255, 0, 0.4)',
+    'rgba(0, 255, 255, 0.4)',
+  ];
+  return features.map((feature, index) => {
+    const coordinates = feature.geometry.coordinates.map(coord => ({
+      latitude: coord[1],
+      longitude: coord[0],
+    }));
+    return (
+      <Polygon
+        id={mapboxJSON}
+        key={feature.name}
+        coordinates={coordinates}
+        strokeColor={alternateColors[index % alternateColors.length]}
+        strokeWidth={2}
+      />
+    );
+  });
+};
+
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data }) {
   return (
@@ -38,6 +66,7 @@ export default function MapScreen({ style, navigation, data }) {
       maxZoomLevel={20}
       showsUserLocation
     >
+      {getCoordinates(MAPBOX_COORDS)}
       {data.map(tree => (
         <Marker
           key={tree.uuid}
@@ -54,8 +83,7 @@ export default function MapScreen({ style, navigation, data }) {
 }
 MapScreen.propTypes = {
   style: ViewPropTypes.style,
-  // eslint-disable-next-line react/forbid-prop-types
-  data: array,
+  data: arrayOf(Tree),
   navigation: shape({
     navigate: func,
   }),

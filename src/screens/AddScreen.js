@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import * as ImagePicker from 'expo-image-picker';
+import { isPointInPolygon } from 'geolib';
 import { func, shape } from 'prop-types';
 import {
   Image,
@@ -21,6 +22,7 @@ import Inset from '../components/Inset';
 import Button from '../components/ui/Button';
 import { color } from '../components/ui/colors';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import MAPBOX_COORDS from '../constants/Features';
 import firebase, { addTree } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
@@ -66,42 +68,40 @@ const styles = StyleSheet.create({
 async function uploadImageAsync(uri) {
   // Why are we using XMLHttpRequest? See:
   // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  // const blob = await new Promise((resolve, reject) => {
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.onload = () => {
-  //     resolve(xhr.response);
-  //   };
-  //   xhr.onerror = () => {
-  //     // TODO: handle error
-  //     reject(new TypeError('Network request failed'));
-  //   };
-  //   xhr.responseType = 'blob';
-  //   xhr.open('GET', uri, true);
-  //   xhr.send(null);
-  // });
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      resolve(xhr.response);
+    };
+    xhr.onerror = () => {
+      // TODO: handle error
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
 
-  // const fileRef = firebase.storage().ref(uuidv4());
-  const fileRef = firebase.storage().ref();
-  const res = await fileRef.listAll();
-  await Promise.all(res.items.map(item => item.delete()));
-  // await fileRef.put(blob);
+  const fileRef = firebase.storage().ref(uuidv4());
+  await fileRef.put(blob);
 
   // We're done with the blob, close and release it
-  // blob.close();
+  blob.close();
 
-  // return fileRef.getDownloadURL();
+  return fileRef.getDownloadURL();
 }
 
 export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [entry, setEntry] = React.useState({
+  const [entry, setEntry] = useState({
     id: '',
     name: '',
     uuid: '',
     location: { latitude: '', longitude: '' },
     planted: null,
     comments: [],
+    region: null,
   });
   const [newLocation, setNewLocation] = useState({
     latitude: DEFAULT_LOCATION.latitude,
@@ -109,6 +109,7 @@ export default function AddScreen({ navigation }) {
   });
   const [checked, setChecked] = React.useState(false);
   const [image, setImage] = useState(null);
+  const [polygon, setPolygon] = useState({});
 
   useEffect(() => {
     async function getData() {
@@ -139,6 +140,20 @@ export default function AddScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    const { features } = MAPBOX_COORDS;
+    return features.forEach(feature => {
+      const coordinates = feature.geometry.coordinates.map(coord => ({
+        latitude: coord[1],
+        longitude: coord[0],
+      }));
+      setPolygon(prevState => ({
+        ...prevState,
+        [feature.properties.Name]: coordinates,
+      }));
+    });
+  }, []);
+
   async function addTreeAndNavigate(tree) {
     const newId = await addTree(tree);
     navigation.push('TreeDetails', { uuid: newId });
@@ -147,7 +162,29 @@ export default function AddScreen({ navigation }) {
     let result = entry;
     if (checked) {
       result = { ...result, location: newLocation };
+    } else {
+      if (
+        // eslint-disable-next-line operator-linebreak
+        Number.isNaN(Number(result.location.latitude)) ||
+        Number.isNaN(Number(result.location.longitude))
+      ) {
+        // eslint-disable-next-line no-alert
+        alert('Either the latitude or longitude value is not a valid number.');
+        return;
+      }
+      result = {
+        ...result,
+        location: {
+          latitude: Number(result.location.latitude),
+          longitude: Number(result.location.longitude),
+        },
+      };
     }
+    Object.entries(polygon).forEach(([key, value]) => {
+      if (isPointInPolygon(result.location, value)) {
+        result = { ...result, region: key };
+      }
+    });
     setChecked(false);
     setEntry({
       id: '',
@@ -156,6 +193,7 @@ export default function AddScreen({ navigation }) {
       location: { latitude: '', longitude: '' },
       planted: null,
       comments: [],
+      region: null,
     });
     let imageURL;
     try {

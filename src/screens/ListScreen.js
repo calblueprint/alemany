@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { array, func, shape } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 import {
   ScrollView,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
+import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   list: {
@@ -59,6 +60,5 @@ ListScreen.propTypes = {
     push: func,
   }),
   style: ViewPropTypes.style,
-  // eslint-disable-next-line react/forbid-prop-types
-  data: array,
+  data: arrayOf(Tree),
 };
