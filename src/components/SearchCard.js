@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { arrayOf, func, node, object, string } from 'prop-types';
 import {
@@ -9,8 +9,6 @@ import {
   ViewPropTypes,
   Image,
 } from 'react-native';
-
-import firebase from '../database/firebase';
 
 const styles = StyleSheet.create({
   card: {
@@ -42,18 +40,7 @@ Card.propTypes = {
   style: ViewPropTypes.style,
 };
 
-export default function SearchCard({ name, onPress, comments, uuid }) {
-  const [imageURL, setImageURL] = useState(null);
-  useEffect(() => {
-    async function fetchImageURL() {
-      const httpsReference = await firebase
-        .storage()
-        .ref(uuid)
-        .getDownloadURL();
-      setImageURL(httpsReference);
-    }
-    fetchImageURL();
-  }, [uuid]);
+export default function SearchCard({ name, onPress, comments, previewImage }) {
   return (
     <Card
       style={{
@@ -71,7 +58,7 @@ export default function SearchCard({ name, onPress, comments, uuid }) {
         </Text>
       </View>
       <Image
-        source={{ uri: imageURL }}
+        source={{ uri: previewImage }}
         style={{
           height: 96,
           width: 96,
@@ -87,5 +74,5 @@ SearchCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   comments: arrayOf(object),
   onPress: func,
-  uuid: string,
+  previewImage: string,
 };

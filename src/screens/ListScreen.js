@@ -39,11 +39,12 @@ export default function ListScreen({ navigation, style, data }) {
       </Inset>
       <View style={{ marginTop: 10, marginBottom: 248 }}>
         {data.map(tree => {
-          const { uuid, name, comments } = tree;
+          const { uuid, name, comments, images } = tree;
           return (
             <SearchCard
               key={uuid}
-              uuid="test_uuid"
+              uuid={uuid}
+              previewImage={images && images[0]}
               name={name}
               comments={comments}
               onPress={() => navigation.push('TreeDetails', { uuid })}

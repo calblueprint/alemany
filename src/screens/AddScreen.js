@@ -16,14 +16,13 @@ import {
   View,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { v4 as uuidv4 } from 'uuid';
 
 import Inset from '../components/Inset';
 import Button from '../components/ui/Button';
 import { color } from '../components/ui/colors';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import MAPBOX_COORDS from '../constants/Features';
-import firebase, { addTree } from '../database/firebase';
+import { addTree, uploadImageAsync } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
 const styles = StyleSheet.create({
@@ -64,32 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
-async function uploadImageAsync(uri) {
-  // Why are we using XMLHttpRequest? See:
-  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      resolve(xhr.response);
-    };
-    xhr.onerror = () => {
-      // TODO: handle error
-      reject(new TypeError('Network request failed'));
-    };
-    xhr.responseType = 'blob';
-    xhr.open('GET', uri, true);
-    xhr.send(null);
-  });
-
-  const fileRef = firebase.storage().ref(uuidv4());
-  await fileRef.put(blob);
-
-  // We're done with the blob, close and release it
-  blob.close();
-
-  return fileRef.getDownloadURL();
-}
 
 export default function AddScreen({ navigation }) {
   const getCurrentLocation = useCurrentLocation();
@@ -260,14 +233,14 @@ export default function AddScreen({ navigation }) {
           onConfirm={handleConfirm}
           onCancel={() => setDatePickerVisibility(false)}
         />
-        <View style={{ marginTop: 10 }} />
-        <Button
-          backgroundColor="#52bd41"
-          color="#fff"
-          title="Add"
-          onPress={handleSubmit}
-        />
-        <View style={{ marginTop: 20 }} />
+        <View style={{ paddingVertical: 10 }}>
+          <Button
+            backgroundColor="#52bd41"
+            color="#fff"
+            title="Add"
+            onPress={handleSubmit}
+          />
+        </View>
       </Inset>
     </ScrollView>
   );

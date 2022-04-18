@@ -10,6 +10,7 @@ import {
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export const config = {
   apiKey: API_KEY,
@@ -194,4 +195,31 @@ export const setAdditional = async additional => {
     // TODO: Add error handling.
   }
 };
+
+export const uploadImageAsync = async uri => {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      resolve(xhr.response);
+    };
+    xhr.onerror = () => {
+      // TODO: handle error
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const fileRef = firebase.storage().ref(uuidv4());
+  await fileRef.put(blob);
+
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return fileRef.getDownloadURL();
+};
+
 export default firebase;
