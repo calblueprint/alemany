@@ -20,7 +20,6 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Inset from '../components/Inset';
 import Button from '../components/ui/Button';
 import { color } from '../components/ui/colors';
-import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import MAPBOX_COORDS from '../constants/Features';
 import { addTree, uploadImageAsync } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
@@ -76,21 +75,9 @@ export default function AddScreen({ navigation }) {
     comments: [],
     region: null,
   });
-  const [newLocation, setNewLocation] = useState({
-    latitude: DEFAULT_LOCATION.latitude,
-    longitude: DEFAULT_LOCATION.longitude,
-  });
-  const [checked, setChecked] = React.useState(false);
   const [image, setImage] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [polygon, setPolygon] = useState({});
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getCurrentLocation();
-      setNewLocation(data);
-    }
-    getData();
-  }, [getCurrentLocation]);
 
   const handleConfirm = date => {
     let result = entry;
@@ -134,24 +121,8 @@ export default function AddScreen({ navigation }) {
   const handleSubmit = async () => {
     let result = entry;
     if (checked) {
-      result = { ...result, location: newLocation };
-    } else {
-      if (
-        // eslint-disable-next-line operator-linebreak
-        Number.isNaN(Number(result.location.latitude)) ||
-        Number.isNaN(Number(result.location.longitude))
-      ) {
-        // eslint-disable-next-line no-alert
-        alert('Either the latitude or longitude value is not a valid number.');
-        return;
-      }
-      result = {
-        ...result,
-        location: {
-          latitude: Number(result.location.latitude),
-          longitude: Number(result.location.longitude),
-        },
-      };
+      const location = await getCurrentLocation();
+      result = { ...result, location };
     }
     Object.entries(polygon).forEach(([key, value]) => {
       if (isPointInPolygon(result.location, value)) {

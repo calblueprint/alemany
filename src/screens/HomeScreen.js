@@ -24,6 +24,7 @@ function Search({ onQueryChange, query }) {
         padding: 15,
         borderRadius: 8,
         display: 'flex',
+        flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: '#000000',
@@ -34,6 +35,7 @@ function Search({ onQueryChange, query }) {
         },
         shadowRadius: 7,
       }}
+      contentContainerStyle={{ flexWrap: 'wrap' }}
     >
       <Icon style={{ marginRight: 5 }} size={20} name="search" />
       <TextInput
@@ -126,7 +128,6 @@ export default function HomeScreen({ navigation }) {
             zIndex: 2,
           }}
         />
-
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
           <Search onQueryChange={onSearchChange} query={searchQuery} />
           <ViewToggle setIsListView={setIsListView} isListView={isListView} />

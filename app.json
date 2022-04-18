@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "alemany",
+    "owner": "alemanyfarm",
     "slug": "alemany",
     "version": "1.0.0",
     "orientation": "portrait",

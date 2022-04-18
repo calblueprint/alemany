@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { arrayOf, func, shape } from 'prop-types';
-import { StyleSheet, ViewPropTypes, Image } from 'react-native';
+import { StyleSheet, ViewPropTypes, View, Image } from 'react-native';
 import MapView, { Marker, Polygon } from 'react-native-maps';
 
-import TreeIcon from '../../assets/images/tree.png';
+import TreeIcon from '../../assets/images/defaultMarker.png';
+import TreeIconBig from '../../assets/images/markerBig.png';
+import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import MAPBOX_COORDS from '../constants/Features';
 import Tree from '../customprops';
@@ -27,6 +29,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
+  },
+  card: {
+    width: '100%',
+    bottom: 60,
+    position: 'absolute',
+    zIndex: 500,
   },
 });
 
@@ -58,33 +66,58 @@ const getCoordinates = mapboxJSON => {
 
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data }) {
+  const [active, setActive] = useState(null);
+
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={DEFAULT_LOCATION}
-      mapType="satellite"
-      maxZoomLevel={20}
-      showsUserLocation
-    >
-      {getCoordinates(MAPBOX_COORDS)}
-      {data.map(tree => (
-        <Marker
-          key={tree.uuid}
-          coordinate={{
-            latitude: tree.location?.latitude,
-            longitude: tree.location?.longitude,
-          }}
-        >
-          <Image source={TreeIcon} />
-        </Marker>
-      ))}
-    </MapView>
+    <View>
+      <MapView
+        style={styles.map}
+        initialRegion={DEFAULT_LOCATION}
+        mapType="satellite"
+        maxZoomLevel={20}
+        showsUserLocation
+      >
+        {getCoordinates(MAPBOX_COORDS)}
+        {data.map(tree => (
+          <Marker
+            key={tree.uuid}
+            coordinate={{
+              latitude: tree.location?.latitude,
+              longitude: tree.location?.longitude,
+            }}
+            onPress={() => {
+              if (active?.uuid === tree.uuid) {
+                setActive(null);
+              } else {
+                setActive(tree);
+              }
+            }}
+          >
+            <Image
+              source={tree.uuid === active?.uuid ? TreeIconBig : TreeIcon}
+            />
+          </Marker>
+        ))}
+        <View style={styles.card}>
+          {active && (
+            <SearchCard
+              key={active.uuid}
+              name={active.name}
+              comments={active.comments}
+              onPress={() => {
+                navigation.push('TreeDetails', { uuid: active.uuid });
+              }}
+            />
+          )}
+        </View>
+      </MapView>
+    </View>
   );
 }
 MapScreen.propTypes = {
   style: ViewPropTypes.style,
   data: arrayOf(Tree),
   navigation: shape({
-    navigate: func,
+    push: func,
   }),
 };
