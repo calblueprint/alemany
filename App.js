@@ -32,10 +32,8 @@ export default function App() {
   }
   return (
     <SafeAreaProvider>
-      <PaperProvider theme={theme}>
-        <Navigation />
-        <StatusBar />
-      </PaperProvider>
+      <Navigation />
+      <StatusBar />
     </SafeAreaProvider>
   );
 }
