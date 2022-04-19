@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import firebase from 'firebase/compat/app';
+import firebase from 'firebase/app';
 import { shape, func, string } from 'prop-types';
 import {
   Text,
@@ -11,7 +11,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Title } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 
@@ -32,7 +31,6 @@ export default function VerificationScreen({ route, navigation }) {
   const [verificationCode, setVerificationCode] = React.useState('');
   return (
     <ViewContainer>
-      <Title>Verification Screen</Title>
       <View style={styles.separator} />
       <Text style={{ marginTop: 20 }}>Enter Verification code</Text>
       <TextInput

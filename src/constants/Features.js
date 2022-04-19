@@ -1,4 +1,4 @@
-const MAPBOX_COORDS = {
+export const MAPBOX_COORDS = {
   features: [
     {
       type: 'Feature',
@@ -131,4 +131,12 @@ const MAPBOX_COORDS = {
   type: 'FeatureCollection',
 };
 
-export default MAPBOX_COORDS;
+export const FEATURE_POLYGONS = Object.fromEntries(
+  MAPBOX_COORDS.features.map(feature => {
+    const coordinates = feature.geometry.coordinates.map(coord => ({
+      longitude: coord[0],
+      latitude: coord[1],
+    }));
+    return [feature.properties.Name, coordinates];
+  }),
+);

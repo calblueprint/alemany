@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
 import { arrayOf, func, shape } from 'prop-types';
-import { StyleSheet, ViewPropTypes, View, Image } from 'react-native';
-import MapView, { Marker, Polygon } from 'react-native-maps';
+import { StyleSheet, ViewPropTypes, View } from 'react-native';
+import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
-import TreeIcon from '../../assets/images/defaultMarker.png';
-import TreeIconBig from '../../assets/images/markerBig.png';
 import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import MAPBOX_COORDS from '../constants/Features';
+import { MAPBOX_COORDS } from '../constants/Features';
 import Tree from '../customprops';
 
 const styles = StyleSheet.create({
@@ -40,13 +38,7 @@ const styles = StyleSheet.create({
 
 const getCoordinates = mapboxJSON => {
   const { features } = mapboxJSON;
-  const alternateColors = [
-    'rgba(128, 0, 0, 0.4)',
-    'rgba(0, 0, 255, 0.4)',
-    'rgba(128, 0, 128, 0.4)',
-    'rgba(255, 255, 0, 0.4)',
-    'rgba(0, 255, 255, 0.4)',
-  ];
+  const alternateColors = ['rgb(255, 255, 0)'];
   return features.map((feature, index) => {
     const coordinates = feature.geometry.coordinates.map(coord => ({
       latitude: coord[1],
@@ -55,10 +47,11 @@ const getCoordinates = mapboxJSON => {
     return (
       <Polygon
         id={mapboxJSON}
-        key={feature.name}
+        key={feature.id}
         coordinates={coordinates}
         strokeColor={alternateColors[index % alternateColors.length]}
-        strokeWidth={2}
+        strokeWidth={3}
+        fillColor="transparent"
       />
     );
   });
@@ -71,10 +64,11 @@ export default function MapScreen({ style, navigation, data }) {
   return (
     <View>
       <MapView
+        provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={DEFAULT_LOCATION}
         mapType="satellite"
-        maxZoomLevel={20}
+        maxZoomLevel={25}
         showsUserLocation
       >
         {getCoordinates(MAPBOX_COORDS)}
@@ -92,11 +86,8 @@ export default function MapScreen({ style, navigation, data }) {
                 setActive(tree);
               }
             }}
-          >
-            <Image
-              source={tree.uuid === active?.uuid ? TreeIconBig : TreeIcon}
-            />
-          </Marker>
+            pinColor={tree.uuid === active?.uuid ? '#f00' : '#0f0'}
+          />
         ))}
         <View style={styles.card}>
           {active && (
@@ -105,7 +96,7 @@ export default function MapScreen({ style, navigation, data }) {
               name={active.name}
               comments={active.comments}
               onPress={() => {
-                navigation.push('TreeDetails', { uuid: active.uuid });
+                navigation.push('TreeScreen', { uuid: active.uuid });
               }}
             />
           )}

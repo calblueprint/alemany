@@ -7,9 +7,9 @@ import {
   APP_ID,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/storage';
 import { v4 as uuidv4 } from 'uuid';
 
 export const config = {
@@ -21,13 +21,16 @@ export const config = {
   appId: APP_ID,
 };
 
-!firebase.apps.length ? firebase.initializeApp(config) : firebase.app();
+if (firebase.apps.length) {
+  firebase.app();
+} else {
+  firebase.initializeApp(config);
+}
 
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
 const userCollection = database.collection('users');
 const commentCollection = database.collection('comments');
-const additionalCollection = database.collection('additional');
 
 /**
  * checkID validates that this ID exists in the `trees` table.
@@ -168,37 +171,7 @@ export const setComment = async comment => {
   }
 };
 
-/**
- * getAdditional queries the `additional` table and
- * returns an Additional if the ID is found and an empty entry otherwise.
- */
-export const getAdditional = async uuid => {
-  try {
-    const doc = await additionalCollection.doc(uuid).get();
-    return doc.data();
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * setAdditional creates/updates an entry in the `additional` table given a Additional.
- */
-export const setAdditional = async additional => {
-  try {
-    await additionalCollection.doc(additional.uuid).set(additional);
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
 export const uploadImageAsync = async uri => {
-  // Why are we using XMLHttpRequest? See:
-  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
   const blob = await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.onload = () => {

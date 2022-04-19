@@ -11,13 +11,14 @@ import {
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
+import { color } from '../components/ui/colors';
 import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   list: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#eee',
+    backgroundColor: color('gray.50'),
     paddingTop: 140,
   },
 });
@@ -47,7 +48,7 @@ export default function ListScreen({ navigation, style, data }) {
               previewImage={images && images[0]}
               name={name}
               comments={comments}
-              onPress={() => navigation.push('TreeDetails', { uuid })}
+              onPress={() => navigation.push('TreeScreen', { uuid })}
             />
           );
         })}

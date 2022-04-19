@@ -83,12 +83,8 @@ export default function HomeScreen({ navigation }) {
       } catch (e) {
         console.warn(e);
       }
-      const data = await getAllTrees();
-      setTrees(data);
     }
     getTrees();
-    const unsubscribe = navigation.addListener('focus', () => getTrees());
-    return unsubscribe;
   }, [navigation]);
 
   useLayoutEffect(() => {

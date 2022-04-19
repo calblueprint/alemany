@@ -10,7 +10,6 @@ import {
   Inter_800ExtraBold,
 } from '@expo-google-fonts/inter';
 import { StatusBar } from 'expo-status-bar';
-import { Provider as PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './src/hooks/useCachedResources';
