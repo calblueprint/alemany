@@ -1,5 +1,6 @@
 {
   "plugins": [
-      "module-resolver"
+      "module-resolver",
+      "react-native-reanimated/plugin"
   ]
 }

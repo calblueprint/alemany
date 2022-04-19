@@ -12,7 +12,6 @@ import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
-import ListScreen from '../screens/ListScreen';
 import LoginScreen from '../screens/LoginScreen';
 import MapScreen from '../screens/MapScreen';
 import ModalScreen from '../screens/ModalScreen';
@@ -61,13 +60,6 @@ function RootNavigator() {
         component={MapScreen}
         options={{
           title: 'Map View',
-        }}
-      />
-      <Screen
-        name="List"
-        component={ListScreen}
-        options={{
-          title: 'List View',
         }}
       />
       <Screen

@@ -1,48 +1,40 @@
-import React, {
-  useState,
-  useLayoutEffect,
-  useCallback,
-  useEffect,
-} from 'react';
+import React, { useState, useMemo, useLayoutEffect } from 'react';
 
+import BottomSheet, {
+  BottomSheetTextInput,
+  BottomSheetScrollView,
+} from '@gorhom/bottom-sheet';
 import { func, shape, string } from 'prop-types';
-import { View, Keyboard, TextInput } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import Icon from '../components/Icon';
 import Inset from '../components/Inset';
-import ViewContainer from '../components/ViewContainer';
-import ViewToggle from '../components/ViewToggle';
+import SearchCard from '../components/SearchCard';
+import { color } from '../components/ui/colors';
+import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import { getAllTrees, checkID } from '../database/firebase';
-import ListScreen from './ListScreen';
-import MapScreen from './MapScreen';
 
 function Search({ onQueryChange, query }) {
   return (
     <View
       style={{
-        backgroundColor: '#fff',
+        backgroundColor: color('gray.100'),
         padding: 15,
-        borderRadius: 8,
+        borderRadius: 16,
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
-        shadowColor: '#000000',
-        shadowOpacity: 0.05,
-        shadowOffset: {
-          x: 0,
-          y: 4,
-        },
-        shadowRadius: 7,
       }}
-      contentContainerStyle={{ flexWrap: 'wrap' }}
     >
       <Icon style={{ marginRight: 5 }} size={20} name="search" />
-      <TextInput
+      <BottomSheetTextInput
         style={{
-          fontSize: 18,
           flex: 1,
+          fontSize: 18,
         }}
+        placeholderTextColor={color('gray.500')}
         placeholder="Search"
         value={query}
         onChangeText={onQueryChange}
@@ -55,26 +47,16 @@ Search.propTypes = {
   query: string,
 };
 
+const isValidLocation = tree =>
+  tree.location && tree.location.latitude && tree.location.longitude;
+
 export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
-  const filtered = trees
-    .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
-    .filter(tree => {
-      const query = searchQuery.toLowerCase();
-      return (
-        tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
-      );
-    });
-  const toggleView = useCallback(() => {
-    setIsListView(!isListView);
-  }, [isListView]);
+  const [active, setActive] = useState(null);
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
 
-  const isValidLocation = tree =>
-    tree.location && tree.location.latitude && tree.location.longitude;
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function getTrees() {
       try {
         const data = await getAllTrees();
@@ -85,51 +67,88 @@ export default function HomeScreen({ navigation }) {
       }
     }
     getTrees();
-  }, [navigation]);
+  }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: isListView ? 'List' : 'Map',
+  const filtered = trees
+    .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
+    .filter(tree => {
+      const query = searchQuery.toLowerCase();
+      return (
+        tree.name?.toLowerCase().includes(query) || tree.address.includes(query)
+      );
     });
-    if (!isListView) {
-      Keyboard.dismiss();
-    }
-  }, [navigation, isListView, toggleView]);
-
-  const onSearchChange = searchValue => {
-    setSearchQuery(searchValue);
-    setIsListView(true);
-  };
 
   return (
-    <ViewContainer>
-      <View style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <ListScreen
-          data={filtered}
-          navigation={navigation}
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: isListView ? 5 : 0,
-          }}
-        />
-        <MapScreen
-          data={filtered}
-          navigation={navigation}
-          style={{
-            position: 'absolute',
-            zIndex: 2,
-          }}
-        />
-        <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
-          <Search onQueryChange={onSearchChange} query={searchQuery} />
-          <ViewToggle setIsListView={setIsListView} isListView={isListView} />
+    <View style={{ flex: 1 }}>
+      <MapView
+        style={[StyleSheet.absoluteFillObject, { zIndex: -10000 }]}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={DEFAULT_LOCATION}
+        mapType="satellite"
+        maxZoomLevel={25}
+        showsUserLocation
+      >
+        {filtered.map(tree => (
+          <Marker
+            key={tree.uuid}
+            coordinate={{
+              latitude: tree.location?.latitude,
+              longitude: tree.location?.longitude,
+            }}
+            onPress={() => {
+              if (active?.uuid === tree.uuid) {
+                setActive(null);
+              } else {
+                setActive(tree);
+              }
+            }}
+            pinColor={tree.uuid === active?.uuid ? '#f00' : '#0f0'}
+          />
+        ))}
+      </MapView>
+      <BottomSheet
+        snapPoints={snapPoints}
+        onChange={() => {}}
+        keyboardBehavior="extend"
+      >
+        <Inset>
+          <Search
+            onQueryChange={query => setSearchQuery(query)}
+            query={searchQuery}
+          />
         </Inset>
-      </View>
-    </ViewContainer>
+        <BottomSheetScrollView>
+          <Inset>
+            <Text
+              style={{
+                fontSize: 11,
+                color: '#3b3f51',
+                textAlign: 'right',
+              }}
+            >
+              {`${filtered.length} ${
+                filtered.length === 1 ? 'result' : 'results'
+              }`}
+            </Text>
+          </Inset>
+          <View style={{ marginTop: 10, marginBottom: 248 }}>
+            {filtered.map(tree => {
+              const { uuid, name, comments, images } = tree;
+              return (
+                <SearchCard
+                  key={uuid}
+                  uuid={uuid}
+                  previewImage={images && images[0]}
+                  name={name}
+                  comments={comments}
+                  onPress={() => navigation.push('TreeScreen', { uuid })}
+                />
+              );
+            })}
+          </View>
+        </BottomSheetScrollView>
+      </BottomSheet>
+    </View>
   );
 }
 HomeScreen.propTypes = {
