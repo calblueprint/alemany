@@ -6,7 +6,7 @@ import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import { MAPBOX_COORDS } from '../constants/Features';
+import { FEATURE_POLYGONS } from '../constants/Features';
 import Tree from '../customprops';
 
 const styles = StyleSheet.create({
@@ -38,7 +38,13 @@ const styles = StyleSheet.create({
 
 const getCoordinates = mapboxJSON => {
   const { features } = mapboxJSON;
-  const alternateColors = ['rgb(255, 255, 0)'];
+  const alternateColors = [
+    'rgba(128, 0, 0, 0.4)',
+    'rgba(0, 0, 255, 0.4)',
+    'rgba(128, 0, 128, 0.4)',
+    'rgba(255, 255, 0, 0.4)',
+    'rgba(0, 255, 255, 0.4)',
+  ];
   return features.map((feature, index) => {
     const coordinates = feature.geometry.coordinates.map(coord => ({
       latitude: coord[1],
@@ -47,11 +53,10 @@ const getCoordinates = mapboxJSON => {
     return (
       <Polygon
         id={mapboxJSON}
-        key={feature.id}
+        key={feature.name}
         coordinates={coordinates}
         strokeColor={alternateColors[index % alternateColors.length]}
-        strokeWidth={3}
-        fillColor="transparent"
+        strokeWidth={2}
       />
     );
   });
@@ -64,14 +69,22 @@ export default function MapScreen({ style, navigation, data }) {
   return (
     <View>
       <MapView
-        provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={DEFAULT_LOCATION}
         mapType="satellite"
-        maxZoomLevel={25}
+        maxZoomLevel={20}
         showsUserLocation
       >
-        {getCoordinates(MAPBOX_COORDS)}
+        {Object.entries(FEATURE_POLYGONS).map(([name, coords]) => (
+          <Polygon
+            // eslint-disable-next-line react/no-array-index-key
+            key={name}
+            coordinates={coords}
+            strokeColor="rgba(255, 255, 0, 1)"
+            strokeWidth={2}
+            fillColor="rgba(0, 0, 0, 0)"
+          />
+        ))}
         {data.map(tree => (
           <Marker
             key={tree.uuid}

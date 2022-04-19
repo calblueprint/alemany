@@ -84,7 +84,7 @@ export default function HomeScreen({ navigation }) {
         console.warn(e);
       }
     }
-    getTrees();
+    return navigation.addListener('focus', () => getTrees());
   }, [navigation]);
 
   useLayoutEffect(() => {

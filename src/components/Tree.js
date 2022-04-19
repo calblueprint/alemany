@@ -5,14 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { isPointInPolygon } from 'geolib';
 import { func, string } from 'prop-types';
 import {
+  Alert,
   Image,
   Pressable,
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
@@ -38,6 +39,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontWeight: '500',
+  },
+  locationText: {
+    display: 'flex',
+    flexDirection: 'row',
   },
   nameInput: {
     width: '100%',
@@ -94,10 +99,10 @@ async function pickImage() {
   return null;
 }
 
-export default function Tree({ uuid = null, onSave }) {
+export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   const getCurrentLocation = useCurrentLocation();
   const [datePickerVisible, setDatePickerVisible] = useState(false);
-  const [address, setAddress] = useState('');
+  const [id, setID] = useState('');
   const [name, setName] = useState('');
   const [planted, setPlanted] = useState(null);
   const [comments, setComments] = useState([]);
@@ -112,7 +117,7 @@ export default function Tree({ uuid = null, onSave }) {
 
       setName(tree.name);
       setPlanted(tree.planted?.toDate());
-      setAddress(tree.address);
+      setID(tree.id);
       setComments(tree.comments);
       setImages(tree.images);
       setLocation(tree.location);
@@ -131,7 +136,8 @@ export default function Tree({ uuid = null, onSave }) {
     });
 
     const tree = {
-      address,
+      uuid,
+      id,
       name,
       location,
       planted,
@@ -142,16 +148,32 @@ export default function Tree({ uuid = null, onSave }) {
 
     if (editing) {
       setEditing(false);
-    } else {
+    }
+    if (!canEdit) {
       setLocation(null);
       setName('');
-      setAddress('');
+      setID('');
       setPlanted(null);
       setComments([]);
       setImages([]);
     }
 
     onSave(tree);
+  };
+
+  const handleDelete = async () => {
+    Alert.alert('Are you sure?', 'This tree will be deleted.', [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: onDelete,
+        style: 'destructive',
+      },
+    ]);
   };
 
   return (
@@ -202,16 +224,27 @@ export default function Tree({ uuid = null, onSave }) {
         )}
       </Pressable>
       <Inset>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Switch
-            value={!!location}
-            onValueChange={async () => {
+        {location && !location.latitude && (
+          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+            <ActivityIndicator />
+            <Text style={{ marginLeft: 5 }}>Fetching your location...</Text>
+          </View>
+        )}
+        {location && location.latitude && (
+          <>
+            <Text>
+              Latitude:&nbsp;
+              {location.latitude}
+            </Text>
+            <Text style={{ marginTop: 2 }}>
+              Longitude:&nbsp;
+              {location.longitude}
+            </Text>
+          </>
+        )}
+        {editing && (
+          <Pressable
+            onPress={async () => {
               if (location) {
                 setLocation(null);
                 return;
@@ -223,15 +256,23 @@ export default function Tree({ uuid = null, onSave }) {
               const currentLocation = await getCurrentLocation();
               setLocation(currentLocation);
             }}
-          />
-          <Text style={{ marginLeft: 5, fontWeight: '500' }}>
-            Capture location
-          </Text>
-        </View>
+            style={{
+              backgroundColor: '#fff',
+              padding: 14,
+              borderRadius: 8,
+              marginTop: 10,
+            }}
+          >
+            <Text style={{ fontWeight: '500' }}>
+              {location ? 'Remove ' : 'Tag with current '}
+              location
+            </Text>
+          </Pressable>
+        )}
         <TextInput
           placeholder="Address"
-          value={address}
-          onChangeText={newValue => setAddress(newValue)}
+          value={id}
+          onChangeText={newValue => setID(newValue)}
           style={styles.input}
           editable={editing}
         />
@@ -252,16 +293,14 @@ export default function Tree({ uuid = null, onSave }) {
           }}
           onCancel={() => setDatePickerVisible(false)}
         />
-        {!canEdit && (
-          <View style={{ paddingVertical: 10 }}>
-            <Button
-              backgroundColor="#52bd41"
-              color="#fff"
-              title="Add"
-              onPress={handleSave}
-            />
-          </View>
-        )}
+        <View style={{ paddingVertical: 10 }}>
+          <Button
+            backgroundColor={canEdit ? color('rose.500') : '#52bd41'}
+            color="#fff"
+            title={canEdit ? 'Delete' : 'Save'}
+            onPress={canEdit ? handleDelete : handleSave}
+          />
+        </View>
       </Inset>
     </ScrollView>
   );
@@ -269,5 +308,6 @@ export default function Tree({ uuid = null, onSave }) {
 
 Tree.propTypes = {
   onSave: func,
+  onDelete: func,
   uuid: string,
 };

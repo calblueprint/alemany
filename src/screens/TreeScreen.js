@@ -1,16 +1,20 @@
 import React from 'react';
 
-import { shape, string } from 'prop-types';
+import { func, shape, string } from 'prop-types';
 
 import Tree from '../components/Tree';
-import { setTree } from '../database/firebase';
+import { deleteTree, setTree } from '../database/firebase';
 
-export default function TreeScreen({ route }) {
+export default function TreeScreen({ route, navigation }) {
   const { uuid } = route.params;
-  const handleSave = async tree => {
+  const handleSave = tree => {
     setTree(tree);
   };
-  return <Tree onSave={handleSave} uuid={uuid} />;
+  const handleDelete = () => {
+    deleteTree(uuid);
+    navigation.pop();
+  };
+  return <Tree onSave={handleSave} onDelete={handleDelete} uuid={uuid} />;
 }
 
 TreeScreen.propTypes = {
@@ -18,5 +22,8 @@ TreeScreen.propTypes = {
     params: shape({
       uuid: string,
     }),
+  }),
+  navigation: shape({
+    pop: func,
   }),
 };

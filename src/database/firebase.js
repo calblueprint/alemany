@@ -30,7 +30,6 @@ if (firebase.apps.length) {
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
 const userCollection = database.collection('users');
-const commentCollection = database.collection('comments');
 
 /**
  * checkID validates that this ID exists in the `trees` table.
@@ -90,6 +89,16 @@ export const getAllTrees = async () => {
   }
 };
 
+export const deleteTree = async uuid => {
+  try {
+    await treeCollection.doc(uuid).delete();
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
 /**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
@@ -103,67 +112,13 @@ export const setTree = async tree => {
   }
 };
 
+/** Adds a tree to the trees collection. */
 export const addTree = async tree => {
   try {
     const ref = await treeCollection.add(tree);
     const newId = ref.id;
     treeCollection.doc(newId).update({ uuid: newId });
     return newId;
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * same functionality as addTree but for comments:
- * assigns uuid to comment and adds to commentCollection.
- */
-export const saveComment = async comment => {
-  try {
-    const ref = await commentCollection.add(comment);
-    commentCollection.doc(ref.id).update({ uuid: ref.id });
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-export const addComment = async (comment, uuid) => {
-  try {
-    treeCollection
-      .doc(uuid)
-      .update({ comments: firebase.firestore.FieldValue.arrayUnion(comment) });
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * getComment queries the `comments` table and
- * returns a Comment if the ID is found and an empty entry otherwise.
- */
-export const getComment = async uuid => {
-  try {
-    const doc = await commentCollection.doc(uuid).get();
-    return doc.data();
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * setComment creates/updates an entry in the `comments` table given a Comment.
- */
-export const setComment = async comment => {
-  try {
-    await commentCollection.doc(comment.uuid).set(comment);
   } catch (e) {
     console.warn(e);
     throw e;
