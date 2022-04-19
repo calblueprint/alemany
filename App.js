@@ -13,12 +13,10 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import useCachedResources from './src/hooks/useCachedResources';
-import useTheme from './src/hooks/useTheme';
 import Navigation from './src/navigation/index';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const theme = useTheme();
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
