@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import 'react-native-get-random-values';
 import React, { useState, useLayoutEffect } from 'react';
 
@@ -16,9 +17,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FEATURE_POLYGONS } from '../constants/Features';
-import { getTree, uploadImageAsync } from '../database/firebase';
+import { addComment, getTree, uploadImageAsync } from '../database/firebase';
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import Inset from './Inset';
 import Button from './ui/Button';
@@ -78,8 +80,13 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: '#fff',
     borderRadius: 8,
+    overflow: 'hidden',
     marginTop: 15,
     fontSize: 16,
+  },
+  heading: {
+    marginTop: 30,
+    fontSize: 20,
   },
 });
 
@@ -109,6 +116,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   const [images, setImages] = useState([]);
   const [location, setLocation] = useState(null);
   const [editing, setEditing] = useState(uuid === null);
+  const [commentText, setCommentText] = useState('');
   const canEdit = uuid !== null;
 
   useLayoutEffect(() => {
@@ -121,6 +129,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       setComments(tree.comments);
       setImages(tree.images);
       setLocation(tree.location);
+      setComments(tree.comments);
     }
     if (uuid) {
       fetchData();
@@ -174,6 +183,18 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
         style: 'destructive',
       },
     ]);
+  };
+
+  const handleSaveComment = async () => {
+    if (commentText) {
+      const comment = {
+        uuid: uuidv4(),
+        input: commentText,
+      };
+      await addComment(comment, uuid);
+      setComments([...comments, comment]);
+      setCommentText('');
+    }
   };
 
   return (
@@ -293,6 +314,28 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
           }}
           onCancel={() => setDatePickerVisible(false)}
         />
+        {!editing && (
+          <>
+            <Text style={styles.heading}>Comments</Text>
+            {comments?.map((c, i) => (
+              <Text
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
+                editable={false}
+                style={styles.input}
+              >
+                {c.input}
+              </Text>
+            ))}
+            <TextInput
+              placeholder="Add Comment"
+              onChangeText={newValue => setCommentText(newValue)}
+              style={styles.input}
+              value={commentText}
+            />
+            <Button title="Add Comment" onPress={handleSaveComment} />
+          </>
+        )}
         <View style={{ paddingVertical: 10 }}>
           <Button
             backgroundColor={canEdit ? color('rose.500') : '#52bd41'}

@@ -91,7 +91,11 @@ export const getAllTrees = async () => {
 
 export const deleteTree = async uuid => {
   try {
+    const tree = await getTree(uuid);
     await treeCollection.doc(uuid).delete();
+    return Promise.all(
+      tree?.images?.map(image => firebase.storage().refFromURL(image).delete()),
+    );
   } catch (e) {
     console.warn(e);
     throw e;
@@ -119,6 +123,19 @@ export const addTree = async tree => {
     const newId = ref.id;
     treeCollection.doc(newId).update({ uuid: newId });
     return newId;
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
+/** Add comment to a tree document. */
+export const addComment = async (comment, uuid) => {
+  try {
+    treeCollection
+      .doc(uuid)
+      .update({ comments: firebase.firestore.FieldValue.arrayUnion(comment) });
   } catch (e) {
     console.warn(e);
     throw e;

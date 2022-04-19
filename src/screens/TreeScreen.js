@@ -10,8 +10,8 @@ export default function TreeScreen({ route, navigation }) {
   const handleSave = tree => {
     setTree(tree);
   };
-  const handleDelete = () => {
-    deleteTree(uuid);
+  const handleDelete = async () => {
+    await deleteTree(uuid);
     navigation.pop();
   };
   return <Tree onSave={handleSave} onDelete={handleDelete} uuid={uuid} />;
