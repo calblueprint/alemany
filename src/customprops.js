@@ -10,7 +10,7 @@ function checkPlanted(props, propName, componentName) {
 }
 const Comment = PropTypes.arrayOf(PropTypes.object);
 const Tree = PropTypes.shape({
-  address: PropTypes.string,
+  id: PropTypes.string,
   name: PropTypes.string,
   uuid: PropTypes.string,
   location: PropTypes.shape({
