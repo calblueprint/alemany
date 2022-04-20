@@ -109,7 +109,7 @@ export default function ListScreen({
   } else if (searchEntered === true) {
     text = `${data.length} ${data.length === 1 ? 'result' : 'results'}`;
   } else if (data.length === 0) {
-    text = "Oops, that's an invalid search. Try again!";
+    text = 'No matches found for your search. Try again!';
   } else {
     text = 'Suggestions';
   }

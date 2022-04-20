@@ -63,7 +63,7 @@ export default function HomeScreen({ navigation }) {
   const [searchStack, setSearchStack] = useState([]);
   const [searchEntered, setEnter] = useState(false);
 
-  const suggestedSearchStr = (query, first, second) => {
+  const suggestedSearch = (query, first, second) => {
     if (first.slice(0, query.length) === query) {
       if (second.slice(0, query.length) === query) {
         if (first < second) return -1;
@@ -77,25 +77,6 @@ export default function HomeScreen({ navigation }) {
     }
     if (first < second) return -1;
     if (first > second) return 1;
-    return 0;
-  };
-
-  const suggestedSearchNum = (query, first, second) => {
-    const firstNum = parseInt(first, 10);
-    const secondNum = parseInt(second, 10);
-    if (first.slice(0, query.length) === query) {
-      if (second.slice(0, query.length) === query) {
-        if (firstNum < secondNum) return -1;
-        if (firstNum > secondNum) return 1;
-        return 0;
-      }
-      return -1;
-    }
-    if (second.slice(0, query.length) === query) {
-      return 1;
-    }
-    if (firstNum < secondNum) return -1;
-    if (firstNum > secondNum) return 1;
     return 0;
   };
 
@@ -114,9 +95,9 @@ export default function HomeScreen({ navigation }) {
       const firstId = a.id.toLowerCase();
       const secondId = b.id.toLowerCase();
       if (parseInt(query, 10)) {
-        return suggestedSearchNum(query, firstId, secondId);
+        return suggestedSearch(query, firstId, secondId);
       }
-      return suggestedSearchStr(query, firstN, secondN);
+      return suggestedSearch(query, firstN, secondN);
     });
 
   const toggleView = useCallback(() => {
