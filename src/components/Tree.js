@@ -185,7 +185,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
     ]);
   };
 
-  const handleSaveComment = async () => {
+  const handleAddComment = async () => {
     if (commentText) {
       const comment = {
         uuid: uuidv4(),
@@ -333,7 +333,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
               style={styles.input}
               value={commentText}
             />
-            <Button title="Add Comment" onPress={handleSaveComment} />
+            <Button title="Add Comment" onPress={handleAddComment} />
           </>
         )}
         <View style={{ paddingVertical: 10 }}>
