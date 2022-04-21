@@ -42,10 +42,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
   },
-  locationText: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
   nameInput: {
     width: '100%',
     backgroundColor: 'white',
