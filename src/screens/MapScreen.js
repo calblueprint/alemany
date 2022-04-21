@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 
 import { arrayOf, func, shape } from 'prop-types';
 import { StyleSheet, ViewPropTypes, View } from 'react-native';
-import MapView, { Marker, Polygon } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import { FEATURE_POLYGONS } from '../constants/Features';
 import Tree from '../customprops';
 
 const styles = StyleSheet.create({
@@ -45,20 +44,11 @@ export default function MapScreen({ style, navigation, data }) {
       <MapView
         style={styles.map}
         initialRegion={DEFAULT_LOCATION}
+        provider={PROVIDER_GOOGLE}
         mapType="satellite"
-        maxZoomLevel={20}
+        maxZoomLevel={25}
         showsUserLocation
       >
-        {Object.entries(FEATURE_POLYGONS).map(([name, coords]) => (
-          <Polygon
-            // eslint-disable-next-line react/no-array-index-key
-            key={name}
-            coordinates={coords}
-            strokeColor="rgba(255, 255, 0, 1)"
-            strokeWidth={2}
-            fillColor="rgba(0, 0, 0, 0)"
-          />
-        ))}
         {data.map(tree => (
           <Marker
             key={tree.uuid}
