@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { Title } from 'react-native-paper';
 
+
 import LoginScreenIcon from '../components/LoginScreenIcon';
 import ViewContainer from '../components/ViewContainer';
 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginRight: 7,
     marginLeft: 7,
-    width: '12.85%',
+    width: '94%',
     height: 50,
     fontSize: 18,
     position: 'relative',
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginRight: 7,
     marginLeft: 7,
-    width: 40,
+    width: '94%',
     height: 50,
     fontSize: 18,
     position: 'relative',
@@ -120,47 +121,13 @@ export default function VerificationScreen({ route, navigation }) {
     text: '',
   });
 
-  const [verifCode, setVerifCode] = useState([]);
-  const [messageResent, setMessageResent] = useState(false);
-
-  function VerificationFields({ inputRef, number, inputNextRef }) {
-    if (!inputRef || !number || !inputNextRef) {
-      throw new Error('Missing argument for verification field');
-    }
-    const [focused, setFocused] = useState(false);
-    const handleChange = event => {
-      const inputNumber = event.target.value;
-      verifCode[number] = inputNumber;
-      setVerifCode(verifCode);
-      inputNextRef.current.focus();
-    };
-
-    const onFocus = () => setFocused(true);
-    const onBlur = () => setFocused(false);
-
-    return (
-      <TextInput
-        ref={inputRef}
-        style={focused ? styles.input : styles.inputUnfocused}
-        placeholder={number.toString()}
-        value={verifCode[number]}
-        placeholderTextColor="#777"
-        keyboardType="numeric"
-        maxLength={1}
-        onChange={handleChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
-    );
-  }
-
-  VerificationFields.propTypes = {
-    inputRef: React.MutableRefObject,
-    number: Number,
-    inputNextRef: React.MutableRefObject,
-  };
-
   const { verificationId } = route.params;
+  const [verificationCode, setVerificationCode] = useState('');
+  const [messageResent, setMessageResent] = useState(false);
+  const [focused, setFocused] = useState(false);
+
+  const onFocus = () => setFocused(true);
+  const onBlur = () => setFocused(false);
 
   function SubmitButton() {
     return (
@@ -169,7 +136,7 @@ export default function VerificationScreen({ route, navigation }) {
         title="Confirm Verification Code"
         disabled={!verificationId}
         onPress={async () => {
-          const verificationCode = verifCode.join();
+          setVerificationCode(verificationCode);
           try {
             const credential = firebase.auth.PhoneAuthProvider.credential(
               verificationId,
@@ -180,20 +147,14 @@ export default function VerificationScreen({ route, navigation }) {
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('Root');
           } catch (err) {
-            showMessage({ text: 'Incorrect Code' });
+            showMessage({ text: `Error: ${err.message}` });
           }
         }}
       >
-        <Text style={styles.text}>Log in</Text>
+        <Text style={styles.text}>{'Log in'}</Text>
       </Pressable>
     );
   }
-  const input1 = useRef(null);
-  const input2 = useRef(null);
-  const input3 = useRef(null);
-  const input4 = useRef(null);
-  const input5 = useRef(null);
-  const input6 = useRef(null);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -211,35 +172,16 @@ export default function VerificationScreen({ route, navigation }) {
             </View>
           </View>
           <View style={styles.containerForVerificationInput}>
-            <VerificationFields
-              inputRef={input1}
-              number={1}
-              inputNextRef={input2}
-            />
-            <VerificationFields
-              inputRef={input2}
-              number={2}
-              inputNextRef={input3}
-            />
-            <VerificationFields
-              inputRef={input3}
-              number={3}
-              inputNextRef={input4}
-            />
-            <VerificationFields
-              inputRef={input4}
-              number={4}
-              inputNextRef={input5}
-            />
-            <VerificationFields
-              inputRef={input5}
-              number={5}
-              inputNextRef={input6}
-            />
-            <VerificationFields
-              inputRef={input6}
-              number={6}
-              inputNextRef={input6}
+            <TextInput
+              style={focused ? styles.input : styles.inputUnfocused}
+              editable={!!verificationId}
+              placeholder={'123456'}
+              placeholderTextColor="#777"
+              keyboardType="numeric"
+              onChangeText={setVerificationCode}
+              maxLength={6}
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
           </View>
           <View style={styles.rowContainer}>

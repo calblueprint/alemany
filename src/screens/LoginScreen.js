@@ -206,6 +206,7 @@ export default function LoginScreen({ navigation }) {
             </View>
           </View>
           <TextInput
+            inputType="tel"
             style={styles.input}
             placeholder="(123) 456-7890"
             placeholderTextColor="#777"

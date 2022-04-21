@@ -67,15 +67,16 @@ function RootNavigator() {
         name="List"
         component={ListScreen}
         options={{
+
           title: 'List View',
         }}
       />
       <Screen
         name="Login"
-        options={{ headerShown: false, gestureEnabled: false }}
+        options={{ headerShown: false, gestureEnabled: false, headerLeft: null }}
         component={LoginScreen}
       />
-      <Screen name="Verify" component={VerificationScreen} />
+      <Screen name="Verify" component={VerificationScreen} options={{ headerLeft: null, }} />
       <Screen
         name="Root"
         component={TabNavigator}
