@@ -155,7 +155,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       images,
     };
 
-    if (editing) {
+    if (editing && canEdit) {
       setEditing(false);
     }
     if (!canEdit) {
