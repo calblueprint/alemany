@@ -314,7 +314,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
           }}
           onCancel={() => setDatePickerVisible(false)}
         />
-        {!editing && (
+        {canEdit && !editing && (
           <>
             <Text style={styles.heading}>Comments</Text>
             {comments?.map((c, i) => (
