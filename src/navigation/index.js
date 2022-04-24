@@ -54,6 +54,7 @@ function RootNavigator() {
         options={{
           headerShown: false,
           gestureEnabled: false,
+          headerBackVisible: false
         }}
       />
       <Screen
@@ -73,10 +74,10 @@ function RootNavigator() {
       />
       <Screen
         name="Login"
-        options={{ headerShown: false, gestureEnabled: false, headerLeft: null }}
+        options={{ headerShown: false, gestureEnabled: false, headerLeft: null, headerBackVisible: false }}
         component={LoginScreen}
       />
-      <Screen name="Verify" component={VerificationScreen} options={{ headerLeft: null, }} />
+      <Screen name="Verify" component={VerificationScreen} options={{ headerLeft: null, headerBackVisible: false }} />
       <Screen
         name="Root"
         component={TabNavigator}

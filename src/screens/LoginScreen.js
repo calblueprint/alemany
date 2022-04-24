@@ -109,6 +109,7 @@ function VerifyButton({
   setVerificationId,
   recaptchaVerifier,
 }) {
+
   const onPress = async () => {
     // FIXME: Bypass checking if the phone number is in the
     // Users table (entered via Retool dashboard).
@@ -117,6 +118,7 @@ function VerifyButton({
       if (phoneNumber.length === 9) {
         setMessage({ text: 'Invalid phone number' });
       }
+
       const normalizedNumber = e164ify(phoneNumber);
 
       const authorizedPhoneNumber = await checkPhoneNumber(
@@ -135,7 +137,6 @@ function VerifyButton({
         });
       }
     } catch (err) {
-      setMessage({ text: `Error: ${err.message}` });
     }
   };
 
@@ -173,9 +174,11 @@ export default function LoginScreen({ navigation }) {
       });
       navigation.navigate('Verify', {
         verificationId,
+        phoneNumber,
+        //ADD ALL ADDTIONAL METHODS HERE!
       });
     }
-  }, [verificationId, navigation]);
+  }, [verificationId, phoneNumber, navigation]);
 
   const setFormattedPhoneNumber = input => {
     if (input.length < phoneNumber.length) {
@@ -185,6 +188,19 @@ export default function LoginScreen({ navigation }) {
     const formatted = new AsYouType('US').input(input);
     setPhoneNumber(formatted);
   };
+
+  const onChange = (text) => {
+    var cleaned = ("" + text).replace(/\D/g, "");
+    var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      var intlCode = match[1] ? "+1 " : "",
+        number = [intlCode, "(", match[2], ") ", match[3], "-", match[4]].join(
+          ""
+        );
+      return number;
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
@@ -213,6 +229,7 @@ export default function LoginScreen({ navigation }) {
             onChangeText={setFormattedPhoneNumber}
             keyboardType="phone-pad"
             value={phoneNumber}
+            onChange={onChange}
           />
 
           {message ? (

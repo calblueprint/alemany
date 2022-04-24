@@ -117,12 +117,13 @@ const styles = StyleSheet.create({
 });
 
 export default function VerificationScreen({ route, navigation }) {
+  const [verificationCode, setVerificationCode] = useState('');
   const [message, showMessage] = React.useState({
     text: '',
   });
 
-  const { verificationId } = route.params;
-  const [verificationCode, setVerificationCode] = useState('');
+  const { verificationId, phoneNumber } = route.params;
+  const [finalVerifId, setfinalVerifId] = useState(verificationId)
   const [messageResent, setMessageResent] = useState(false);
   const [focused, setFocused] = useState(false);
 
@@ -147,14 +148,44 @@ export default function VerificationScreen({ route, navigation }) {
             showMessage({ text: 'Phone authentication successful' });
             navigation.navigate('Root');
           } catch (err) {
-            showMessage({ text: `Error: ${err.message}` });
+            showMessage({ text: ` ${err}}` });
           }
-        }}
+        }
+        }
       >
         <Text style={styles.text}>{'Log in'}</Text>
       </Pressable>
     );
   }
+
+  function e164ify(number) {
+    return parsePhoneNumber(number, 'US').format('E.164');
+  }
+
+  const ResendButton = () => {
+
+    return (
+      <Pressable>
+        <Text
+          onPress={async () => {
+            const normalizedNumber = e164ify(phoneNumber);
+            const phoneProvider = new firebase.auth.PhoneAuthProvider();
+            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+              normalizedNumber,
+              recaptchaVerifier.current,
+            );
+            setfinalVerifId(tempVerificationID);
+          }
+          }
+          style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}
+        >
+          Resend
+        </Text>
+      </Pressable>
+    )
+
+  }
+
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -186,16 +217,7 @@ export default function VerificationScreen({ route, navigation }) {
           </View>
           <View style={styles.rowContainer}>
             <Text>{"Didn't get a code? "}</Text>
-            <Pressable>
-              <Text
-                onPress={() => {
-                  setMessageResent(true);
-                }}
-                style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}
-              >
-                Resend
-              </Text>
-            </Pressable>
+            <ResendButton />
           </View>
           {message && (
             <TouchableOpacity onPress={() => showMessage({ text: '' })}>
