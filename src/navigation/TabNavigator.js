@@ -22,14 +22,6 @@ export default function TabNavigator() {
       initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#52bd41',
-        tabBarStyle: { position: 'absolute', height: 80 },
-        tabBarBackground: () => (
-          <BlurView
-            tint="light"
-            intensity={100}
-            style={StyleSheet.absoluteFill}
-          />
-        ),
       }}
     >
       <Screen
