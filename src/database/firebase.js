@@ -7,9 +7,10 @@ import {
   APP_ID,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/storage';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export const config = {
   apiKey: API_KEY,
@@ -20,13 +21,15 @@ export const config = {
   appId: APP_ID,
 };
 
-!firebase.apps.length ? firebase.initializeApp(config) : firebase.app();
+if (firebase.apps.length) {
+  firebase.app();
+} else {
+  firebase.initializeApp(config);
+}
 
 const database = firebase.firestore();
 const treeCollection = database.collection('trees');
 const userCollection = database.collection('users');
-const commentCollection = database.collection('comments');
-const additionalCollection = database.collection('additional');
 
 /**
  * checkID validates that this ID exists in the `trees` table.
@@ -86,6 +89,20 @@ export const getAllTrees = async () => {
   }
 };
 
+export const deleteTree = async uuid => {
+  try {
+    const tree = await getTree(uuid);
+    await treeCollection.doc(uuid).delete();
+    return Promise.all(
+      tree?.images?.map(image => firebase.storage().refFromURL(image).delete()),
+    );
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
 /**
  * setTree creates/updates an entry in the `trees` table given a Tree.
  */
@@ -99,6 +116,7 @@ export const setTree = async tree => {
   }
 };
 
+/** Adds a tree to the trees collection. */
 export const addTree = async tree => {
   try {
     const ref = await treeCollection.add(tree);
@@ -112,21 +130,7 @@ export const addTree = async tree => {
   }
 };
 
-/**
- * same functionality as addTree but for comments:
- * assigns uuid to comment and adds to commentCollection.
- */
-export const saveComment = async comment => {
-  try {
-    const ref = await commentCollection.add(comment);
-    commentCollection.doc(ref.id).update({ uuid: ref.id });
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
+/** Add comment to a tree document. */
 export const addComment = async (comment, uuid) => {
   try {
     treeCollection
@@ -139,59 +143,28 @@ export const addComment = async (comment, uuid) => {
   }
 };
 
-/**
- * getComment queries the `comments` table and
- * returns a Comment if the ID is found and an empty entry otherwise.
- */
-export const getComment = async uuid => {
-  try {
-    const doc = await commentCollection.doc(uuid).get();
-    return doc.data();
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
+export const uploadImageAsync = async uri => {
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      resolve(xhr.response);
+    };
+    xhr.onerror = () => {
+      // TODO: handle error
+      reject(new TypeError('Network request failed'));
+    };
+    xhr.responseType = 'blob';
+    xhr.open('GET', uri, true);
+    xhr.send(null);
+  });
+
+  const fileRef = firebase.storage().ref(uuidv4());
+  await fileRef.put(blob);
+
+  // We're done with the blob, close and release it
+  blob.close();
+
+  return fileRef.getDownloadURL();
 };
 
-/**
- * setComment creates/updates an entry in the `comments` table given a Comment.
- */
-export const setComment = async comment => {
-  try {
-    await commentCollection.doc(comment.uuid).set(comment);
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * getAdditional queries the `additional` table and
- * returns an Additional if the ID is found and an empty entry otherwise.
- */
-export const getAdditional = async uuid => {
-  try {
-    const doc = await additionalCollection.doc(uuid).get();
-    return doc.data();
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
-
-/**
- * setAdditional creates/updates an entry in the `additional` table given a Additional.
- */
-export const setAdditional = async additional => {
-  try {
-    await additionalCollection.doc(additional.uuid).set(additional);
-  } catch (e) {
-    console.warn(e);
-    throw e;
-    // TODO: Add error handling.
-  }
-};
 export default firebase;

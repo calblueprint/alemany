@@ -14,7 +14,7 @@ export default function AuthLoadingScreen({ navigation }) {
           if (url) {
             const { queryParams } = Linking.parse(url);
             if (queryParams.uuid) {
-              navigation.push('TreeDetails', { uuid: queryParams.uuid });
+              navigation.push('TreeScreen', { uuid: queryParams.uuid });
             }
           }
         });

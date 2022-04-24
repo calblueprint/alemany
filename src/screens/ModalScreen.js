@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, View } from 'react-native';
-import { Title } from 'react-native-paper';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import ViewContainer from '../components/ViewContainer';
@@ -19,7 +18,6 @@ const styles = StyleSheet.create({
 export default function ModalScreen() {
   return (
     <ViewContainer>
-      <Title>Modal</Title>
       <View style={styles.separator} />
       <EditScreenInfo path="/screens/ModalScreen.tsx" />
 

@@ -5,8 +5,8 @@ import {
   FirebaseRecaptchaBanner,
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { AsYouType, parsePhoneNumber } from 'libphonenumber-js';
 import { any, func, node, shape, string } from 'prop-types';
 import { Button, StyleSheet, Text, TextInput } from 'react-native';

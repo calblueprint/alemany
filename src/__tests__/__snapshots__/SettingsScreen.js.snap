@@ -47,6 +47,7 @@ exports[`Settings Screen should have an attribution 1`] = `
         style={
           Object {
             "backgroundColor": "#eaeaef",
+            "borderColor": "transparent",
             "borderRadius": 8,
             "marginTop": 10,
             "padding": 20,
@@ -56,6 +57,7 @@ exports[`Settings Screen should have an attribution 1`] = `
         <Text
           style={
             Object {
+              "color": "#000",
               "fontSize": 18,
               "fontWeight": "600",
               "textAlign": "center",
