@@ -1,8 +1,6 @@
 import * as React from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BlurView } from 'expo-blur';
-import { StyleSheet } from 'react-native';
 
 import Icon from '../components/Icon';
 import AddScreen from '../screens/AddScreen';
