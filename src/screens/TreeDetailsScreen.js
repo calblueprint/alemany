@@ -7,8 +7,9 @@ import React, {
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 import { IconButton, TextInput } from 'react-native-paper';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import ViewContainer from '../components/ViewContainer';
 import { getTree, setTree, addComment } from '../database/firebase';
@@ -75,79 +76,83 @@ export default function TreeDetailsScreen({ route, navigation }) {
   };
 
   return (
-    <ViewContainer>
-      <TextInput
-        disabled={!isEditing}
-        label="Name"
-        onChangeText={value => setEntry({ ...entry, name: value.toString() })}
-        style={styles.input}
-        value={entry.name}
-      />
-      <TextInput
-        disabled={!isEditing}
-        label="ID"
-        onChangeText={value => setEntry({ ...entry, id: value.toString() })}
-        style={styles.input}
-        value={entry.id}
-      />
-      <TextInput
-        disabled={!isEditing}
-        label="Latitude"
-        onChangeText={
-          value =>
-            setEntry({
-              ...entry,
-              location: { ...entry.location, latitude: Number(value) },
-            })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-        style={styles.input}
-        value={entry.location.latitude.toString()}
-      />
-      <TextInput
-        disabled={!isEditing}
-        label="Longitude"
-        onChangeText={
-          value =>
-            setEntry({
-              ...entry,
-              location: { ...entry.location, longitude: Number(value) },
-            })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-        style={styles.input}
-        value={entry.location.longitude.toString()}
-      />
-      <TextInput
-        disabled={!isEditing}
-        label="Date Planted"
-        style={styles.input}
-        // eslint-disable-next-line react/jsx-no-bind
-        value={entry.planted && entry.planted.toDate().toLocaleDateString()}
-      />
-      {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
-      {entry.comments?.map((c, i) => (
+    <KeyboardAwareScrollView>
+
+      <ViewContainer>
+
         <TextInput
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          disabled="true"
-          label="Comment"
+          disabled={!isEditing}
+          label="Name"
+          onChangeText={value => setEntry({ ...entry, name: value.toString() })}
           style={styles.input}
-          value={c.input}
+          value={entry.name}
         />
-      ))}
-      <TextInput
-        label="Add Comment"
-        onChangeText={
-          value => setComment({ ...comment, input: value.toString() })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-        ref={addCommentText}
-        style={styles.input}
-        value={comment.input}
-      />
-      <Button title="Add Comment" onPress={handleSaveComment} />
-    </ViewContainer>
+        <TextInput
+          disabled={!isEditing}
+          label="ID"
+          onChangeText={value => setEntry({ ...entry, id: value.toString() })}
+          style={styles.input}
+          value={entry.id}
+        />
+        <TextInput
+          disabled={!isEditing}
+          label="Latitude"
+          onChangeText={
+            value =>
+              setEntry({
+                ...entry,
+                location: { ...entry.location, latitude: Number(value) },
+              })
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
+          style={styles.input}
+          value={entry.location.latitude.toString()}
+        />
+        <TextInput
+          disabled={!isEditing}
+          label="Longitude"
+          onChangeText={
+            value =>
+              setEntry({
+                ...entry,
+                location: { ...entry.location, longitude: Number(value) },
+              })
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
+          style={styles.input}
+          value={entry.location.longitude.toString()}
+        />
+        <TextInput
+          disabled={!isEditing}
+          label="Date Planted"
+          style={styles.input}
+          // eslint-disable-next-line react/jsx-no-bind
+          value={entry.planted && entry.planted.toDate().toLocaleDateString()}
+        />
+        {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
+        {entry.comments?.map((c, i) => (
+          <TextInput
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            disabled="true"
+            label="Comment"
+            style={styles.input}
+            value={c.input}
+          />
+        ))}
+        <TextInput
+          label="Add Comment"
+          onChangeText={
+            value => setComment({ ...comment, input: value.toString() })
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
+          ref={addCommentText}
+          style={styles.input}
+          value={comment.input}
+        />
+        <Button title="Add Comment" onPress={handleSaveComment} />
+      </ViewContainer>
+    </KeyboardAwareScrollView>
   );
 }
 
