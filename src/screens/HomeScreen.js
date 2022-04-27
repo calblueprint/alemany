@@ -119,6 +119,7 @@ export default function HomeScreen({ navigation }) {
         <MapScreen
           data={filtered}
           navigation={navigation}
+          isList={isListView}
           style={{
             position: 'absolute',
             zIndex: 2,
