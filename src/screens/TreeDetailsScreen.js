@@ -7,9 +7,9 @@ import React, {
 } from 'react';
 
 import { shape, func, string } from 'prop-types';
-import { StyleSheet, Button, View } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { IconButton, TextInput } from 'react-native-paper';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import ViewContainer from '../components/ViewContainer';
 import { getTree, setTree, addComment } from '../database/firebase';
@@ -77,9 +77,7 @@ export default function TreeDetailsScreen({ route, navigation }) {
 
   return (
     <KeyboardAwareScrollView>
-
       <ViewContainer>
-
         <TextInput
           disabled={!isEditing}
           label="Name"
@@ -129,7 +127,9 @@ export default function TreeDetailsScreen({ route, navigation }) {
           // eslint-disable-next-line react/jsx-no-bind
           value={entry.planted && entry.planted.toDate().toLocaleDateString()}
         />
-        {isEditing && <Button title="Save Changes" onPress={handleSaveChanges} />}
+        {isEditing && (
+          <Button title="Save Changes" onPress={handleSaveChanges} />
+        )}
         {entry.comments?.map((c, i) => (
           <TextInput
             // eslint-disable-next-line react/no-array-index-key
