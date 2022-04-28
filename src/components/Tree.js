@@ -16,6 +16,7 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -194,154 +195,158 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   };
 
   return (
-    <ScrollView>
-      {canEdit && (
-        <Pressable
-          onPress={() => {
-            if (editing) {
-              handleSave();
-            } else {
-              setEditing(true);
-            }
-          }}
-          style={styles.toolbar}
-        >
-          <Inset>
-            <Text style={styles.toolbarText}>{editing ? 'Save' : 'Edit'}</Text>
-          </Inset>
-        </Pressable>
-      )}
-      <TextInput
-        placeholder="Name"
-        value={name}
-        onChangeText={newValue => setName(newValue)}
-        style={styles.nameInput}
-        editable={editing}
-      />
-      <Pressable
-        onPress={async () => {
-          if (editing) {
-            const uri = await pickImage();
-            if (uri) {
-              setImages([uri]);
-            }
-          }
-        }}
-      >
-        {images?.length ? (
-          <Image style={styles.image} source={{ uri: images[0] }} />
-        ) : (
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.imageText}>
-              {editing
-                ? 'Press to add image...'
-                : 'Press edit to add an image.'}
-            </Text>
-          </View>
-        )}
-      </Pressable>
-      <Inset>
-        {location && !location.latitude && (
-          <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-            <ActivityIndicator />
-            <Text style={{ marginLeft: 5 }}>Fetching your location...</Text>
-          </View>
-        )}
-        {location && location.latitude && (
-          <>
-            <Text>
-              Latitude:&nbsp;
-              {location.latitude}
-            </Text>
-            <Text style={{ marginTop: 2 }}>
-              Longitude:&nbsp;
-              {location.longitude}
-            </Text>
-          </>
-        )}
-        {editing && (
+    <KeyboardAwareScrollView>
+      <ScrollView>
+        {canEdit && (
           <Pressable
-            onPress={async () => {
-              if (location) {
-                setLocation(null);
-                return;
+            onPress={() => {
+              if (editing) {
+                handleSave();
+              } else {
+                setEditing(true);
               }
-              setLocation({
-                latitude: null,
-                longitude: null,
-              });
-              const currentLocation = await getCurrentLocation();
-              setLocation(currentLocation);
             }}
-            style={{
-              backgroundColor: '#fff',
-              padding: 14,
-              borderRadius: 8,
-              marginTop: 10,
-            }}
+            style={styles.toolbar}
           >
-            <Text style={{ fontWeight: '500' }}>
-              {location ? 'Remove ' : 'Tag with current '}
-              location
-            </Text>
+            <Inset>
+              <Text style={styles.toolbarText}>
+                {editing ? 'Save' : 'Edit'}
+              </Text>
+            </Inset>
           </Pressable>
         )}
         <TextInput
-          placeholder="Address"
-          value={id}
-          onChangeText={newValue => setID(newValue)}
-          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={newValue => setName(newValue)}
+          style={styles.nameInput}
           editable={editing}
         />
         <Pressable
-          style={styles.input}
-          onPress={() => editing && setDatePickerVisible(true)}
-        >
-          <Text style={{ fontSize: 16 }}>
-            {planted?.toLocaleDateString() || 'Date planted'}
-          </Text>
-        </Pressable>
-        <DateTimePickerModal
-          isVisible={datePickerVisible}
-          mode="date"
-          onConfirm={date => {
-            setPlanted(date);
-            setDatePickerVisible(false);
+          onPress={async () => {
+            if (editing) {
+              const uri = await pickImage();
+              if (uri) {
+                setImages([uri]);
+              }
+            }
           }}
-          onCancel={() => setDatePickerVisible(false)}
-        />
-        {canEdit && !editing && (
-          <>
-            <Text style={styles.heading}>Comments</Text>
-            {comments?.map((c, i) => (
-              <Text
-                // eslint-disable-next-line react/no-array-index-key
-                key={i}
-                editable={false}
-                style={styles.input}
-              >
-                {c.input}
+        >
+          {images?.length ? (
+            <Image style={styles.image} source={{ uri: images[0] }} />
+          ) : (
+            <View style={styles.imagePlaceholder}>
+              <Text style={styles.imageText}>
+                {editing
+                  ? 'Press to add image...'
+                  : 'Press edit to add an image.'}
               </Text>
-            ))}
-            <TextInput
-              placeholder="Add Comment"
-              onChangeText={newValue => setCommentText(newValue)}
-              style={styles.input}
-              value={commentText}
-            />
-            <Button title="Add Comment" onPress={handleAddComment} />
-          </>
-        )}
-        <View style={{ paddingVertical: 10 }}>
-          <Button
-            backgroundColor={canEdit ? color('rose.500') : '#52bd41'}
-            color="#fff"
-            title={canEdit ? 'Delete' : 'Save'}
-            onPress={canEdit ? handleDelete : handleSave}
+            </View>
+          )}
+        </Pressable>
+        <Inset>
+          {location && !location.latitude && (
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+              <ActivityIndicator />
+              <Text style={{ marginLeft: 5 }}>Fetching your location...</Text>
+            </View>
+          )}
+          {location && location.latitude && (
+            <>
+              <Text>
+                Latitude:&nbsp;
+                {location.latitude}
+              </Text>
+              <Text style={{ marginTop: 2 }}>
+                Longitude:&nbsp;
+                {location.longitude}
+              </Text>
+            </>
+          )}
+          {editing && (
+            <Pressable
+              onPress={async () => {
+                if (location) {
+                  setLocation(null);
+                  return;
+                }
+                setLocation({
+                  latitude: null,
+                  longitude: null,
+                });
+                const currentLocation = await getCurrentLocation();
+                setLocation(currentLocation);
+              }}
+              style={{
+                backgroundColor: '#fff',
+                padding: 14,
+                borderRadius: 8,
+                marginTop: 10,
+              }}
+            >
+              <Text style={{ fontWeight: '500' }}>
+                {location ? 'Remove ' : 'Tag with current '}
+                location
+              </Text>
+            </Pressable>
+          )}
+          <TextInput
+            placeholder="Address"
+            value={id}
+            onChangeText={newValue => setID(newValue)}
+            style={styles.input}
+            editable={editing}
           />
-        </View>
-      </Inset>
-    </ScrollView>
+          <Pressable
+            style={styles.input}
+            onPress={() => editing && setDatePickerVisible(true)}
+          >
+            <Text style={{ fontSize: 16 }}>
+              {planted?.toLocaleDateString() || 'Date planted'}
+            </Text>
+          </Pressable>
+          <DateTimePickerModal
+            isVisible={datePickerVisible}
+            mode="date"
+            onConfirm={date => {
+              setPlanted(date);
+              setDatePickerVisible(false);
+            }}
+            onCancel={() => setDatePickerVisible(false)}
+          />
+          {canEdit && !editing && (
+            <>
+              <Text style={styles.heading}>Comments</Text>
+              {comments?.map((c, i) => (
+                <Text
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={i}
+                  editable={false}
+                  style={styles.input}
+                >
+                  {c.input}
+                </Text>
+              ))}
+              <TextInput
+                placeholder="Add Comment"
+                onChangeText={newValue => setCommentText(newValue)}
+                style={styles.input}
+                value={commentText}
+              />
+              <Button title="Add Comment" onPress={handleAddComment} />
+            </>
+          )}
+          <View style={{ paddingVertical: 10 }}>
+            <Button
+              backgroundColor={canEdit ? color('rose.500') : '#52bd41'}
+              color="#fff"
+              title={canEdit ? 'Delete' : 'Save'}
+              onPress={canEdit ? handleDelete : handleSave}
+            />
+          </View>
+        </Inset>
+      </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
