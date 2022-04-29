@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firebase from 'firebase/compat/app';
+import { parsePhoneNumber } from 'libphonenumber-js';
 import { shape, func, string } from 'prop-types';
 import {
   Pressable,
@@ -15,7 +16,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Title } from 'react-native-paper';
-
 
 import LoginScreenIcon from '../components/LoginScreenIcon';
 import ViewContainer from '../components/ViewContainer';
@@ -123,7 +123,7 @@ export default function VerificationScreen({ route, navigation }) {
   });
 
   const { verificationId, phoneNumber } = route.params;
-  const [finalVerifId, setfinalVerifId] = useState(verificationId)
+  const [finalVerifId, setfinalVerifId] = useState(verificationId);
   const [messageResent, setMessageResent] = useState(false);
   const [focused, setFocused] = useState(false);
 
@@ -150,10 +150,9 @@ export default function VerificationScreen({ route, navigation }) {
           } catch (err) {
             showMessage({ text: ` ${err}}` });
           }
-        }
-        }
+        }}
       >
-        <Text style={styles.text}>{'Log in'}</Text>
+        <Text style={styles.text}>Log in</Text>
       </Pressable>
     );
   }
@@ -162,31 +161,31 @@ export default function VerificationScreen({ route, navigation }) {
     return parsePhoneNumber(number, 'US').format('E.164');
   }
 
-  const ResendButton = () => {
-
-    return (
-      <Pressable>
-        <Text
-          onPress={async () => {
-            const normalizedNumber = e164ify(phoneNumber);
-            const phoneProvider = new firebase.auth.PhoneAuthProvider();
-            const tempVerificationID = await phoneProvider.verifyPhoneNumber(
-              normalizedNumber,
-              recaptchaVerifier.current,
+  const ResendButton = () => (
+    <Pressable>
+      <Text
+        onPress={async () => {
+          const normalizedNumber = e164ify(phoneNumber);
+          const phoneProvider = new firebase.auth.PhoneAuthProvider();
+          const tempVerificationID = await phoneProvider.verifyPhoneNumber(
+            normalizedNumber,
+          );
+          setfinalVerifId(tempVerificationID);
+          try {
+            const credential = firebase.auth.PhoneAuthProvider.credential(
+              verificationId,
+              verificationCode,
             );
-            setfinalVerifId(tempVerificationID);
-          }
-          }
-          style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}
-        >
-          Resend
-        </Text>
-      </Pressable>
-    )
-
-  }
-
-
+            await AsyncStorage.setItem('userToken', credential.providerId);
+            await firebase.auth().signInWithCredential(credential);
+          } catch (error) {}
+        }}
+        style={{ fontWeight: 'bold', textDecorationLine: 'underline' }}
+      >
+        Resend
+      </Text>
+    </Pressable>
+  );
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }}>
@@ -206,7 +205,7 @@ export default function VerificationScreen({ route, navigation }) {
             <TextInput
               style={focused ? styles.input : styles.inputUnfocused}
               editable={!!verificationId}
-              placeholder={'123456'}
+              placeholder="123456"
               placeholderTextColor="#777"
               keyboardType="numeric"
               onChangeText={setVerificationCode}
