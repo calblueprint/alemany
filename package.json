@@ -60,6 +60,7 @@
     "react-native": "^0.64.3",
     "react-native-dotenv": "^3.2.0",
     "react-native-get-random-values": "^1.7.2",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "0.29.4",
     "react-native-modal-datetime-picker": "^13.1.0",
     "react-native-paper": "^4.8.1",
