@@ -8,6 +8,7 @@ import {
   Text,
   View,
   ViewPropTypes,
+  alert,,
 } from 'react-native';
 
 import Inset from '../components/Inset';
@@ -27,7 +28,9 @@ const storeSearchStack = async value => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem('@storage_Key', jsonValue);
-  } catch (e) {}
+  } catch (e) {
+    alert('Could not store searchStack');
+  }
 };
 
 const SearchCardsComp = ({

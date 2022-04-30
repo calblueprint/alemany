@@ -3,6 +3,7 @@ import React, {
   useLayoutEffect,
   useCallback,
   useEffect,
+  alert,
 } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -141,7 +142,9 @@ export default function HomeScreen({ navigation }) {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem('@storage_Key', jsonValue);
-    } catch (e) {}
+    } catch (e) {
+      alert('Could not store search searchStack');
+    }
   };
 
   const getSearchStack = async () => {
@@ -150,7 +153,9 @@ export default function HomeScreen({ navigation }) {
       jsonValue != null
         ? setSearchStack(JSON.parse(jsonValue))
         : setSearchStack([]);
-    } catch (e) {}
+    } catch (e) {
+      alert('Could not get searchStack');
+    }
   };
 
   useEffect(() => {
