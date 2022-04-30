@@ -1,16 +1,13 @@
-import React, { useState, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useRef } from 'react';
 
-import BottomSheet, {
-  BottomSheetTextInput,
-  BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
 import { func, shape, string } from 'prop-types';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import Icon from '../components/Icon';
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
+import Sheet from '../components/Sheet';
 import { color } from '../components/ui/colors';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import { getAllTrees, checkID } from '../database/firebase';
@@ -29,7 +26,7 @@ function Search({ onQueryChange, query }) {
       }}
     >
       <Icon style={{ marginRight: 5 }} size={20} name="search" />
-      <BottomSheetTextInput
+      <TextInput
         style={{
           flex: 1,
           fontSize: 18,
@@ -54,7 +51,7 @@ export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [trees, setTrees] = useState([]);
   const [active, setActive] = useState(null);
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const rbSheetRef = useRef();
 
   useLayoutEffect(() => {
     async function getTrees() {
@@ -77,6 +74,10 @@ export default function HomeScreen({ navigation }) {
         tree.name?.toLowerCase().includes(query) || tree.address.includes(query)
       );
     });
+
+  useLayoutEffect(() => {
+    rbSheetRef.current?.open();
+  }, [rbSheetRef]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -106,18 +107,14 @@ export default function HomeScreen({ navigation }) {
           />
         ))}
       </MapView>
-      <BottomSheet
-        snapPoints={snapPoints}
-        onChange={() => {}}
-        keyboardBehavior="extend"
-      >
+      <Sheet ref={rbSheetRef} closeOnDragDown={false} closeOnPressMask={false}>
         <Inset>
           <Search
             onQueryChange={query => setSearchQuery(query)}
             query={searchQuery}
           />
         </Inset>
-        <BottomSheetScrollView>
+        <ScrollView>
           <Inset>
             <Text
               style={{
@@ -146,8 +143,8 @@ export default function HomeScreen({ navigation }) {
               );
             })}
           </View>
-        </BottomSheetScrollView>
-      </BottomSheet>
+        </ScrollView>
+      </Sheet>
     </View>
   );
 }
