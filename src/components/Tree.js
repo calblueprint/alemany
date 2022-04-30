@@ -114,6 +114,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   const [location, setLocation] = useState(null);
   const [editing, setEditing] = useState(uuid === null);
   const [commentText, setCommentText] = useState('');
+  const allFields = name !== '' && planted !== null && id !== '';
   const canEdit = uuid !== null;
 
   useLayoutEffect(() => {
@@ -133,8 +134,36 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
     }
   }, [uuid]);
 
+  const handleError = errorField => {
+    Alert.alert(
+      `Not all fields are filled in. Please specify a value for:\n ${errorField}`,
+    );
+  };
+  const verifyFields = () => {
+    let final = '';
+    let nameSpace = name;
+    let addressSpace = id;
+    nameSpace = nameSpace.replace(/\s+/g, '');
+    addressSpace = addressSpace.replace(/\s+/g, '');
+    if (nameSpace === '') {
+      final += '- Name\n';
+    }
+    if (addressSpace === '') {
+      final += '- Address\n';
+    }
+    if (planted === null) {
+      final += '- Date Planted\n';
+    }
+    return final;
+  };
+
   const handleSave = async () => {
     let region = null;
+    const val = verifyFields();
+    if (val) {
+      handleError(val);
+      return;
+    }
     Object.entries(FEATURE_POLYGONS).forEach(([key, value]) => {
       if (isPointInPolygon(location, value)) {
         region = key;
