@@ -163,7 +163,7 @@ export default function HomeScreen({ navigation }) {
   }, []);
 
   const editSearchHistory = newSearch => {
-    if (searchStack.filter(e => e.uuid === newSearch.uuid).length > 0) {
+    if (searchStack?.filter(e => e.uuid === newSearch.uuid).length > 0) {
       const foundInd = searchStack.findIndex(el => el.uuid === newSearch.uuid);
       searchStack.splice(foundInd, 1);
     }

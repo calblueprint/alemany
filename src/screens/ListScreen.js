@@ -8,7 +8,7 @@ import {
   Text,
   View,
   ViewPropTypes,
-  alert,,
+  alert,
 } from 'react-native';
 
 import Inset from '../components/Inset';
@@ -37,9 +37,9 @@ const SearchCardsComp = ({
   scroll,
   navigation,
   marginBottom,
+  marginTop,
   label,
   labelAlign,
-  addHistory,
   searchStack,
 }) => (
   <View>
@@ -48,7 +48,7 @@ const SearchCardsComp = ({
         style={{
           fontSize: 15,
           color: '#3b3f51',
-          marginTop: 10,
+          marginTop,
           textAlign: labelAlign,
         }}
       >
@@ -64,20 +64,19 @@ const SearchCardsComp = ({
             name={name}
             comments={comments}
             onPress={() => {
-              navigation.push('TreeDetails', { uuid });
-              if (addHistory) {
-                if (searchStack.filter(e => e.uuid === tree.uuid).length > 0) {
-                  const foundInd = searchStack.findIndex(
-                    el => el.uuid === tree.uuid,
-                  );
-                  searchStack.splice(foundInd, 1);
-                }
-                searchStack.unshift(tree);
-                if (searchStack.length > 5) {
-                  searchStack.pop();
-                }
-                storeSearchStack(searchStack);
+              navigation.push('TreeScreen', { uuid });
+              if (searchStack?.filter(e => e.uuid === tree.uuid).length > 0) {
+                const foundInd = searchStack.findIndex(
+                  el => el.uuid === tree.uuid,
+                );
+                searchStack.splice(foundInd, 1);
               }
+              searchStack.unshift(tree);
+              if (searchStack.length > 5) {
+                searchStack.pop();
+              }
+              storeSearchStack(searchStack);
+              // }
             }}
           />
         );
@@ -94,9 +93,9 @@ SearchCardsComp.propTypes = {
     push: func,
   }),
   marginBottom: number,
+  marginTop: number,
   label: string,
   labelAlign: string,
-  addHistory: bool,
   // eslint-disable-next-line react/forbid-prop-types
   searchStack: array,
 };
@@ -125,9 +124,10 @@ export default function ListScreen({
         {searchQuery.length === 0 && searchStack.length !== 0 ? (
           <SearchCardsComp
             scroll={searchStack}
-            addHistory={false}
+            searchStack={searchStack}
             navigation={navigation}
             marginBottom={0}
+            marginTop={50}
             label="Recents"
             labelAlign="left"
           />
@@ -136,10 +136,10 @@ export default function ListScreen({
       <View>
         <SearchCardsComp
           scroll={data}
-          addHistory
           searchStack={searchStack}
           navigation={navigation}
-          marginBottom={260}
+          marginBottom={140}
+          marginTop={10}
           label={text}
           labelAlign={searchEntered === true ? 'right' : 'left'}
         />
