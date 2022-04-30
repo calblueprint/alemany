@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 
-import { arrayOf, bool, func, shape } from 'prop-types';
-import { Platform, StyleSheet, ViewPropTypes, View } from 'react-native';
+import { arrayOf, func, shape } from 'prop-types';
+import { StyleSheet, ViewPropTypes, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
-import Button from '../components/ui/Button';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import Tree from '../customprops';
-
-const check = {
-  isAndroid: () => Platform.OS === 'android',
-};
 
 const styles = StyleSheet.create({
   map: {
@@ -34,19 +29,16 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    bottom: check.isAndroid ? -20 : 60,
+    bottom: 60,
     position: 'absolute',
     zIndex: 500,
   },
 });
 
 // eslint-disable-next-line no-unused-vars
-export default function MapScreen({ style, navigation, data, isList }) {
+export default function MapScreen({ style, navigation, data }) {
   const [active, setActive] = useState(null);
-  const mapRef = React.useRef(null);
-  const goToFarm = () => {
-    mapRef.current.animateToRegion(DEFAULT_LOCATION, 1000);
-  };
+
   return (
     <View>
       <MapView
@@ -56,8 +48,6 @@ export default function MapScreen({ style, navigation, data, isList }) {
         mapType="satellite"
         maxZoomLevel={25}
         showsUserLocation
-        ref={mapRef}
-        toolbarEnabled={false}
       >
         {data.map(tree => (
           <Marker
@@ -76,36 +66,26 @@ export default function MapScreen({ style, navigation, data, isList }) {
             pinColor={tree.uuid === active?.uuid ? '#f00' : '#0f0'}
           />
         ))}
+        <View style={styles.card}>
+          {active && (
+            <SearchCard
+              key={active.uuid}
+              name={active.name}
+              comments={active.comments}
+              onPress={() => {
+                navigation.push('TreeScreen', { uuid: active.uuid });
+              }}
+            />
+          )}
+        </View>
       </MapView>
-      <View style={{ position: 'absolute', top: '89%', alignSelf: 'center' }}>
-        <Button
-          onPress={() => {
-            goToFarm();
-          }}
-          title="center farm"
-        />
-      </View>
-      <View style={styles.card}>
-        {active && !isList && (
-          <SearchCard
-            key={active.uuid}
-            name={active.name}
-            comments={active.comments}
-            onPress={() => {
-              navigation.push('TreeScreen', { uuid: active.uuid });
-            }}
-          />
-        )}
-      </View>
     </View>
   );
 }
-
 MapScreen.propTypes = {
   style: ViewPropTypes.style,
   data: arrayOf(Tree),
   navigation: shape({
     push: func,
   }),
-  isList: bool,
 };
