@@ -114,7 +114,6 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   const [location, setLocation] = useState(null);
   const [editing, setEditing] = useState(uuid === null);
   const [commentText, setCommentText] = useState('');
-  const allFields = name !== '' && planted !== null && id !== '';
   const canEdit = uuid !== null;
 
   useLayoutEffect(() => {
@@ -154,6 +153,9 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
     if (planted === null) {
       final += '- Date Planted\n';
     }
+    if (!location) {
+      setLocation({ latitude: null, longitude: null });
+    }
     return final;
   };
 
@@ -164,11 +166,13 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       handleError(val);
       return;
     }
-    Object.entries(FEATURE_POLYGONS).forEach(([key, value]) => {
-      if (isPointInPolygon(location, value)) {
-        region = key;
-      }
-    });
+    if (location) {
+      Object.entries(FEATURE_POLYGONS).forEach(([key, value]) => {
+        if (isPointInPolygon(location, value)) {
+          region = key;
+        }
+      });
+    }
 
     const tree = {
       uuid,
@@ -185,7 +189,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       setEditing(false);
     }
     if (!canEdit) {
-      setLocation(null);
+      setLocation({ latitude: null, longitude: null });
       setName('');
       setID('');
       setPlanted(null);

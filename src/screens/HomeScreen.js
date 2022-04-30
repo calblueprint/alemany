@@ -59,7 +59,17 @@ export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListView, setIsListView] = useState(false);
   const [trees, setTrees] = useState([]);
+  const [allTrees, setAllTrees] = useState([]);
   const filtered = trees
+    .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
+    .filter(tree => {
+      const query = searchQuery.toLowerCase();
+      return (
+        tree.name?.toLowerCase().includes(query) || tree.id.includes(query)
+      );
+    });
+
+  const filteredList = allTrees
     .filter(tree => tree !== null && tree.name && tree.id && checkID(tree.uuid))
     .filter(tree => {
       const query = searchQuery.toLowerCase();
@@ -79,6 +89,7 @@ export default function HomeScreen({ navigation }) {
       try {
         const data = await getAllTrees();
         const validTrees = data.filter(tree => isValidLocation(tree));
+        setAllTrees(data);
         setTrees(validTrees);
       } catch (e) {
         console.warn(e);
@@ -86,7 +97,6 @@ export default function HomeScreen({ navigation }) {
     }
     return navigation.addListener('focus', () => getTrees());
   }, [navigation]);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isListView ? 'List' : 'Map',
@@ -95,7 +105,6 @@ export default function HomeScreen({ navigation }) {
       Keyboard.dismiss();
     }
   }, [navigation, isListView, toggleView]);
-
   const onSearchChange = searchValue => {
     setSearchQuery(searchValue);
     setIsListView(true);
@@ -105,7 +114,7 @@ export default function HomeScreen({ navigation }) {
     <ViewContainer>
       <View style={{ position: 'relative', width: '100%', height: '100%' }}>
         <ListScreen
-          data={filtered}
+          data={filteredList}
           navigation={navigation}
           style={{
             position: 'absolute',

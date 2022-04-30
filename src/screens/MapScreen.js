@@ -5,6 +5,7 @@ import { Platform, StyleSheet, ViewPropTypes, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import SearchCard from '../components/SearchCard';
+import Button from '../components/ui/Button';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
 import Tree from '../customprops';
 
@@ -42,7 +43,10 @@ const styles = StyleSheet.create({
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data, isList }) {
   const [active, setActive] = useState(null);
-
+  const mapRef = React.useRef(null);
+  const goToFarm = () => {
+    mapRef.current.animateToRegion(DEFAULT_LOCATION, 1000);
+  };
   return (
     <View>
       <MapView
@@ -52,6 +56,7 @@ export default function MapScreen({ style, navigation, data, isList }) {
         mapType="satellite"
         maxZoomLevel={25}
         showsUserLocation
+        ref={mapRef}
         toolbarEnabled={false}
       >
         {data.map(tree => (
@@ -72,6 +77,14 @@ export default function MapScreen({ style, navigation, data, isList }) {
           />
         ))}
       </MapView>
+      <View style={{ position: 'absolute', top: '89%', alignSelf: 'center' }}>
+        <Button
+          onPress={() => {
+            goToFarm();
+          }}
+          title="center farm"
+        />
+      </View>
       <View style={styles.card}>
         {active && !isList && (
           <SearchCard
