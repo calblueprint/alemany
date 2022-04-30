@@ -12,13 +12,14 @@ import {
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
+import { color } from '../components/ui/colors';
 
 const styles = StyleSheet.create({
   list: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#eee',
-    paddingTop: 180,
+    backgroundColor: color('gray.50'),
+    paddingTop: 140,
   },
 });
 

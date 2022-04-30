@@ -25,6 +25,7 @@ function Search({ onQueryChange, query, onSubmitSearch }) {
         padding: 15,
         borderRadius: 8,
         display: 'flex',
+        flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: '#000000',
@@ -35,6 +36,7 @@ function Search({ onQueryChange, query, onSubmitSearch }) {
         },
         shadowRadius: 7,
       }}
+      contentContainerStyle={{ flexWrap: 'wrap' }}
     >
       <Icon style={{ marginRight: 5 }} size={20} name="search" />
       <TextInput
@@ -116,12 +118,8 @@ export default function HomeScreen({ navigation }) {
       } catch (e) {
         console.warn(e);
       }
-      const data = await getAllTrees();
-      setTrees(data);
     }
-    getTrees();
-    const unsubscribe = navigation.addListener('focus', () => getTrees());
-    return unsubscribe;
+    return navigation.addListener('focus', () => getTrees());
   }, [navigation]);
 
   useLayoutEffect(() => {
@@ -199,12 +197,12 @@ export default function HomeScreen({ navigation }) {
         <MapScreen
           data={filtered}
           navigation={navigation}
+          isList={isListView}
           style={{
             position: 'absolute',
             zIndex: 2,
           }}
         />
-
         <Inset style={{ marginTop: 48, position: 'absolute', zIndex: 100 }}>
           <Search
             onQueryChange={onSearchChange}

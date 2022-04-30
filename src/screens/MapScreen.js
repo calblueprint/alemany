@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { array, func, shape } from 'prop-types';
-import { StyleSheet, ViewPropTypes } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { arrayOf, func, shape } from 'prop-types';
+import { StyleSheet, ViewPropTypes, View } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
+import SearchCard from '../components/SearchCard';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   map: {
@@ -25,33 +27,65 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.27,
     shadowRadius: 4.65,
   },
+  card: {
+    width: '100%',
+    bottom: 60,
+    position: 'absolute',
+    zIndex: 500,
+  },
 });
 
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data }) {
+  const [active, setActive] = useState(null);
+
   return (
-    <MapView
-      style={styles.map}
-      initialRegion={DEFAULT_LOCATION}
-      showsUserLocation
-    >
-      {data.map(tree => (
-        <Marker
-          key={tree.uuid}
-          coordinate={{
-            latitude: tree.location.latitude,
-            longitude: tree.location.longitude,
-          }}
-        />
-      ))}
-    </MapView>
+    <View>
+      <MapView
+        style={styles.map}
+        initialRegion={DEFAULT_LOCATION}
+        provider={PROVIDER_GOOGLE}
+        mapType="satellite"
+        maxZoomLevel={25}
+        showsUserLocation
+      >
+        {data.map(tree => (
+          <Marker
+            key={tree.uuid}
+            coordinate={{
+              latitude: tree.location?.latitude,
+              longitude: tree.location?.longitude,
+            }}
+            onPress={() => {
+              if (active?.uuid === tree.uuid) {
+                setActive(null);
+              } else {
+                setActive(tree);
+              }
+            }}
+            pinColor={tree.uuid === active?.uuid ? '#f00' : '#0f0'}
+          />
+        ))}
+        <View style={styles.card}>
+          {active && (
+            <SearchCard
+              key={active.uuid}
+              name={active.name}
+              comments={active.comments}
+              onPress={() => {
+                navigation.push('TreeScreen', { uuid: active.uuid });
+              }}
+            />
+          )}
+        </View>
+      </MapView>
+    </View>
   );
 }
 MapScreen.propTypes = {
   style: ViewPropTypes.style,
-  // eslint-disable-next-line react/forbid-prop-types
-  data: array,
+  data: arrayOf(Tree),
   navigation: shape({
-    navigate: func,
+    push: func,
   }),
 };

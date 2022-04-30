@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { func, shape } from 'prop-types';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Title } from 'react-native-paper';
 
 import ViewContainer from '../components/ViewContainer';
 
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
 export default function NotFoundScreen({ navigation }) {
   return (
     <ViewContainer>
-      <Title>This screen does&pos;t exist.</Title>
       <TouchableOpacity
         onPress={() => navigation.replace('Root')}
         style={styles.link}

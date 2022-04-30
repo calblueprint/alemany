@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { arrayOf, func, node, object, string } from 'prop-types';
-import { Pressable, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ViewPropTypes,
+  Image,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   card: {
@@ -33,7 +40,7 @@ Card.propTypes = {
   style: ViewPropTypes.style,
 };
 
-export default function SearchCard({ name, onPress, comments }) {
+export default function SearchCard({ name, onPress, comments, previewImage }) {
   return (
     <Card
       style={{
@@ -50,7 +57,8 @@ export default function SearchCard({ name, onPress, comments }) {
           {comments?.length !== 1 && 's'}
         </Text>
       </View>
-      <View
+      <Image
+        source={{ uri: previewImage }}
         style={{
           height: 96,
           width: 96,
@@ -66,4 +74,5 @@ SearchCard.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   comments: arrayOf(object),
   onPress: func,
+  previewImage: string,
 };

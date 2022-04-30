@@ -1,85 +1,16 @@
-import * as React from 'react';
-import { useState, useEffect } from 'react';
+import React from 'react';
 
 import { func, shape } from 'prop-types';
-import { StyleSheet } from 'react-native';
-import { Switch, TextInput, Button } from 'react-native-paper';
 
-import ViewContainer from '../components/ViewContainer';
-import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
+import Tree from '../components/Tree';
 import { addTree } from '../database/firebase';
-import { useCurrentLocation } from '../hooks/useCurrentLocation';
-
-const styles = StyleSheet.create({
-  input: {
-    width: '90%',
-    backgroundColor: 'white',
-  },
-});
 
 export default function AddScreen({ navigation }) {
-  const getCurrentLocation = useCurrentLocation();
-  const [entry, setEntry] = React.useState({
-    id: '',
-    name: '',
-    uuid: '',
-    location: null,
-    planted: null,
-    comments: [],
-  });
-  const [location, setLocation] = useState({
-    latitude: DEFAULT_LOCATION.latitude,
-    longitude: DEFAULT_LOCATION.longitude,
-  });
-  const [checked, setChecked] = React.useState(false);
-
-  useEffect(() => {
-    async function getData() {
-      const data = await getCurrentLocation();
-      setLocation(data);
-    }
-    getData();
-  }, [getCurrentLocation]);
-
-  async function addTreeAndNavigate(tree) {
-    const newId = await addTree(tree);
-    navigation.push('TreeDetails', { uuid: newId });
-  }
-
-  const onPress = () => {
-    let result = entry;
-    if (checked) {
-      result = { ...result, location };
-    }
-    addTreeAndNavigate(result);
+  const handleSave = async tree => {
+    const uuid = await addTree(tree);
+    navigation.push('TreeScreen', { uuid });
   };
-
-  return (
-    <ViewContainer>
-      <TextInput
-        label="Name"
-        value={entry.name}
-        onChangeText={name => setEntry({ ...entry, name: name.toString() })}
-        style={styles.input}
-      />
-      <TextInput
-        label="ID"
-        value={entry.id}
-        onChangeText={id => setEntry({ ...entry, id: id.toString() })}
-        style={styles.input}
-      />
-      {/* TODO: Add Switch label that shows location */}
-      <Switch
-        value={checked}
-        onValueChange={() => {
-          setChecked(!checked);
-        }}
-      />
-      <Button mode="contained" onPress={onPress}>
-        Submit
-      </Button>
-    </ViewContainer>
-  );
+  return <Tree onSave={handleSave} uuid={null} />;
 }
 
 AddScreen.propTypes = {

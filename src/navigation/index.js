@@ -17,7 +17,7 @@ import LoginScreen from '../screens/LoginScreen';
 import MapScreen from '../screens/MapScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TreeDetailsScreen from '../screens/TreeDetailsScreen';
+import TreeScreen from '../screens/TreeScreen';
 import VerificationScreen from '../screens/VerificationScreen';
 import LinkingConfiguration from './LinkingConfiguration';
 import TabNavigator from './TabNavigator';
@@ -35,7 +35,7 @@ function RootNavigator() {
     const { queryParams } = Linking.parse(event.url);
     const userToken = await AsyncStorage.getItem('userToken');
     if (userToken) {
-      navigation.navigate('TreeDetails', { uuid: queryParams.uuid });
+      navigation.navigate('TreeScreen', { uuid: queryParams.uuid });
     } else {
       // TODO: remove this auth check once 'Guest Mode's is supported
       Alert.alert(
@@ -82,8 +82,8 @@ function RootNavigator() {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Screen
-        name="TreeDetails"
-        component={TreeDetailsScreen}
+        name="TreeScreen"
+        component={TreeScreen}
         options={{
           title: 'View Tree',
         }}
