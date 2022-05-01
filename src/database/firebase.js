@@ -131,11 +131,23 @@ export const addTree = async tree => {
 };
 
 /** Add comment to a tree document. */
-export const addComment = async (comment, uuid) => {
+export const addComment = async (comment, treeUUID) => {
   try {
     treeCollection
-      .doc(uuid)
+      .doc(treeUUID)
       .update({ comments: firebase.firestore.FieldValue.arrayUnion(comment) });
+  } catch (e) {
+    console.warn(e);
+    throw e;
+    // TODO: Add error handling.
+  }
+};
+
+export const deleteComment = async (comment, treeUUID) => {
+  try {
+    treeCollection
+      .doc(treeUUID)
+      .update({ comments: firebase.firestore.FieldValue.arrayRemove(comment) });
   } catch (e) {
     console.warn(e);
     throw e;
