@@ -7,7 +7,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import SearchCard from '../components/SearchCard';
 import Button from '../components/ui/Button';
 import { DEFAULT_LOCATION } from '../constants/DefaultLocation';
-import Tree from '../customprops';
+import { Tree } from '../prop-types';
 
 const check = {
   isAndroid: () => Platform.OS === 'android',
