@@ -12,7 +12,7 @@ import {
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
 import { color } from '../components/ui/colors';
-import { Tree } from '../prop-types';
+import Tree from '../customprops';
 
 const styles = StyleSheet.create({
   list: {
