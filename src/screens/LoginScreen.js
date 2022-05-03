@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   FirebaseRecaptchaBanner,
@@ -109,7 +109,7 @@ function VerifyButton({
   setVerificationId,
   recaptchaVerifier,
 }) {
-
+  const [error, setError] = useState(false);
   const onPress = async () => {
     // FIXME: Bypass checking if the phone number is in the
     // Users table (entered via Retool dashboard).
@@ -137,6 +137,12 @@ function VerifyButton({
         });
       }
     } catch (err) {
+      if (error) {
+        setMessage({
+          text: 'Error: the phone number entered is not authorized to create an account. Please contact an Alemany Farm administrator for authorization.',
+        });
+        setError(false);
+      }
     }
   };
 
@@ -169,13 +175,10 @@ export default function LoginScreen({ navigation }) {
 
   useEffect(() => {
     if (verificationId) {
-      setMessage({
-        text: 'Verification code has been sent to your phone.',
-      });
       navigation.navigate('Verify', {
         verificationId,
         phoneNumber,
-        //ADD ALL ADDTIONAL METHODS HERE!
+        // ADD ALL ADDTIONAL METHODS HERE!
       });
     }
   }, [verificationId, phoneNumber, navigation]);
@@ -189,17 +192,24 @@ export default function LoginScreen({ navigation }) {
     setPhoneNumber(formatted);
   };
 
-  const onChange = (text) => {
-    var cleaned = ("" + text).replace(/\D/g, "");
-    var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+  const onChange = text => {
+    const cleaned = `${text}`.replace(/\D/g, '');
+    const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
     if (match) {
-      var intlCode = match[1] ? "+1 " : "",
-        number = [intlCode, "(", match[2], ") ", match[3], "-", match[4]].join(
-          ""
-        );
+      const intlCode = match[1] ? '+1 ' : '';
+      const number = [
+        intlCode,
+        '(',
+        match[2],
+        ') ',
+        match[3],
+        '-',
+        match[4],
+      ].join('');
       return number;
     }
-  }
+    return text;
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
