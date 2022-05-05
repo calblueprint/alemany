@@ -193,4 +193,9 @@ export const setAdditional = async additional => {
     // TODO: Add error handling.
   }
 };
+
+/**
+ *
+ */
+
 export default firebase;

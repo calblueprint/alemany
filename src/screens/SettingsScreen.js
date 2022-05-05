@@ -2,10 +2,14 @@ import * as React from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { func, shape } from 'prop-types';
-import { View, Pressable, Text } from 'react-native';
+import { View, Pressable, Text, Image } from 'react-native';
 
 import Inset from '../components/Inset';
 import ViewContainer from '../components/ViewContainer';
+
+import BeepLogo from '/Users/kenneth/Desktop/bp/alemany/assets/images/beep.png';
+
+import { Linking } from 'react-native';
 
 export default function SettingsScreen({ navigation }) {
   const signOut = async () => {
@@ -37,8 +41,12 @@ export default function SettingsScreen({ navigation }) {
             color: '#777',
           }}
         >
-          Built by Blueprint.
+          Built by Cal Blueprint.
         </Text>
+        <Image source={BeepLogo} />
+        <View
+          style={{ position: 'relative', width: '100%', height: '100%' }}
+        ></View>
       </Inset>
     </ViewContainer>
   );
