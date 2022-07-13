@@ -4,6 +4,7 @@ import React, { useState, useLayoutEffect } from 'react';
 
 import { formatRelative } from 'date-fns';
 import * as ImagePicker from 'expo-image-picker';
+import * as MapLocation from 'expo-location';
 import { isPointInPolygon } from 'geolib';
 import { func, string } from 'prop-types';
 import {
@@ -27,7 +28,6 @@ import {
   getTree,
   uploadImageAsync,
 } from '../database/firebase';
-import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { Comment as CommentPropType } from '../prop-types';
 import Icon from './Icon';
 import Inset from './Inset';
@@ -216,8 +216,24 @@ Comment.propTypes = {
   onDelete: func,
 };
 
+async function getCurrentLocation() {
+  const { status } = await MapLocation.requestForegroundPermissionsAsync();
+  if (status !== 'granted') {
+    return Alert.alert(
+      'Cannot access location',
+      'Please grant permissions to use the location in your phone settings.',
+    );
+  }
+  const currentLocation = await MapLocation.getCurrentPositionAsync({
+    accuracy: MapLocation.Accuracy.Balanced,
+  });
+  return {
+    latitude: currentLocation.coords.latitude,
+    longitude: currentLocation.coords.longitude,
+  };
+}
+
 export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
-  const getCurrentLocation = useCurrentLocation();
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [id, setID] = useState('');
   const [name, setName] = useState('');
@@ -492,7 +508,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
             }}
           >
             <Text style={{ fontWeight: '500', color: color('blue.500') }}>
-              {location ? 'Remove ' : 'Tag with current '}
+              {location ? 'Remove ' : 'Tag with '}
               location
             </Text>
           </Pressable>
