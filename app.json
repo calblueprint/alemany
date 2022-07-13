@@ -18,7 +18,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kbrgl.alemany",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to take pictures of crops",
+        "NSPhotoLibraryUsageDescription": "This app uses the photo library to get pictures of crops"
+      }
     },
     "android": {
       "adaptiveIcon": {
