@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
+import BottomSheet from '@gorhom/bottom-sheet';
 import { arrayOf, bool, func, shape } from 'prop-types';
 import { Platform, StyleSheet, ViewPropTypes, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -42,6 +43,8 @@ const styles = StyleSheet.create({
 
 // eslint-disable-next-line no-unused-vars
 export default function MapScreen({ style, navigation, data, isList }) {
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
   const [active, setActive] = useState(null);
   const mapRef = React.useRef(null);
   const goToFarm = () => {
@@ -87,14 +90,16 @@ export default function MapScreen({ style, navigation, data, isList }) {
       </View>
       <View style={styles.card}>
         {active && !isList && (
-          <SearchCard
-            key={active.uuid}
-            name={active.name}
-            comments={active.comments}
-            onPress={() => {
-              navigation.push('TreeScreen', { uuid: active.uuid });
-            }}
-          />
+          <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints} index={1}>
+            <SearchCard
+              key={active.uuid}
+              name={active.name}
+              comments={active.comments}
+              onPress={() => {
+                navigation.push('TreeScreen', { uuid: active.uuid });
+              }}
+            />
+          </BottomSheet>
         )}
       </View>
     </View>

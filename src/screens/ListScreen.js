@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { arrayOf, func, shape } from 'prop-types';
 import {
   ScrollView,
@@ -11,21 +12,11 @@ import {
 
 import Inset from '../components/Inset';
 import SearchCard from '../components/SearchCard';
-import { color } from '../components/ui/colors';
 import { Tree } from '../prop-types';
-
-const styles = StyleSheet.create({
-  list: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: color('gray.50'),
-    paddingTop: 140,
-  },
-});
 
 export default function ListScreen({ navigation, style, data }) {
   return (
-    <ScrollView style={[styles.list, style]}>
+    <BottomSheetScrollView style={style}>
       <Inset>
         <Text
           style={{
@@ -53,7 +44,7 @@ export default function ListScreen({ navigation, style, data }) {
           );
         })}
       </View>
-    </ScrollView>
+    </BottomSheetScrollView>
   );
 }
 
