@@ -3,10 +3,16 @@ import React from 'react';
 import { func, number, shape } from 'prop-types';
 
 import Tree from '../components/Tree';
+import { addTree } from '../database/firebase';
 
 export default function AddScreen({ navigation, route }) {
+  const handleSave = async tree => {
+    const uuid = await addTree(tree);
+    navigation.push('TreeScreen', { uuid });
+  };
   return (
     <Tree
+      onSave={handleSave}
       navigation={navigation}
       uuid={null}
       initialLocation={route?.params?.location}
