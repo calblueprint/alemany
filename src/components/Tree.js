@@ -1,12 +1,12 @@
 /* eslint-disable operator-linebreak */
 import 'react-native-get-random-values';
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 
 import { formatRelative } from 'date-fns';
 import * as ImagePicker from 'expo-image-picker';
 import * as MapLocation from 'expo-location';
 import { isPointInPolygon } from 'geolib';
-import { func, string } from 'prop-types';
+import { func, number, shape, string } from 'prop-types';
 import {
   Alert,
   Image,
@@ -233,7 +233,13 @@ async function getCurrentLocation() {
   };
 }
 
-export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
+export default function Tree({
+  uuid = null,
+  onSave,
+  navigation,
+  initialLocation = null,
+  onDelete = () => {},
+}) {
   const [datePickerVisible, setDatePickerVisible] = useState(false);
   const [id, setID] = useState('');
   const [name, setName] = useState('');
@@ -245,6 +251,10 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
   const [editing, setEditing] = useState(uuid === null);
   const [commentText, setCommentText] = useState('');
   const canEdit = uuid !== null;
+
+  useEffect(() => {
+    if (initialLocation) setLocation(initialLocation);
+  }, [initialLocation]);
 
   useLayoutEffect(() => {
     async function fetchData() {
@@ -490,7 +500,36 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
           <Pressable
             onPress={async () => {
               if (location) {
-                setLocation(null);
+                Alert.alert(
+                  'Edit location',
+                  null,
+                  [
+                    {
+                      text: 'Refine',
+                      onPress: () => {
+                        navigation.push('RefineLocation', {
+                          location,
+                          onSave: newLocation => {
+                            setLocation(newLocation);
+                          },
+                        });
+                      },
+                    },
+                    {
+                      text: 'Remove',
+                      onPress: () => {
+                        setLocation(null);
+                      },
+                      style: 'destructive',
+                    },
+                    {
+                      text: 'Cancel',
+                      onPress: () => {},
+                      style: 'cancel',
+                    },
+                  ],
+                  { cancelable: false },
+                );
                 return;
               }
               setLocation({
@@ -508,7 +547,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
             }}
           >
             <Text style={{ fontWeight: '500', color: color('blue.500') }}>
-              {location ? 'Remove ' : 'Tag with '}
+              {location ? 'Edit ' : 'Tag with '}
               location
             </Text>
           </Pressable>
@@ -618,4 +657,11 @@ Tree.propTypes = {
   onSave: func,
   onDelete: func,
   uuid: string,
+  navigation: shape({
+    navigate: func,
+  }),
+  initialLocation: shape({
+    latitude: number,
+    longitude: number,
+  }),
 };

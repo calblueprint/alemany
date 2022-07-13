@@ -14,7 +14,14 @@ export default function TreeScreen({ route, navigation }) {
     await deleteTree(uuid);
     navigation.pop();
   };
-  return <Tree onSave={handleSave} onDelete={handleDelete} uuid={uuid} />;
+  return (
+    <Tree
+      navigation={navigation}
+      onSave={handleSave}
+      onDelete={handleDelete}
+      uuid={uuid}
+    />
+  );
 }
 
 TreeScreen.propTypes = {

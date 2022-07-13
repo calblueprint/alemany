@@ -13,9 +13,9 @@ import { Alert } from 'react-native';
 
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
-import MapScreen from '../screens/MapScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import RefineLocationScreen from '../screens/RefineLocationScreen';
 import TreeScreen from '../screens/TreeScreen';
 import VerificationScreen from '../screens/VerificationScreen';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -56,10 +56,10 @@ function RootNavigator() {
         }}
       />
       <Screen
-        name="Map"
-        component={MapScreen}
+        name="RefineLocation"
+        component={RefineLocationScreen}
         options={{
-          title: 'Map View',
+          title: 'Refine Location',
         }}
       />
       <Screen
