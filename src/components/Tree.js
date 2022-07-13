@@ -87,20 +87,73 @@ const styles = StyleSheet.create({
   },
 });
 
-async function pickImage() {
-  // No permissions request is necessary for launching the image library
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
-    allowsEditing: true,
-    aspect: IMAGE_ASPECT_RATIO,
-    quality: 0.05,
-  });
+async function takePicture() {
+  const permission = await ImagePicker.requestCameraPermissionsAsync();
+  if (permission.granted) {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: IMAGE_ASPECT_RATIO,
+      quality: 0.05,
+    });
 
-  if (!result.cancelled) {
-    const { uri } = result;
-    return uploadImageAsync(uri);
+    if (!result.cancelled) {
+      const { uri } = result;
+      return uploadImageAsync(uri);
+    }
+    return null;
   }
-  return null;
+  return Alert.alert(
+    'Cannot access camera',
+    'Please grant permissions to use the camera in your phone settings.',
+  );
+}
+
+async function pickImage() {
+  const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (permission.granted) {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: IMAGE_ASPECT_RATIO,
+      quality: 0.05,
+    });
+
+    if (!result.cancelled) {
+      const { uri } = result;
+      return uploadImageAsync(uri);
+    }
+    return null;
+  }
+  return Alert.alert(
+    'Cannot access camera',
+    'Please grant permissions to use the camera in your phone settings.',
+  );
+}
+
+function getImage() {
+  return new Promise(resolve => {
+    Alert.alert(
+      'Add an image',
+      'Choose where to get the image from',
+      [
+        {
+          text: 'Take photo',
+          onPress: () => takePicture().then(resolve),
+        },
+        {
+          text: 'Choose from gallery',
+          onPress: () => pickImage().then(resolve),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => resolve(null),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false },
+    );
+  });
 }
 
 function Comment({ comment, onDelete }) {
@@ -283,6 +336,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       )}
       <TextInput
         placeholder="Name"
+        placeholderTextColor={color('gray.400')}
         value={name}
         onChangeText={newValue => setName(newValue)}
         style={styles.nameInput}
@@ -300,6 +354,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
         <TextInput
           placeholder="Address"
           value={id}
+          placeholderTextColor={color('gray.400')}
           onChangeText={newValue => setID(newValue)}
           style={{
             fontSize: 18,
@@ -312,7 +367,7 @@ export default function Tree({ uuid = null, onSave, onDelete = () => {} }) {
       <Pressable
         onPress={async () => {
           if (editing) {
-            const uri = await pickImage();
+            const uri = await getImage();
             if (uri) {
               setImages([uri]);
             }
