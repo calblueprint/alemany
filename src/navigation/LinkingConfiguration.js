@@ -33,7 +33,6 @@ const linking = {
           },
         },
       },
-      Modal: 'modal',
       NotFound: '*',
     },
   },

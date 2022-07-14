@@ -13,7 +13,6 @@ import { Alert } from 'react-native';
 
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import LoginScreen from '../screens/LoginScreen';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import RefineLocationScreen from '../screens/RefineLocationScreen';
 import TreeScreen from '../screens/TreeScreen';
@@ -85,9 +84,6 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      <Group screenOptions={{ presentation: 'modal' }}>
-        <Screen name="Modal" component={ModalScreen} />
-      </Group>
     </Navigator>
   );
 }
