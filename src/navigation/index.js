@@ -26,7 +26,7 @@ import TabNavigator from './TabNavigator';
  */
 function RootNavigator() {
   const Stack = createNativeStackNavigator();
-  const { Navigator, Screen, Group } = Stack;
+  const { Navigator, Screen } = Stack;
   const navigation = useNavigation();
 
   const handleDeepLinkingUrl = async event => {
